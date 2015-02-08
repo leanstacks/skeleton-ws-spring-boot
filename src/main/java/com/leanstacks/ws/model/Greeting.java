@@ -2,6 +2,11 @@ package com.leanstacks.ws.model;
 
 import java.math.BigInteger;
 
+/**
+ * The Greeting class is an entity model object.
+ * 
+ * @author Matt Warman
+ */
 public class Greeting {
 
     private BigInteger id;
