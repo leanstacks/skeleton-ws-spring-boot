@@ -5,6 +5,9 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,9 @@ public class GreetingServiceBean implements GreetingService {
         return greetings;
     }
 
+    @Cacheable(
+            value = "greetings",
+            key = "#id")
     @Override
     public Greeting findOne(Long id) {
         logger.info("> findOne {}", id);
@@ -45,6 +51,9 @@ public class GreetingServiceBean implements GreetingService {
         return greeting;
     }
 
+    @CachePut(
+            value = "greetings",
+            key = "#result.id")
     @Transactional
     @Override
     public Greeting create(Greeting greeting) {
@@ -65,6 +74,9 @@ public class GreetingServiceBean implements GreetingService {
         return savedGreeting;
     }
 
+    @CachePut(
+            value = "greetings",
+            key = "#greeting.id")
     @Transactional
     @Override
     public Greeting update(Greeting greeting) {
@@ -86,6 +98,9 @@ public class GreetingServiceBean implements GreetingService {
         return updatedGreeting;
     }
 
+    @CacheEvict(
+            value = "greetings",
+            key = "#id")
     @Transactional
     @Override
     public void delete(Long id) {
