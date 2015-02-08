@@ -2,11 +2,10 @@ package com.leanstacks.ws.web.api;
 
 import java.math.BigInteger;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leanstacks.ws.model.Greeting;
+import com.leanstacks.ws.service.GreetingService;
 
 /**
  * The GreetingController class is a RESTful web service controller. The
@@ -31,48 +31,8 @@ public class GreetingController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static BigInteger nextId;
-    private static Map<BigInteger, Greeting> greetingMap;
-
-    private static Greeting save(Greeting greeting) {
-        if (greetingMap == null) {
-            greetingMap = new HashMap<BigInteger, Greeting>();
-            nextId = BigInteger.ONE;
-        }
-        // If Update...
-        if (greeting.getId() != null) {
-            Greeting oldGreeting = greetingMap.get(greeting.getId());
-            if (oldGreeting == null) {
-                return null;
-            }
-            greetingMap.remove(greeting.getId());
-            greetingMap.put(greeting.getId(), greeting);
-            return greeting;
-        }
-        // If Create
-        greeting.setId(nextId);
-        nextId = nextId.add(BigInteger.ONE);
-        greetingMap.put(greeting.getId(), greeting);
-        return greeting;
-    }
-
-    private static boolean delete(BigInteger id) {
-        Greeting deletedGreeting = greetingMap.remove(id);
-        if (deletedGreeting == null) {
-            return false;
-        }
-        return true;
-    }
-
-    static {
-        Greeting g1 = new Greeting();
-        g1.setText("Hello World!");
-        save(g1);
-
-        Greeting g2 = new Greeting();
-        g2.setText("Hola Mundo!");
-        save(g2);
-    }
+    @Autowired
+    private GreetingService greetingService;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Exception> handleException(Exception e) {
@@ -90,7 +50,7 @@ public class GreetingController {
     public ResponseEntity<Collection<Greeting>> getGreetings() throws Exception {
         logger.info("> getGreetings");
 
-        Collection<Greeting> greetings = greetingMap.values();
+        Collection<Greeting> greetings = greetingService.findAll();
 
         logger.info("< getGreetings");
         return new ResponseEntity<Collection<Greeting>>(greetings,
@@ -105,7 +65,7 @@ public class GreetingController {
             throws Exception {
         logger.info("> getGreeting");
 
-        Greeting greeting = greetingMap.get(id);
+        Greeting greeting = greetingService.findOne(id);
         if (greeting == null) {
             logger.info("< getGreeting");
             return new ResponseEntity<Greeting>(HttpStatus.NOT_FOUND);
@@ -124,7 +84,12 @@ public class GreetingController {
             @RequestBody Greeting greeting) throws Exception {
         logger.info("> createGreeting");
 
-        Greeting savedGreeting = save(greeting);
+        Greeting savedGreeting = greetingService.create(greeting);
+        if (savedGreeting == null) {
+            logger.info("< createGreeting");
+            return new ResponseEntity<Greeting>(
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
         logger.info("< createGreeting");
         return new ResponseEntity<Greeting>(savedGreeting, HttpStatus.CREATED);
@@ -139,7 +104,7 @@ public class GreetingController {
             @RequestBody Greeting greeting) throws Exception {
         logger.info("> updateGreeting");
 
-        Greeting updatedGreeting = save(greeting);
+        Greeting updatedGreeting = greetingService.update(greeting);
         if (updatedGreeting == null) {
             logger.info("< updateGreeting");
             return new ResponseEntity<Greeting>(
@@ -159,7 +124,7 @@ public class GreetingController {
             throws Exception {
         logger.info("> deleteGreeting");
 
-        boolean deleted = delete(id);
+        boolean deleted = greetingService.delete(id);
         if (!deleted) {
             logger.info("< deleteGreeting");
             return new ResponseEntity<Greeting>(
