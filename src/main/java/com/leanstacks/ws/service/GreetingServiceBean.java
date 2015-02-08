@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.repository.GreetingRepository;
@@ -44,6 +45,7 @@ public class GreetingServiceBean implements GreetingService {
         return greeting;
     }
 
+    @Transactional
     @Override
     public Greeting create(Greeting greeting) {
         logger.info("> create");
@@ -63,6 +65,7 @@ public class GreetingServiceBean implements GreetingService {
         return savedGreeting;
     }
 
+    @Transactional
     @Override
     public Greeting update(Greeting greeting) {
         logger.info("> update {}", greeting.getId());
@@ -83,6 +86,7 @@ public class GreetingServiceBean implements GreetingService {
         return updatedGreeting;
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         logger.info("> delete {}", id);
