@@ -1,15 +1,14 @@
 package com.leanstacks.ws.service;
 
-import java.math.BigInteger;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.leanstacks.ws.model.Greeting;
+import com.leanstacks.ws.repository.GreetingRepository;
 
 /**
  * The GreetingServiceBean encapsulates all business behaviors operating on the
@@ -22,64 +21,24 @@ public class GreetingServiceBean implements GreetingService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static BigInteger nextId;
-    private static Map<BigInteger, Greeting> greetingMap;
-
-    private static Greeting saveGreeting(Greeting greeting) {
-        if (greetingMap == null) {
-            greetingMap = new HashMap<BigInteger, Greeting>();
-            nextId = BigInteger.ONE;
-        }
-        // If Update...
-        if (greeting.getId() != null) {
-            Greeting oldGreeting = greetingMap.get(greeting.getId());
-            if (oldGreeting == null) {
-                return null;
-            }
-            greetingMap.remove(greeting.getId());
-            greetingMap.put(greeting.getId(), greeting);
-            return greeting;
-        }
-        // If Create
-        greeting.setId(nextId);
-        nextId = nextId.add(BigInteger.ONE);
-        greetingMap.put(greeting.getId(), greeting);
-        return greeting;
-    }
-
-    private static boolean deleteGreeting(BigInteger id) {
-        Greeting deletedGreeting = greetingMap.remove(id);
-        if (deletedGreeting == null) {
-            return false;
-        }
-        return true;
-    }
-
-    static {
-        Greeting g1 = new Greeting();
-        g1.setText("Hello World!");
-        saveGreeting(g1);
-
-        Greeting g2 = new Greeting();
-        g2.setText("Hola Mundo!");
-        saveGreeting(g2);
-    }
+    @Autowired
+    private GreetingRepository greetingRepository;
 
     @Override
     public Collection<Greeting> findAll() {
         logger.info("> findAll");
 
-        Collection<Greeting> greetings = greetingMap.values();
+        Collection<Greeting> greetings = greetingRepository.findAll();
 
         logger.info("< findAll");
         return greetings;
     }
 
     @Override
-    public Greeting findOne(BigInteger id) {
+    public Greeting findOne(Long id) {
         logger.info("> findOne {}", id);
 
-        Greeting greeting = greetingMap.get(id);
+        Greeting greeting = greetingRepository.findOne(id);
 
         logger.info("< findOne {}", id);
         return greeting;
@@ -89,7 +48,16 @@ public class GreetingServiceBean implements GreetingService {
     public Greeting create(Greeting greeting) {
         logger.info("> create");
 
-        Greeting savedGreeting = saveGreeting(greeting);
+        // Ensure the entity object to be created does NOT exist in the
+        // repository. Prevent the default behavior of save() which will update
+        // an existing entity if the entity matching the supplied id exists.
+        if (greeting.getId() != null) {
+            logger.error("Attempted to create a Greeting, but id attribute was not null.");
+            logger.info("< create");
+            return null;
+        }
+
+        Greeting savedGreeting = greetingRepository.save(greeting);
 
         logger.info("< create");
         return savedGreeting;
@@ -99,20 +67,29 @@ public class GreetingServiceBean implements GreetingService {
     public Greeting update(Greeting greeting) {
         logger.info("> update {}", greeting.getId());
 
-        Greeting updatedGreeting = saveGreeting(greeting);
+        // Ensure the entity object to be updated exists in the repository to
+        // prevent the default behavior of save() which will persist a new
+        // entity if the entity matching the id does not exist
+        Greeting greetingToUpdate = findOne(greeting.getId());
+        if (greetingToUpdate == null) {
+            logger.error("Attempted to update a Greeting, but the entity does not exist.");
+            logger.info("< update {}", greeting.getId());
+            return null;
+        }
+
+        Greeting updatedGreeting = greetingRepository.save(greeting);
 
         logger.info("< update {}", greeting.getId());
         return updatedGreeting;
     }
 
     @Override
-    public boolean delete(BigInteger id) {
+    public void delete(Long id) {
         logger.info("> delete {}", id);
 
-        boolean deleted = deleteGreeting(id);
+        greetingRepository.delete(id);
 
         logger.info("< delete {}", id);
-        return deleted;
     }
 
 }

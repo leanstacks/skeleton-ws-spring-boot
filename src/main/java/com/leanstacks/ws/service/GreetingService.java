@@ -1,6 +1,5 @@
 package com.leanstacks.ws.service;
 
-import java.math.BigInteger;
 import java.util.Collection;
 
 import com.leanstacks.ws.model.Greeting;
@@ -27,7 +26,7 @@ public interface GreetingService {
      * @param id A BigInteger primary key identifier.
      * @return A Greeting or <code>null</code> if none found.
      */
-    Greeting findOne(BigInteger id);
+    Greeting findOne(Long id);
 
     /**
      * Persists a Greeting entity in the data store.
@@ -48,9 +47,7 @@ public interface GreetingService {
     /**
      * Removes a previously persisted Greeting entity from the data store.
      * @param id A BigInteger primary key identifier.
-     * @return Returns <code>true</code> if the entity was removed from the data
-     *         store or <code>false</code> if a problem occurred.
      */
-    boolean delete(BigInteger id);
+    void delete(Long id);
 
 }

@@ -1,6 +1,5 @@
 package com.leanstacks.ws.web.api;
 
-import java.math.BigInteger;
 import java.util.Collection;
 
 import org.slf4j.Logger;
@@ -61,7 +60,7 @@ public class GreetingController {
             value = "/api/greetings/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> getGreeting(@PathVariable BigInteger id)
+    public ResponseEntity<Greeting> getGreeting(@PathVariable Long id)
             throws Exception {
         logger.info("> getGreeting");
 
@@ -119,17 +118,11 @@ public class GreetingController {
             value = "/api/greetings/{id}",
             method = RequestMethod.DELETE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> deleteGreeting(
-            @PathVariable("id") BigInteger id, @RequestBody Greeting greeting)
-            throws Exception {
+    public ResponseEntity<Greeting> deleteGreeting(@PathVariable("id") Long id,
+            @RequestBody Greeting greeting) throws Exception {
         logger.info("> deleteGreeting");
 
-        boolean deleted = greetingService.delete(id);
-        if (!deleted) {
-            logger.info("< deleteGreeting");
-            return new ResponseEntity<Greeting>(
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        greetingService.delete(id);
 
         logger.info("< deleteGreeting");
         return new ResponseEntity<Greeting>(HttpStatus.NO_CONTENT);
