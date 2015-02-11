@@ -116,10 +116,9 @@ public class GreetingController {
 
     @RequestMapping(
             value = "/api/greetings/{id}",
-            method = RequestMethod.DELETE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> deleteGreeting(@PathVariable("id") Long id,
-            @RequestBody Greeting greeting) throws Exception {
+            method = RequestMethod.DELETE)
+    public ResponseEntity<Greeting> deleteGreeting(@PathVariable("id") Long id)
+            throws Exception {
         logger.info("> deleteGreeting");
 
         greetingService.delete(id);

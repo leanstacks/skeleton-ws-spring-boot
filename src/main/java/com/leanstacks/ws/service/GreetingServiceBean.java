@@ -111,4 +111,13 @@ public class GreetingServiceBean implements GreetingService {
         logger.info("< delete {}", id);
     }
 
+    @CacheEvict(
+            value = "greetings",
+            allEntries = true)
+    @Override
+    public void evictCache() {
+        logger.info("> evictCache");
+        logger.info("< evictCache");
+    }
+
 }
