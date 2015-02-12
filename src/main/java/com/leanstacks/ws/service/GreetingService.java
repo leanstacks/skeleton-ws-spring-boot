@@ -50,4 +50,9 @@ public interface GreetingService {
      */
     void delete(Long id);
 
+    /**
+     * Evicts all members of the "greetings" cache.
+     */
+    void evictCache();
+
 }
