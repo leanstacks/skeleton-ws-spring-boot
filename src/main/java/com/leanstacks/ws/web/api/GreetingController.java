@@ -84,11 +84,6 @@ public class GreetingController {
         logger.info("> createGreeting");
 
         Greeting savedGreeting = greetingService.create(greeting);
-        if (savedGreeting == null) {
-            logger.info("< createGreeting");
-            return new ResponseEntity<Greeting>(
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         logger.info("< createGreeting");
         return new ResponseEntity<Greeting>(savedGreeting, HttpStatus.CREATED);
@@ -104,11 +99,6 @@ public class GreetingController {
         logger.info("> updateGreeting");
 
         Greeting updatedGreeting = greetingService.update(greeting);
-        if (updatedGreeting == null) {
-            logger.info("< updateGreeting");
-            return new ResponseEntity<Greeting>(
-                    HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
         logger.info("< updateGreeting");
         return new ResponseEntity<Greeting>(updatedGreeting, HttpStatus.OK);
