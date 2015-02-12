@@ -11,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.leanstacks.ws.AbstractTest;
 import com.leanstacks.ws.model.Greeting;
 
+/**
+ * Unit test methods for the GreetingService and GreetingServiceBean.
+ * 
+ * @author Matt Warman
+ */
 @Transactional
 public class GreetingServiceTest extends AbstractTest {
 
