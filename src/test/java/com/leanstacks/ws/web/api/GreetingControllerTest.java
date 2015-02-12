@@ -13,6 +13,11 @@ import com.leanstacks.ws.AbstractControllerTest;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.GreetingService;
 
+/**
+ * Unit tests for the GreetingController.
+ * 
+ * @author Matt Warman
+ */
 @Transactional
 public class GreetingControllerTest extends AbstractControllerTest {
 
