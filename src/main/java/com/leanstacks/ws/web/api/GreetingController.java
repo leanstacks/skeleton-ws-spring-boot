@@ -2,13 +2,10 @@ package com.leanstacks.ws.web.api;
 
 import java.util.Collection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,21 +23,10 @@ import com.leanstacks.ws.service.GreetingService;
  * @author Matt Warman
  */
 @RestController
-public class GreetingController {
-
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+public class GreetingController extends BaseController {
 
     @Autowired
     private GreetingService greetingService;
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Exception> handleException(Exception e) {
-        logger.error("> handleException");
-        logger.error("- Exception: ", e);
-        logger.error("< handleException");
-        return new ResponseEntity<Exception>(e,
-                HttpStatus.INTERNAL_SERVER_ERROR);
-    }
 
     @RequestMapping(
             value = "/api/greetings",
