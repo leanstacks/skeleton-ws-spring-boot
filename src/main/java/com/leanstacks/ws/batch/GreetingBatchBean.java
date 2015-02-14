@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,9 @@ public class GreetingBatchBean {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private CounterService counterService;
+
+    @Autowired
     private GreetingService greetingService;
 
     /**
@@ -37,6 +41,8 @@ public class GreetingBatchBean {
             cron = "${batch.greeting.cron}")
     public void cronJob() {
         logger.info("> cronJob");
+
+        counterService.increment("method.invoked.greetingBatchBean.cronJob");
 
         // Add scheduled logic here
 
@@ -56,6 +62,9 @@ public class GreetingBatchBean {
             fixedRateString = "${batch.greeting.fixedrate}")
     public void fixedRateJob() {
         logger.info("> fixedRateJob");
+
+        counterService
+                .increment("method.invoked.greetingBatchBean.fixedRateJob");
 
         // Add scheduled logic here
 
@@ -79,6 +88,9 @@ public class GreetingBatchBean {
     public void fixedRateJobWithInitialDelay() {
         logger.info("> fixedRateJobWithInitialDelay");
 
+        counterService
+                .increment("method.invoked.greetingBatchBean.fixedRateJobWithInitialDelay");
+
         // Add scheduled logic here
 
         Collection<Greeting> greetings = greetingService.findAll();
@@ -97,6 +109,9 @@ public class GreetingBatchBean {
             fixedDelayString = "${batch.greeting.fixeddelay}")
     public void fixedDelayJob() {
         logger.info("> fixedDelayJob");
+
+        counterService
+                .increment("method.invoked.greetingBatchBean.fixedDelayJob");
 
         // Add scheduled logic here
 
@@ -119,6 +134,9 @@ public class GreetingBatchBean {
             fixedDelayString = "${batch.greeting.fixeddelay}")
     public void fixedDelayJobWithInitialDelay() {
         logger.info("> fixedDelayJobWithInitialDelay");
+
+        counterService
+                .increment("method.invoked.greetingBatchBean.fixedDelayJobWithInitialDelay");
 
         // Add scheduled logic here
 
