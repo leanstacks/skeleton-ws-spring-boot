@@ -5,18 +5,24 @@
 
   <groupId>com.leanstacks</groupId>
   <artifactId>skeleton-ws-spring-boot</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.0</version>
+  <name>Web Services Project Skeleton</name>
+  <description>Skeleton project for RESTful web services using Spring Boot.</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>1.2.1.RELEASE</version>
   </parent>
-
+  
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -38,6 +44,13 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>18.0</version>
+    </dependency>
+    
+    <!-- Dependencies for Unit Testing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
