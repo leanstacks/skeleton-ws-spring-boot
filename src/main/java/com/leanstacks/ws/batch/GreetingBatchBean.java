@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,13 +20,20 @@ import com.leanstacks.ws.service.GreetingService;
  * @author Matt Warman
  */
 @Component
+@Profile("batch")
 public class GreetingBatchBean {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The <code>CounterService</code> captures metrics for Spring Actuator.
+     */
     @Autowired
     private CounterService counterService;
 
+    /**
+     * The GreetingService business service.
+     */
     @Autowired
     private GreetingService greetingService;
 

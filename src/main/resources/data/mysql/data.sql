@@ -1,5 +1,5 @@
 /*
- * HSQLDB script.
+ * MySQL script.
  * Load the database with reference data and unit test data.
  */
 -- password is 'password'
