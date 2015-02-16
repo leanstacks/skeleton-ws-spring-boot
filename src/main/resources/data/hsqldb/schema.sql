@@ -1,3 +1,7 @@
+/*
+ * HSQLDB script.
+ * Create the database schema for the application.
+ */
 DROP TABLE Greeting IF EXISTS;
 
 CREATE TABLE Greeting (

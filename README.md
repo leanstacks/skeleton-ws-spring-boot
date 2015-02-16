@@ -4,9 +4,49 @@
 
 This is a [LEAN**STACKS**](http://www.leanstacks.com) solution.
 
+For more detailed information and instruction about constructing Spring Boot RESTful web services, see the book [Lean Application Engineering Featuring Backbone.Marionette and the Spring Framework](https://leanpub.com/leanstacks-marionette-spring).
+
 ## Getting Started
 
 This is a project skeleton for a [Spring Boot](http://projects.spring.io/spring-boot/) RESTful web services application.
+
+### Features
+
+#### RESTful Web Service Family
+The project contains examples of **C**reate, **R**ead, **U**pdate, and **D**elete web services.  The project illustrates the use of `@ExceptionHandler` methods to manage web service responses when common exceptional conditions arise.
+
+#### Business Services
+The project demonstrates the encapsulation of business behaviors into domain-specific, Spring-managed services annotated with `@Service`.
+
+#### Spring Data JPA
+The project shows the use of Spring Data JPA repositories, `@Repository`, for data access and management.  Illustrates the `@Entity` annotation and other JPA entity model annotations for attribute and relationship mapping.
+
+#### HSQLDB In-Memory Database
+The project illustrates how to use the HSQLDB in-memory database which is useful for rapid prototyping or unit test execution in a continuous integration environment.  The project contains schema and data SQL scripts to build and destroy the database dynamically as the application is started and stopped.
+
+#### MySQL Database
+In addition to HSQLDB support, the project also supports integration with MySQL.  The project contains MySQL schema and data scripts.
+
+#### Transaction Management
+The project contains examples of the `@Transactional` annotation on business service methods.
+
+#### Cache Management
+The project contains examples of the `@Cacheable`, `@CachePut`, and `@CacheEvict` annotations on business service methods.
+
+#### Scheduled (Batch) Processes
+The project illustrates the use of the `@Scheduled` annotation and provides examples of cron, fixed rate, and fixed delay schedules.
+
+#### Spring Security
+The project provides examples of Spring Security integration.  The web service endpoints are secured using Basic Auth, backed by database authentication and authorization.  The project illustrates declarative authorization for resources by role.
+
+#### Spring Profiles
+The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, and mysql.
+
+#### Unit Tests
+The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects.
+
+#### Actuator Monitoring and Management
+The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics.  Also, custom Maven project attributes are incorporated into the Actuator info endpoint.
 
 ## Languages
 
@@ -67,6 +107,12 @@ The application distribution artifact is placed in the /target directory and is 
 
 ```
 java -jar example-1.0.0.jar
+```
+
+By default, the batch and hsqldb profiles are active.  To run the application with a specific set of active profiles, supply the `--spring.profiles.active` command line argument.  For example, to start the project using MySQL instad of HSQLDB and enable the batch process:
+
+```
+java -jar example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
 
 ### test

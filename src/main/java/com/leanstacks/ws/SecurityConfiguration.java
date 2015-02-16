@@ -27,11 +27,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private AccountAuthenticationProvider accountAuthenticationProvider;
 
+    /**
+     * Supplies a PasswordEncoder instance to the Spring ApplicationContext. The
+     * PasswordEncoder is used by the AuthenticationProvider to perform one-way
+     * hash operations on passwords for credential comparison.
+     * 
+     * @return A PasswordEncoder.
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * This method builds the AuthenticationProvider used by the system to
+     * process authentication requests.
+     * 
+     * @param auth An AuthenticationManagerBuilder instance used to construct
+     *        the AuthenticationProvider.
+     * @throws Exception Thrown if a problem occurs constructing the
+     *         AuthenticationProvider.
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth)
             throws Exception {

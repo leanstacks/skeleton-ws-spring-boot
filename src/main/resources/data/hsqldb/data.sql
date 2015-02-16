@@ -1,3 +1,7 @@
+/*
+ * HSQLDB script.
+ * Load the database with reference data and unit test data.
+ */
 -- password is 'password'
 INSERT INTO Account (username, password, enabled, credentialsexpired, expired, locked) VALUES ('user', '$2a$10$9/44Rne7kQqPXa0cY6NfG.3XzScMrCxFYjapoLq/wFmHz7EC9praK', true, false, false, false);
 -- password is 'operations'

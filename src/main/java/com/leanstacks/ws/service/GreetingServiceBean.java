@@ -29,9 +29,15 @@ public class GreetingServiceBean implements GreetingService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The <code>CounterService</code> captures metrics for Spring Actuator.
+     */
     @Autowired
     private CounterService counterService;
 
+    /**
+     * The Spring Data repository for Greeting entities.
+     */
     @Autowired
     private GreetingRepository greetingRepository;
 

@@ -25,9 +25,15 @@ public class GreetingBatchBean {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The <code>CounterService</code> captures metrics for Spring Actuator.
+     */
     @Autowired
     private CounterService counterService;
 
+    /**
+     * The GreetingService business service.
+     */
     @Autowired
     private GreetingService greetingService;
 

@@ -1,3 +1,7 @@
+/*
+ * MySQL script.
+ * Create the database schema for the application.
+ */
 DROP TABLE IF EXISTS `Greeting`;
 
 CREATE TABLE `Greeting` (

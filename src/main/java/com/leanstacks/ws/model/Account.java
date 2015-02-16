@@ -12,6 +12,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
+/**
+ * The Account class is an entity model object. An Account describes the
+ * security credentials and authentication flags that permit access to
+ * application functionality.
+ * 
+ * @author Matt Warman
+ */
 @Entity
 public class Account {
 

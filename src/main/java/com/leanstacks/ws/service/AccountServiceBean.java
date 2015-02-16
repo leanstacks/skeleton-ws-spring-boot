@@ -8,11 +8,20 @@ import org.springframework.stereotype.Service;
 import com.leanstacks.ws.model.Account;
 import com.leanstacks.ws.repository.AccountRepository;
 
+/**
+ * The AccountServiceBean encapsulates all business behaviors for operations on
+ * the Account entity model and some related entities such as Role.
+ * 
+ * @author Matt Warman
+ */
 @Service
 public class AccountServiceBean implements AccountService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The Spring Data repository for Account entities.
+     */
     @Autowired
     private AccountRepository accountRepository;
 

@@ -11,15 +11,32 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * A Spring Security AuthenticationProvider which extends
+ * <code>AbstractUserDetailsAuthenticationProvider</code>. This classes uses the
+ * <code>AccountUserDetailsService</code> to retrieve a UserDetails instance.
+ * 
+ * A PasswordEncoder compares the supplied authentication credentials to those
+ * in the UserDetails.
+ * 
+ * @author Matt Warman
+ */
 @Component
 public class AccountAuthenticationProvider extends
         AbstractUserDetailsAuthenticationProvider {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * A Spring Security UserDetailsService implementation based upon the
+     * Account entity model.
+     */
     @Autowired
     private AccountUserDetailsService userDetailsService;
 
+    /**
+     * A PasswordEncoder instance to hash clear test password values.
+     */
     @Autowired
     private PasswordEncoder passwordEncoder;
 

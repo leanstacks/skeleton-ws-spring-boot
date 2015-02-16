@@ -22,14 +22,21 @@ public class Application {
 
     /**
      * Entry point for the application.
+     * 
      * @param args Command line arguments.
-     * @throws Exception Thrown when an unexpected exception is thrown from the
+     * @throws Exception Thrown when an unexpected Exception is thrown from the
      *         application.
      */
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
     }
 
+    /**
+     * Create a CacheManager implementation class to be used by Spring where
+     * <code>@Cacheable</code> annotations are applied.
+     * 
+     * @return A CacheManager instance.
+     */
     @Bean
     public CacheManager cacheManager() {
         GuavaCacheManager cacheManager = new GuavaCacheManager("greetings");

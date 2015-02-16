@@ -18,11 +18,20 @@ import com.leanstacks.ws.model.Account;
 import com.leanstacks.ws.model.Role;
 import com.leanstacks.ws.service.AccountService;
 
+/**
+ * A Spring Security UserDetailsService implementation which creates UserDetails
+ * objects from the Account and Role entities.
+ * 
+ * @author Matt Warman
+ */
 @Service
 public class AccountUserDetailsService implements UserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    /**
+     * The AccountService business service.
+     */
     @Autowired
     private AccountService accountService;
 
