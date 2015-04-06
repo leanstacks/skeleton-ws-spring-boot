@@ -36,6 +36,9 @@ The project contains examples of the `@Cacheable`, `@CachePut`, and `@CacheEvict
 #### Scheduled (Batch) Processes
 The project illustrates the use of the `@Scheduled` annotation and provides examples of cron, fixed rate, and fixed delay schedules.
 
+#### Asynchronous Processes
+The project illustrates the use of the `@Async` annotation and provides examples of asynchronous methods with and without return values.
+
 #### Spring Security
 The project provides examples of Spring Security integration.  The web service endpoints are secured using Basic Auth, backed by database authentication and authorization.  The project illustrates declarative authorization for resources by role.
 
