@@ -5,7 +5,7 @@
 
   <groupId>com.leanstacks</groupId>
   <artifactId>skeleton-ws-spring-boot</artifactId>
-  <version>1.0.1</version>
+  <version>1.2.0</version>
   <name>Web Services Project Skeleton</name>
   <description>Skeleton project for RESTful web services using Spring Boot.</description>
 
@@ -19,7 +19,16 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.7</java.version>
     <guava.version>18.0</guava.version>
+    <swagger.version>2.0.0-SNAPSHOT</swagger.version>
   </properties>
+  
+  <repositories>
+    <repository>
+      <id>jcenter-snapshots</id>
+      <name>jcenter</name>
+      <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
@@ -59,6 +68,18 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+    
+    <!-- Dependencies for Swagger -->
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger2</artifactId>
+      <version>${swagger.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.springfox</groupId>
+      <artifactId>springfox-swagger-ui</artifactId>
+      <version>${swagger.version}</version>
     </dependency>
     
     <!-- Dependencies for Unit Testing -->
