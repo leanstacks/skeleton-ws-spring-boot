@@ -13,6 +13,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import com.google.common.base.Predicate;
 
+/**
+ * The SwaggerConfiguration class provides configuration beans for the Swagger
+ * API documentation generator.
+ * 
+ * @author Matt Warman
+ */
 @Profile("docs")
 @Configuration
 @EnableSwagger2

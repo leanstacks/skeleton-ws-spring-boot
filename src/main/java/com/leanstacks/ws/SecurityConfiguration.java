@@ -58,6 +58,12 @@ public class SecurityConfiguration {
 
     }
     
+    /**
+     * This inner class configures the WebSecurityConfigurerAdapter instance for
+     * the web service API context paths.
+     * 
+     * @author Matt Warman
+     */
     @Configuration
     @Order(1)
     public static class ApiWebSecurityConfigurerAdapter extends
@@ -81,6 +87,12 @@ public class SecurityConfiguration {
         
     }
     
+    /**
+     * This inner class configures the WebSecurityConfigurerAdapter instance for
+     * the Spring Actuator web service context paths.
+     * 
+     * @author Matt Warman
+     */
     @Configuration
     @Order(2)
     public static class ActuatorWebSecurityConfigurerAdapter extends
@@ -104,6 +116,12 @@ public class SecurityConfiguration {
         
     }
     
+    /**
+     * This inner class configures the WebSecurityConfigurerAdapter instance for
+     * any remaining context paths not handled by other adapters.
+     * 
+     * @author Matt Warman
+     */
     @Profile("docs")
     @Configuration
     public static class FormLoginWebSecurityConfigurerAdapter extends 
