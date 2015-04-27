@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import com.google.common.base.Predicate;
 
 /**
- * The SwaggerConfiguration class provides configuration beans for the Swagger
+ * The ApiDocsConfiguration class provides configuration beans for the Swagger
  * API documentation generator.
  * 
  * @author Matt Warman
@@ -22,7 +22,7 @@ import com.google.common.base.Predicate;
 @Profile("docs")
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration {
+public class ApiDocsConfiguration {
 
     /**
      * Create a Docket class to be used by Springfox's Swagger API Documentation

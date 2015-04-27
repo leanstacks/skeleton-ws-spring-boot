@@ -1,18 +1,18 @@
-package com.leanstacks.ws.web;
+package com.leanstacks.ws.web.docs;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * The SwaggerController is a Spring MVC web controller class which serves the
+ * The ApiDocsController is a Spring MVC web controller class which serves the
  * Swagger user interface HTML page.
  * 
  * @author Matt Warman
  */
 @Profile("docs")
 @Controller
-public class SwaggerController {
+public class ApiDocsController {
 
     /**
      * Request handler to serve the Swagger user interface HTML page configured
