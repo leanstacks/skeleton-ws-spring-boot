@@ -46,10 +46,13 @@ The project provides examples of Spring Security integration.  The web service e
 The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, and mysql.
 
 #### Unit Tests
-The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects.
+The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects.  Perform complete end-to-end testing with Spring MVC mocking or leverage Mockito to stub or spy business components.
 
 #### Actuator Monitoring and Management
 The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics.  Also, custom Maven project attributes are incorporated into the Actuator info endpoint.
+
+#### API Documentation Generator
+The project includes [Springfox](http://springfox.github.io/springfox/) Swagger integration to automatically generate API docs for the RESTful web service endpoints.  This feature may be activated using the *"docs"* Spring profile.
 
 ## Languages
 
