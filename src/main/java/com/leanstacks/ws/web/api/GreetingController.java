@@ -51,7 +51,7 @@ public class GreetingController extends BaseController {
             value = "/api/greetings",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Greeting>> getGreetings() throws Exception {
+    public ResponseEntity<Collection<Greeting>> getGreetings() {
         logger.info("> getGreetings");
 
         Collection<Greeting> greetings = greetingService.findAll();
@@ -80,8 +80,7 @@ public class GreetingController extends BaseController {
             value = "/api/greetings/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> getGreeting(@PathVariable Long id)
-            throws Exception {
+    public ResponseEntity<Greeting> getGreeting(@PathVariable Long id) {
         logger.info("> getGreeting");
 
         Greeting greeting = greetingService.findOne(id);
@@ -117,7 +116,7 @@ public class GreetingController extends BaseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Greeting> createGreeting(
-            @RequestBody Greeting greeting) throws Exception {
+            @RequestBody Greeting greeting) {
         logger.info("> createGreeting");
 
         Greeting savedGreeting = greetingService.create(greeting);
@@ -152,7 +151,7 @@ public class GreetingController extends BaseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Greeting> updateGreeting(
-            @RequestBody Greeting greeting) throws Exception {
+            @RequestBody Greeting greeting) {
         logger.info("> updateGreeting");
 
         Greeting updatedGreeting = greetingService.update(greeting);

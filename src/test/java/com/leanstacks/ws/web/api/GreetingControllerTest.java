@@ -14,7 +14,12 @@ import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.GreetingService;
 
 /**
- * Unit tests for the GreetingController.
+ * Unit tests for the GreetingController using Spring MVC Mocks.
+ * 
+ * These tests utilize the Spring MVC Mock objects to simulate sending actual
+ * HTTP requests to the Controller component. This test ensures that the
+ * RequestMappings are configured correctly. Also, these tests ensure that the
+ * request and response bodies are serialized as expected.
  * 
  * @author Matt Warman
  */

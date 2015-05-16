@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leanstacks.ws.web.api.BaseController;
 
 /**
  * This class extends the functionality of AbstractTest. AbstractControllerTest
@@ -36,6 +37,16 @@ public abstract class AbstractControllerTest extends AbstractTest {
      */
     protected void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    }
+
+    /**
+     * Prepares the test class for execution of web tests. Builds a MockMvc
+     * instance using standalone configuration facilitating the injection of
+     * Mockito resources into the controller class.
+     * @param controller A controller object to be tested.
+     */
+    protected void setUp(BaseController controller) {
+        mvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     /**
