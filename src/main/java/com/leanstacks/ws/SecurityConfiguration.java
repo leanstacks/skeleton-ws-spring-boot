@@ -57,7 +57,7 @@ public class SecurityConfiguration {
         auth.authenticationProvider(accountAuthenticationProvider);
 
     }
-    
+
     /**
      * This inner class configures the WebSecurityConfigurerAdapter instance for
      * the web service API context paths.
@@ -66,11 +66,13 @@ public class SecurityConfiguration {
      */
     @Configuration
     @Order(1)
-    public static class ApiWebSecurityConfigurerAdapter extends
-            WebSecurityConfigurerAdapter {
-    
+    public static class ApiWebSecurityConfigurerAdapter
+            extends WebSecurityConfigurerAdapter {
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+
+            // @formatter:off
             
             http
             .csrf().disable()
@@ -81,12 +83,14 @@ public class SecurityConfiguration {
             .httpBasic()
             .and()
             .sessionManagement()
-              .sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
+              .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             
+            // @formatter:on
+
         }
-        
+
     }
-    
+
     /**
      * This inner class configures the WebSecurityConfigurerAdapter instance for
      * the Spring Actuator web service context paths.
@@ -95,11 +99,13 @@ public class SecurityConfiguration {
      */
     @Configuration
     @Order(2)
-    public static class ActuatorWebSecurityConfigurerAdapter extends
-            WebSecurityConfigurerAdapter {
-    
+    public static class ActuatorWebSecurityConfigurerAdapter
+            extends WebSecurityConfigurerAdapter {
+
         @Override
         protected void configure(HttpSecurity http) throws Exception {
+
+            // @formatter:off
             
             http
             .csrf().disable()
@@ -112,10 +118,12 @@ public class SecurityConfiguration {
             .sessionManagement()
               .sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
             
+            // @formatter:on
+
         }
-        
+
     }
-    
+
     /**
      * This inner class configures the WebSecurityConfigurerAdapter instance for
      * any remaining context paths not handled by other adapters.
@@ -124,21 +132,25 @@ public class SecurityConfiguration {
      */
     @Profile("docs")
     @Configuration
-    public static class FormLoginWebSecurityConfigurerAdapter extends 
-            WebSecurityConfigurerAdapter {
+    public static class FormLoginWebSecurityConfigurerAdapter
+            extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-    
+
+            // @formatter:off
+            
             http
               .csrf().disable()
               .authorizeRequests()
                 .anyRequest().authenticated()
               .and()
               .formLogin();
-    
+            
+            // @formatter:on
+
         }
-    
+
     }
 
 }
