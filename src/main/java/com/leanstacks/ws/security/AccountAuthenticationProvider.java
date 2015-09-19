@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.leanstacks.ws.util.RequestContext;
+
 /**
  * A Spring Security AuthenticationProvider which extends
  * <code>AbstractUserDetailsAuthenticationProvider</code>. This classes uses the
@@ -22,8 +24,8 @@ import org.springframework.stereotype.Component;
  * @author Matt Warman
  */
 @Component
-public class AccountAuthenticationProvider extends
-        AbstractUserDetailsAuthenticationProvider {
+public class AccountAuthenticationProvider
+        extends AbstractUserDetailsAuthenticationProvider {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -43,10 +45,11 @@ public class AccountAuthenticationProvider extends
     @Override
     protected void additionalAuthenticationChecks(UserDetails userDetails,
             UsernamePasswordAuthenticationToken token)
-            throws AuthenticationException {
+                    throws AuthenticationException {
         logger.info("> additionalAuthenticationChecks");
 
-        if (token.getCredentials() == null || userDetails.getPassword() == null) {
+        if (token.getCredentials() == null
+                || userDetails.getPassword() == null) {
             logger.info("< additionalAuthenticationChecks");
             throw new BadCredentialsException("Credentials may not be null.");
         }
@@ -57,13 +60,15 @@ public class AccountAuthenticationProvider extends
             throw new BadCredentialsException("Invalid credentials.");
         }
 
+        RequestContext.setUsername(userDetails.getUsername());
+
         logger.info("< additionalAuthenticationChecks");
     }
 
     @Override
     protected UserDetails retrieveUser(String username,
             UsernamePasswordAuthenticationToken token)
-            throws AuthenticationException {
+                    throws AuthenticationException {
         logger.info("> retrieveUser");
 
         UserDetails userDetails = userDetailsService

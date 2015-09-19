@@ -20,6 +20,7 @@
     <java.version>1.8</java.version>
     <guava.version>18.0</guava.version>
     <swagger.version>2.0.0-SNAPSHOT</swagger.version>
+    <jadira.version>4.0.0.GA</jadira.version>
   </properties>
   
   <repositories>
@@ -58,6 +59,12 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
     </dependency>
+    <!-- jadira custom Hibernate type mappings -->
+    <dependency>
+      <groupId>org.jadira.usertype</groupId>
+      <artifactId>usertype.extended</artifactId>
+      <version>${jadira.version}</version>
+    </dependency>
 
     <!-- Dependencies for GuavaCacheManager -->
     <dependency>
@@ -70,6 +77,16 @@
       <version>${guava.version}</version>
     </dependency>
     
+    <!-- Dependencies for Miscellaneous Functionality -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-joda</artifactId>
+    </dependency>
+
     <!-- Dependencies for Swagger -->
     <dependency>
       <groupId>io.springfox</groupId>

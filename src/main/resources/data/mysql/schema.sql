@@ -6,8 +6,15 @@ DROP TABLE IF EXISTS `Greeting`;
 
 CREATE TABLE `Greeting` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
+  `referenceId` varchar(255) NOT NULL,
   `text` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
+  `version` int(10) unsigned NOT NULL,
+  `createdBy` varchar(100) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedBy` varchar(100) DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UQ_Greeting_ReferenceId` (`referenceId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS `AccountRole`;
@@ -16,13 +23,20 @@ DROP TABLE IF EXISTS `Role`;
 
 CREATE TABLE `Account` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
+  `referenceId` varchar(255) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(200) NOT NULL,
   `enabled` bit(1) NOT NULL DEFAULT 1,
   `credentialsexpired` bit(1) NOT NULL DEFAULT 0,
   `expired` bit(1) NOT NULL DEFAULT 0,
   `locked` bit(1) NOT NULL DEFAULT 0,
+  `version` int(10) unsigned NOT NULL,
+  `createdBy` varchar(100) NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedBy` varchar(100) DEFAULT NULL,
+  `updatedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `UQ_Account_ReferenceId` (`referenceId`),
   UNIQUE KEY `UQ_Account_Username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
