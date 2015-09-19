@@ -82,7 +82,8 @@ public class GreetingServiceBean implements GreetingService {
         // repository. Prevent the default behavior of save() which will update
         // an existing entity if the entity matching the supplied id exists.
         if (greeting.getId() != null) {
-            logger.error("Attempted to create a Greeting, but id attribute was not null.");
+            logger.error(
+                    "Attempted to create a Greeting, but id attribute was not null.");
             logger.info("< create");
             throw new EntityExistsException(
                     "Cannot create new Greeting with supplied id.  The id attribute must be null to create an entity.");
@@ -109,12 +110,14 @@ public class GreetingServiceBean implements GreetingService {
         // entity if the entity matching the id does not exist
         Greeting greetingToUpdate = findOne(greeting.getId());
         if (greetingToUpdate == null) {
-            logger.error("Attempted to update a Greeting, but the entity does not exist.");
+            logger.error(
+                    "Attempted to update a Greeting, but the entity does not exist.");
             logger.info("< update {}", greeting.getId());
             throw new NoResultException("Requested Greeting not found.");
         }
 
-        Greeting updatedGreeting = greetingRepository.save(greeting);
+        greetingToUpdate.setText(greeting.getText());
+        Greeting updatedGreeting = greetingRepository.save(greetingToUpdate);
 
         logger.info("< update {}", greeting.getId());
         return updatedGreeting;
