@@ -44,8 +44,8 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers",
                 "x-requested-with, content-type");
 
-        logger.info("< doFilter");
         chain.doFilter(req, res);
+        logger.info("< doFilter");
     }
 
     @Override
