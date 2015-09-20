@@ -144,8 +144,9 @@ public class TransactionalEntity implements Serializable {
                     "Cannot persist a TransactionalEntity without a username "
                             + "in the RequestContext for this thread.");
         }
-        createdBy = username;
-        createdAt = new DateTime();
+        setCreatedBy(username);
+
+        setCreatedAt(new DateTime());
     }
 
     /**
@@ -162,11 +163,12 @@ public class TransactionalEntity implements Serializable {
         String username = RequestContext.getUsername();
         if (username == null) {
             throw new IllegalArgumentException(
-                    "Cannot update a TransactionalEntity without a username  "
+                    "Cannot update a TransactionalEntity without a username "
                             + "in the RequestContext for this thread.");
         }
-        updatedBy = username;
-        updatedAt = new DateTime();
+        setUpdatedBy(username);
+
+        setUpdatedAt(new DateTime());
     }
 
     /**
@@ -202,10 +204,10 @@ public class TransactionalEntity implements Serializable {
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
-        if (this.id == null) {
+        if (getId() == null) {
             return -1;
         }
-        return this.id.hashCode();
+        return getId().hashCode();
     }
 
 }
