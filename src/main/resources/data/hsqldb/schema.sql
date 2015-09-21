@@ -44,6 +44,10 @@ CREATE TABLE Role (
   id BIGINT NOT NULL,
   code VARCHAR(50) NOT NULL,
   label VARCHAR(100) NOT NULL,
+  ordinal INT NOT NULL,
+  effectiveAt DATETIME NOT NULL,
+  expiresAt DATETIME DEFAULT NULL,
+  createdAt DATETIME NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT UQ_Role_Code UNIQUE (code)
 );

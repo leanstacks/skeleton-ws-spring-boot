@@ -44,6 +44,10 @@ CREATE TABLE `Role` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `code` varchar(50) NOT NULL,
   `label` varchar(100) NOT NULL,
+  `ordinal` int(10) unsigned NOT NULL,
+  `effectiveAt` datetime NOT NULL,
+  `expiresAt` datetime DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UQ_Role_Code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
