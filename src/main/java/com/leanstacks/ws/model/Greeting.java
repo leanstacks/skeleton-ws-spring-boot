@@ -1,8 +1,6 @@
 package com.leanstacks.ws.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -11,25 +9,15 @@ import javax.validation.constraints.NotNull;
  * @author Matt Warman
  */
 @Entity
-public class Greeting {
+public class Greeting extends TransactionalEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private String text;
 
     public Greeting() {
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getText() {

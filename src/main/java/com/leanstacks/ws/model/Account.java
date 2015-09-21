@@ -5,8 +5,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,11 +18,9 @@ import javax.validation.constraints.NotNull;
  * @author Matt Warman
  */
 @Entity
-public class Account {
+public class Account extends TransactionalEntity {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     private String username;
@@ -51,22 +47,14 @@ public class Account {
             name = "AccountRole",
             joinColumns = @JoinColumn(
                     name = "accountId",
-                    referencedColumnName = "id"),
+                    referencedColumnName = "id") ,
             inverseJoinColumns = @JoinColumn(
                     name = "roleId",
-                    referencedColumnName = "id"))
+                    referencedColumnName = "id") )
     private Set<Role> roles;
 
     public Account() {
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getUsername() {
