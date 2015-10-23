@@ -42,8 +42,13 @@ public class AccountUserDetailsService implements UserDetailsService {
 
         Account account = accountService.findByUsername(username);
         if (account == null) {
-            logger.info("< loadUserByUsername {}", username);
-            return null;
+            // Not found...
+            throw new UsernameNotFoundException("Invalid credentials.");
+        }
+
+        if (account.getRoles() == null || account.getRoles().isEmpty()) {
+            // No Roles assigned to Account...
+            throw new UsernameNotFoundException("Invalid credentials.");
         }
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
