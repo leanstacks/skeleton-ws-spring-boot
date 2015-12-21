@@ -13,7 +13,7 @@ This is a project skeleton for a [Spring Boot](http://projects.spring.io/spring-
 ### Features
 
 #### RESTful Web Service Family
-The project contains examples of **C**reate, **R**ead, **U**pdate, and **D**elete web services.  The project illustrates the use of `@ExceptionHandler` methods to manage web service responses when common exceptional conditions arise.
+The project contains examples of **C** reate, **R** ead, **U** pdate, and **D** elete web services.  The project illustrates the use of `@ExceptionHandler` methods to manage web service responses when common exceptional conditions arise.
 
 #### Business Services
 The project demonstrates the encapsulation of business behaviors into domain-specific, Spring-managed services annotated with `@Service`.
@@ -69,13 +69,20 @@ Fork the [Spring Boot web services skeleton project](https://github.com/mwarman/
 The project requires the following dependencies be installed on the host machine:
 
 * Java Development Kit 7 or later
+
+and choose one of:
 * Apache Maven 3 or later
+* Gradle 2.4 or later
 
 ## Running
 
-The project uses [Maven](http://maven.apache.org/) for build, package, and test workflow automation.  The following Maven goals are the most commonly used.
+The project supports [Maven](http://maven.apache.org/) and [Gradle](http://gradle.org/) for build, package, and test workflow automation.  
 
-### spring-boot:run
+### Maven
+
+The following Maven goals are the most commonly used.
+
+#### spring-boot:run
 
 The `spring-boot:run` Maven goal performs the following workflow steps:
 
@@ -93,7 +100,7 @@ Type `ctrl-C` to halt the web server.
 
 This goal is used for local machine development and functional testing.  Use the `package` goal for server deployment.
 
-### test
+#### test
 
 The `test` Maven goal performs the following workflow steps:
 
@@ -110,7 +117,7 @@ To execute the `test` Maven goal, type the following command at a terminal promp
 mvn clean test
 ```
 
-### package
+#### package
 
 The `package` Maven goal performs the following workflow steps:
 
@@ -138,4 +145,74 @@ By default, the batch and hsqldb profiles are active.  To run the application wi
 
 ```
 java -jar example-1.0.0.jar --spring.profiles.active=mysql,batch
+```
+
+### Gradle
+
+The following Gradle tasks are the most commonly used.
+
+#### bootRun
+
+The `bootRun` Gradle task performs the following workflow steps:
+
+* compiles Java classes to the /build directory
+* copies all resources to the /build directory
+* starts an embedded Apache Tomcat server
+
+To execute the `bootRun` Gradle task, type the following command at a terminal prompt in the project base directory.
+
+```
+gradle bootRun
+```
+
+Type `ctrl-C` to halt the web server.
+
+This task is used for local machine development and functional testing.  Use the `assemble` or `build` task for server deployment.
+
+#### assemble
+
+The `assemble` Gradle task performs the following workflow steps:
+
+* compiles Java classes to the /build directory
+* copies all resources to the /build directory
+* prepares an executable JAR file in the /build/libs directory
+
+The `assemble` Gradle task is designed to allow engineers the means to compile the project and produce an executable JAR file suitable for server environments without executing unit tests or producing other project reports.
+
+To execute the `assemble` Gradle task, type the following command at a terminal prompt in the project base directory.
+
+```
+gradle clean assemble
+```
+
+#### build
+
+The `build` Gradle task performs the following workflow steps:
+
+* compiles Java classes to the /build directory
+* copies all resources to the /build directory
+* executes the unit test suites
+* produces unit test reports
+* prepares an executable JAR file in the /build/libs directory
+
+The `build` Gradle task is prepares the application for distribution to server environments. The application and all dependencies are packaged into a single, executable JAR file.
+
+This task is ideal for use on continuous integration servers such as Jenkins, etc. because it produces unit test, code coverage, and static analysis reports.
+
+To execute the `build` Gradle task, type the following command at a terminal prompt in the project base directory.
+
+```
+gradle clean build
+```
+
+The application distribution artifact is placed in the /build/libs directory and is named using the project name and version from the `build.gradle` file.  To run the JAR file use the following command:
+
+```
+java -jar build/libs/example-1.0.0.jar
+```
+
+By default, the batch and hsqldb profiles are active.  To run the application with a specific set of active profiles, supply the `--spring.profiles.active` command line argument.  For example, to start the project using MySQL instad of HSQLDB and enable the batch process:
+
+```
+java -jar build/libs/example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
