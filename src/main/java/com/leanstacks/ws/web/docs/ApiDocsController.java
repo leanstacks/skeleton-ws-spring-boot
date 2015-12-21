@@ -22,7 +22,7 @@ public class ApiDocsController {
      */
     @RequestMapping("/docs")
     public String getSwaggerApiDocsPage() {
-        return "swagger-ui.html";
+        return "redirect:swagger-ui.html";
     }
 
 }

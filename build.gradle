@@ -32,8 +32,8 @@ dependencies {
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda'
   compile group: 'com.google.guava', name: 'guava', version: '19.0'
   compile group: 'org.jadira.usertype', name: 'usertype.extended', version: '4.0.0.GA'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.0.0'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.0.0'
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.3.0'
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.3.0'
   
   runtime group: 'org.hsqldb', name: 'hsqldb'
   runtime group: 'mysql', name: 'mysql-connector-java'
