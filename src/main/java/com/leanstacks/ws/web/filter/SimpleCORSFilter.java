@@ -2,9 +2,7 @@ package com.leanstacks.ws.web.filter;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -13,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.filter.GenericFilterBean;
 
 /**
  * The SimpleCORSFilter class is a standard web Filter which intercepts all
@@ -22,21 +21,19 @@ import org.springframework.stereotype.Component;
  * @author Matt Warman
  */
 @Component
-public class SimpleCORSFilter implements Filter {
+public class SimpleCORSFilter extends GenericFilterBean {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    @Override
-    public void destroy() {
-
-    }
+    /**
+     * The Logger for this class.
+     */
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res,
+    public void doFilter(ServletRequest req, ServletResponse resp,
             FilterChain chain) throws IOException, ServletException {
         logger.info("> doFilter");
 
-        HttpServletResponse response = (HttpServletResponse) res;
+        HttpServletResponse response = (HttpServletResponse) resp;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods",
                 "DELETE, GET, OPTIONS, PATCH, POST, PUT");
@@ -44,13 +41,8 @@ public class SimpleCORSFilter implements Filter {
         response.setHeader("Access-Control-Allow-Headers",
                 "x-requested-with, content-type");
 
-        chain.doFilter(req, res);
+        chain.doFilter(req, resp);
         logger.info("< doFilter");
-    }
-
-    @Override
-    public void init(FilterConfig config) throws ServletException {
-
     }
 
 }
