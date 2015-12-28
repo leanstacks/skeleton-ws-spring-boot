@@ -12,6 +12,12 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
+ext {
+  guavaVersion = '19.0'
+  jadiraVersion = '4.0.0.GA'
+  swaggerVersion = '2.3.0'
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 version = '1.5.0'
@@ -30,10 +36,10 @@ dependencies {
   
   compile group: 'joda-time', name: 'joda-time'
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda'
-  compile group: 'com.google.guava', name: 'guava', version: '19.0'
-  compile group: 'org.jadira.usertype', name: 'usertype.extended', version: '4.0.0.GA'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.3.0'
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.3.0'
+  compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+  compile group: 'org.jadira.usertype', name: 'usertype.extended', version: jadiraVersion
+  compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
+  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion
   
   runtime group: 'org.hsqldb', name: 'hsqldb'
   runtime group: 'mysql', name: 'mysql-connector-java'
