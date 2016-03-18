@@ -72,7 +72,9 @@ The project requires the following dependencies be installed on the host machine
 
 and choose one of:
 * Apache Maven 3 or later
-* Gradle 2.4 or later
+* Gradle 2.4 or later \*
+
+\* The Gradle Wrapper is bundled with this project. Gradle tasks may be used without installing Gradle CLI by substituting `./gradlew` for `gradle` in the instructions below.
 
 ## Running
 
@@ -162,7 +164,11 @@ The `bootRun` Gradle task performs the following workflow steps:
 To execute the `bootRun` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle bootRun
+gradle clean bootRun
+
+...OR...
+
+./gradlew clean bootRun
 ```
 
 Type `ctrl-C` to halt the web server.
@@ -183,6 +189,10 @@ To execute the `assemble` Gradle task, type the following command at a terminal 
 
 ```
 gradle clean assemble
+
+...OR...
+
+./gradlew clean assemble
 ```
 
 #### build
@@ -192,7 +202,8 @@ The `build` Gradle task performs the following workflow steps:
 * compiles Java classes to the /build directory
 * copies all resources to the /build directory
 * executes the unit test suites
-* produces unit test reports
+* analyzes unit test code coverage
+* produces unit test, code coverage, and other project reports
 * prepares an executable JAR file in the /build/libs directory
 
 The `build` Gradle task is prepares the application for distribution to server environments. The application and all dependencies are packaged into a single, executable JAR file.
@@ -203,6 +214,20 @@ To execute the `build` Gradle task, type the following command at a terminal pro
 
 ```
 gradle clean build
+
+...OR...
+
+./gradlew clean build
+```
+
+The `clean` and `build` tasks are the default tasks for this project.  Therefore, simply typing `gradle` (or `./gradlew` to use the Gradle Wrapper) will produce the same result as `gradle clean build`.
+
+```
+gradle
+
+...OR...
+
+./gradlew
 ```
 
 The application distribution artifact is placed in the /build/libs directory and is named using the project name and version from the `build.gradle` file.  To run the JAR file use the following command:
