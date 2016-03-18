@@ -31,7 +31,7 @@ public class EmailServiceBean implements EmailService {
         long pause = 5000;
         try {
             Thread.sleep(pause);
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // do nothing
         }
         logger.info("Processing time was {} seconds.", pause / 1000);
@@ -49,8 +49,8 @@ public class EmailServiceBean implements EmailService {
 
         try {
             send(greeting);
-        } catch (Exception e) {
-            logger.warn("Exception caught sending asynchronous mail.", e);
+        } catch (Exception ex) {
+            logger.warn("Exception caught sending asynchronous mail.", ex);
         }
 
         logger.info("< sendAsync");
@@ -66,9 +66,9 @@ public class EmailServiceBean implements EmailService {
         try {
             Boolean success = send(greeting);
             response.complete(success);
-        } catch (Exception e) {
-            logger.warn("Exception caught sending asynchronous mail.", e);
-            response.completeExceptionally(e);
+        } catch (Exception ex) {
+            logger.warn("Exception caught sending asynchronous mail.", ex);
+            response.completeExceptionally(ex);
         }
 
         logger.info("< sendAsyncWithResult");

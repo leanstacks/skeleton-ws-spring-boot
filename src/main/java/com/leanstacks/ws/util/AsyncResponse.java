@@ -7,24 +7,23 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * The AsyncResponse class implements the Future interface. This class
- * facilitates the normal and exceptional completion of asynchronous tasks (or
- * methods) and wraps their response.
- * 
- * The AsyncResponse class seeks to mimic some behaviors defined in the
- * CompletableFuture class provided in JDK version 8. If using JDK 7 or earlier,
- * the AsyncResponse class is a suitable substitute for CompletableFuture.
+ * <p>
+ * The AsyncResponse class implements the Future interface. This class facilitates the normal and exceptional completion
+ * of asynchronous tasks (or methods) and wraps their response.
+ * </p>
+ * <p>
+ * The AsyncResponse class seeks to mimic some behaviors defined in the CompletableFuture class provided in JDK version
+ * 8. If using JDK 7 or earlier, the AsyncResponse class is a suitable substitute for CompletableFuture.
+ * </p>
  * 
  * @author Matt Warman
  * 
- * @param <V> The type of Value object wrapped and returned by the
- *        AsyncResponse.
+ * @param <V> The type of Value object wrapped and returned by the AsyncResponse.
  */
 public class AsyncResponse<V> implements Future<V> {
 
     /**
-     * Indicates the block operation should run indefinitely until the
-     * AsyncResponse state changes.
+     * Indicates the block operation should run indefinitely until the AsyncResponse state changes.
      */
     private static final long BLOCK_INDEFINITELY = 0;
 
@@ -49,8 +48,8 @@ public class AsyncResponse<V> implements Future<V> {
      */
     private boolean isDone = false;
     /**
-     * The interval, in milliseconds, which any <code>get</code> method checks
-     * if the task is complete. Default: 100 milliseconds.
+     * The interval, in milliseconds, which any <code>get</code> method checks if the task is complete. Default: 100
+     * milliseconds.
      */
     private long checkCompletedInterval = 100;
 
@@ -63,6 +62,7 @@ public class AsyncResponse<V> implements Future<V> {
 
     /**
      * Create a new, completed AsyncResponse with the supplied value.
+     * 
      * @param val An object of type V used as the task response value.
      */
     public AsyncResponse(V val) {
@@ -71,11 +71,9 @@ public class AsyncResponse<V> implements Future<V> {
     }
 
     /**
-     * Create a new, completed AsyncResponse with the supplied Exception. The
-     * AsyncResponse is marked as completed exceptionally. When the client
-     * invokes one of the <code>get</code> methods, an ExecutionException will
-     * be thrown using the supplied Exception as the cause of the
-     * ExecutionException.
+     * Create a new, completed AsyncResponse with the supplied Exception. The AsyncResponse is marked as completed
+     * exceptionally. When the client invokes one of the <code>get</code> methods, an ExecutionException will be thrown
+     * using the supplied Exception as the cause of the ExecutionException.
      * 
      * @param ex A Throwable.
      */
@@ -126,8 +124,7 @@ public class AsyncResponse<V> implements Future<V> {
     }
 
     @Override
-    public V get(long timeout, TimeUnit unit) throws InterruptedException,
-            ExecutionException, TimeoutException {
+    public V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
 
         long timeoutInMillis = unit.toMillis(timeout);
         block(timeoutInMillis);
@@ -146,12 +143,11 @@ public class AsyncResponse<V> implements Future<V> {
     }
 
     /**
-     * Mark this AsyncResponse as finished (completed) and set the supplied
-     * value V as the task return value.
+     * Mark this AsyncResponse as finished (completed) and set the supplied value V as the task return value.
+     * 
      * @param val An object of type V.
-     * @return A boolean that when TRUE indicates the AsyncResponse state was
-     *         successfully updated. A response of FALSE indicates the
-     *         AsyncResponse state could not be set correctly.
+     * @return A boolean that when TRUE indicates the AsyncResponse state was successfully updated. A response of FALSE
+     *         indicates the AsyncResponse state could not be set correctly.
      */
     public boolean complete(V val) {
         this.value = val;
@@ -161,15 +157,13 @@ public class AsyncResponse<V> implements Future<V> {
     }
 
     /**
-     * Mark this AsyncResposne as finished (completed) with an exception. The
-     * AsyncResponse value (V) is set to null. The supplied Throwable will be
-     * used as the Cause of an ExceptionException thrown when any
-     * <code>get</code> method is called.
+     * Mark this AsyncResposne as finished (completed) with an exception. The AsyncResponse value (V) is set to null.
+     * The supplied Throwable will be used as the Cause of an ExceptionException thrown when any <code>get</code> method
+     * is called.
      * 
      * @param ex A Throwable.
-     * @return A boolean that when TRUE indicates the AsyncResponse state was
-     *         successfully updated. A response of FALSE indicates the
-     *         AsyncResponse state could not be set correctly.
+     * @return A boolean that when TRUE indicates the AsyncResponse state was successfully updated. A response of FALSE
+     *         indicates the AsyncResponse state could not be set correctly.
      */
     public boolean completeExceptionally(Throwable ex) {
         this.value = null;
@@ -181,8 +175,8 @@ public class AsyncResponse<V> implements Future<V> {
     }
 
     /**
-     * Set the interval at which any <code>get</code> method evaluates if the
-     * AsyncResponse is complete or cancelled.
+     * Set the interval at which any <code>get</code> method evaluates if the AsyncResponse is complete or cancelled.
+     * 
      * @param millis A long number of milliseconds.
      */
     public void setCheckCompletedInterval(long millis) {
@@ -190,15 +184,12 @@ public class AsyncResponse<V> implements Future<V> {
     }
 
     /**
-     * Pauses the current thread until the AsyncResponse is in a completed or
-     * cancelled status OR the specified timeout (in milliseconds) has elapsed.
-     * If the timeout value is zero (0), then wait indefinitely for the
-     * AsyncResponse to be completed or cancelled.
+     * Pauses the current thread until the AsyncResponse is in a completed or cancelled status OR the specified timeout
+     * (in milliseconds) has elapsed. If the timeout value is zero (0), then wait indefinitely for the AsyncResponse to
+     * be completed or cancelled.
      * 
-     * @param timeout A long number of milliseconds after which the process
-     *        ceases to wait for state change.
-     * @throws InterruptedException Thrown when the blocking operation is
-     *         interrupted.
+     * @param timeout A long number of milliseconds after which the process ceases to wait for state change.
+     * @throws InterruptedException Thrown when the blocking operation is interrupted.
      */
     private void block(long timeout) throws InterruptedException {
         long start = System.currentTimeMillis();

@@ -21,7 +21,7 @@ import org.springframework.web.filter.GenericFilterBean;
  * @author Matt Warman
  */
 @Component
-public class SimpleCORSFilter extends GenericFilterBean {
+public class SimpleCorsFilter extends GenericFilterBean {
 
     /**
      * The Logger for this class.

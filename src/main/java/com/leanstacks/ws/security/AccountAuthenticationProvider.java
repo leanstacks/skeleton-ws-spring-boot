@@ -14,24 +14,23 @@ import org.springframework.stereotype.Component;
 import com.leanstacks.ws.util.RequestContext;
 
 /**
- * A Spring Security AuthenticationProvider which extends
- * <code>AbstractUserDetailsAuthenticationProvider</code>. This classes uses the
- * <code>AccountUserDetailsService</code> to retrieve a UserDetails instance.
- * 
- * A PasswordEncoder compares the supplied authentication credentials to those
- * in the UserDetails.
+ * <p>
+ * A Spring Security AuthenticationProvider which extends <code>AbstractUserDetailsAuthenticationProvider</code>. This
+ * class uses the <code>AccountUserDetailsService</code> to retrieve a UserDetails instance.
+ * </p>
+ * <p>
+ * A PasswordEncoder compares the supplied authentication credentials to those in the UserDetails.
+ * </p>
  * 
  * @author Matt Warman
  */
 @Component
-public class AccountAuthenticationProvider
-        extends AbstractUserDetailsAuthenticationProvider {
+public class AccountAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * A Spring Security UserDetailsService implementation based upon the
-     * Account entity model.
+     * A Spring Security UserDetailsService implementation based upon the Account entity model.
      */
     @Autowired
     private AccountUserDetailsService userDetailsService;
@@ -43,19 +42,16 @@ public class AccountAuthenticationProvider
     private PasswordEncoder passwordEncoder;
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails,
-            UsernamePasswordAuthenticationToken token)
-                    throws AuthenticationException {
+    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken token)
+            throws AuthenticationException {
         logger.info("> additionalAuthenticationChecks");
 
-        if (token.getCredentials() == null
-                || userDetails.getPassword() == null) {
+        if (token.getCredentials() == null || userDetails.getPassword() == null) {
             logger.info("< additionalAuthenticationChecks");
             throw new BadCredentialsException("Credentials may not be null.");
         }
 
-        if (!passwordEncoder.matches((String) token.getCredentials(),
-                userDetails.getPassword())) {
+        if (!passwordEncoder.matches((String) token.getCredentials(), userDetails.getPassword())) {
             logger.info("< additionalAuthenticationChecks");
             throw new BadCredentialsException("Invalid credentials.");
         }
@@ -66,13 +62,11 @@ public class AccountAuthenticationProvider
     }
 
     @Override
-    protected UserDetails retrieveUser(String username,
-            UsernamePasswordAuthenticationToken token)
-                    throws AuthenticationException {
+    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken token)
+            throws AuthenticationException {
         logger.info("> retrieveUser");
 
-        UserDetails userDetails = userDetailsService
-                .loadUserByUsername(username);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         logger.info("< retrieveUser");
         return userDetails;

@@ -44,16 +44,16 @@ public class BaseController {
      * Exception detail in the response body as JSON and a HTTP status code of
      * 500, internal server error.
      * 
-     * @param e An Exception instance.
+     * @param ex An Exception instance.
      * @return A ResponseEntity containing a the Exception attributes in the
      *         response body and a HTTP status code 500.
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Exception> handleException(Exception e) {
+    public ResponseEntity<Exception> handleException(Exception ex) {
         logger.error("> handleException");
-        logger.error("- Exception: ", e);
+        logger.error("- Exception: ", ex);
         logger.error("< handleException");
-        return new ResponseEntity<Exception>(e,
+        return new ResponseEntity<Exception>(ex,
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

@@ -25,13 +25,14 @@ import com.leanstacks.ws.service.EmailService;
 import com.leanstacks.ws.service.GreetingService;
 
 /**
+ * <p>
  * Unit tests for the GreetingController using Mockito mocks and spies.
- * 
- * These tests utilize the Mockito framework objects to simulate interaction
- * with back-end components. The controller methods are invoked directly
- * bypassing the Spring MVC mappings. Back-end components are mocked and
- * injected into the controller. Mockito spies and verifications are performed
- * ensuring controller behaviors.
+ * </p>
+ * <p>
+ * These tests utilize the Mockito framework objects to simulate interaction with back-end components. The controller
+ * methods are invoked directly bypassing the Spring MVC mappings. Back-end components are mocked and injected into the
+ * controller. Mockito spies and verifications are performed ensuring controller behaviors.
+ * </p>
  * 
  * @author Matt Warman
  */
@@ -39,27 +40,25 @@ import com.leanstacks.ws.service.GreetingService;
 public class GreetingControllerMocksTest extends AbstractControllerTest {
 
     /**
-     * A mocked GreetingService
+     * A mocked GreetingService.
      */
     @Mock
     private GreetingService greetingService;
 
     /**
-     * A mocked EmailService
+     * A mocked EmailService.
      */
     @Mock
     private EmailService emailService;
 
     /**
-     * A GreetingController instance with <code>@Mock</code> components injected
-     * into it.
+     * A GreetingController instance with <code>@Mock</code> components injected into it.
      */
     @InjectMocks
     private GreetingController greetingController;
 
     /**
-     * Setup each test method. Initialize Mockito mock and spy objects. Scan for
-     * Mockito annotations.
+     * Setup each test method. Initialize Mockito mock and spy objects. Scan for Mockito annotations.
      */
     @Before
     public void setUp() {
@@ -81,9 +80,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         // Perform the behavior being tested
         String uri = "/api/greetings";
 
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(uri).accept(
-                        MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
 
         // Extract the response status and body
         String content = result.getResponse().getContentAsString();
@@ -94,9 +91,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
 
         // Perform standard JUnit assertions on the response
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue(
-                "failure - expected HTTP response body to have a value",
-                content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
 
     }
 
@@ -113,9 +108,8 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         // Perform the behavior being tested
         String uri = "/api/greetings/{id}";
 
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(uri, id).accept(
-                        MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).accept(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         // Extract the response status and body
         String content = result.getResponse().getContentAsString();
@@ -126,9 +120,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue(
-                "failure - expected HTTP response body to have a value",
-                content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
     }
 
     @Test
@@ -143,9 +135,8 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         // Perform the behavior being tested
         String uri = "/api/greetings/{id}";
 
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.get(uri, id).accept(
-                        MediaType.APPLICATION_JSON)).andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).accept(MediaType.APPLICATION_JSON))
+                .andReturn();
 
         // Extract the response status and body
         String content = result.getResponse().getContentAsString();
@@ -156,8 +147,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 404", 404, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty",
-                content.trim().length() == 0);
+        Assert.assertTrue("failure - expected HTTP response body to be empty", content.trim().length() == 0);
 
     }
 
@@ -174,11 +164,8 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         String uri = "/api/greetings";
         String inputJson = super.mapToJson(entity);
 
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.post(uri)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON).content(inputJson))
-                .andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
 
         // Extract the response status and body
         String content = result.getResponse().getContentAsString();
@@ -189,18 +176,13 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 201", 201, status);
-        Assert.assertTrue(
-                "failure - expected HTTP response body to have a value",
-                content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
 
         Greeting createdEntity = super.mapFromJson(content, Greeting.class);
 
-        Assert.assertNotNull("failure - expected entity not null",
-                createdEntity);
-        Assert.assertNotNull("failure - expected id attribute not null",
-                createdEntity.getId());
-        Assert.assertEquals("failure - expected text attribute match",
-                entity.getText(), createdEntity.getText());
+        Assert.assertNotNull("failure - expected entity not null", createdEntity);
+        Assert.assertNotNull("failure - expected id attribute not null", createdEntity.getId());
+        Assert.assertEquals("failure - expected text attribute match", entity.getText(), createdEntity.getText());
     }
 
     @Test
@@ -218,11 +200,8 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         String uri = "/api/greetings/{id}";
         String inputJson = super.mapToJson(entity);
 
-        MvcResult result = mvc.perform(
-                MockMvcRequestBuilders.put(uri, id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON).content(inputJson))
-                .andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.put(uri, id).contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
 
         // Extract the response status and body
         String content = result.getResponse().getContentAsString();
@@ -233,18 +212,13 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue(
-                "failure - expected HTTP response body to have a value",
-                content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
 
         Greeting updatedEntity = super.mapFromJson(content, Greeting.class);
 
-        Assert.assertNotNull("failure - expected entity not null",
-                updatedEntity);
-        Assert.assertEquals("failure - expected id attribute unchanged",
-                entity.getId(), updatedEntity.getId());
-        Assert.assertEquals("failure - expected text attribute match",
-                entity.getText(), updatedEntity.getText());
+        Assert.assertNotNull("failure - expected entity not null", updatedEntity);
+        Assert.assertEquals("failure - expected id attribute unchanged", entity.getId(), updatedEntity.getId());
+        Assert.assertEquals("failure - expected text attribute match", entity.getText(), updatedEntity.getText());
 
     }
 
@@ -257,8 +231,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         // Perform the behavior being tested
         String uri = "/api/greetings/{id}";
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(uri, id))
-                .andReturn();
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(uri, id)).andReturn();
 
         // Extract the response status and body
         String content = result.getResponse().getContentAsString();
@@ -269,8 +242,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 204", 204, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty",
-                content.trim().length() == 0);
+        Assert.assertTrue("failure - expected HTTP response body to be empty", content.trim().length() == 0);
 
     }
 

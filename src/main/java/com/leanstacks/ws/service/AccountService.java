@@ -3,12 +3,13 @@ package com.leanstacks.ws.service;
 import com.leanstacks.ws.model.Account;
 
 /**
- * The AccountService interface defines all public business behaviors for
- * operations on the Account entity model and some related entities such as
- * Role.
- * 
- * This interface should be injected into AccountService clients, not the
- * implementation bean.
+ * <p>
+ * The AccountService interface defines all public business behaviors for operations on the Account entity model and
+ * some related entities such as Role.
+ * </p>
+ * <p>
+ * This interface should be injected into AccountService clients, not the implementation bean.
+ * </p>
  * 
  * @author Matt Warman
  */

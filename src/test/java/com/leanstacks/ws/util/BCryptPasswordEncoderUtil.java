@@ -5,13 +5,15 @@ import java.util.Scanner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * The BCryptPasswordEncoderUtil class assists engineers during application
- * construction. It is not intended for use in a 'live' application.
- * 
- * The class uses a BCryptPasswordEncoder to encrypt clear text values using
- * it's native hashing algorithm. This utility may be used to create encrypted
- * password values in a database initialization script used for unit testing or
- * local machine development.
+ * <p>
+ * The BCryptPasswordEncoderUtil class assists engineers during application construction. It is not intended for use in
+ * a 'live' application.
+ * </p>
+ * <p>
+ * The class uses a BCryptPasswordEncoder to encrypt clear text values using it's native hashing algorithm. This utility
+ * may be used to create encrypted password values in a database initialization script used for unit testing or local
+ * machine development.
+ * </p>
  * 
  * @author Matt Warman
  *
@@ -20,6 +22,7 @@ public class BCryptPasswordEncoderUtil {
 
     /**
      * Uses a BCryptPasswordEncoder to hash the clear text value.
+     * 
      * @param clearText A String of clear text to be encrypted.
      * @return The encrypted (hashed) value.
      */
@@ -30,6 +33,7 @@ public class BCryptPasswordEncoderUtil {
 
     /**
      * Facilitates gathering user input and invoking the class behavior.
+     * 
      * @param args An array of command line input values. (not used)
      */
     public static void main(String[] args) {
@@ -41,12 +45,11 @@ public class BCryptPasswordEncoderUtil {
             String input = console.nextLine();
 
             System.out.println("clear text:" + input);
-            System.out.println(
-                    "   encoded:" + BCryptPasswordEncoderUtil.encode(input));
+            System.out.println("   encoded:" + BCryptPasswordEncoderUtil.encode(input));
 
-        } catch (Exception e) {
-            System.err.println("Exception occurred. " + e.getMessage());
-            e.printStackTrace(System.err);
+        } catch (Exception ex) {
+            System.err.println("Exception occurred. " + ex.getMessage());
+            ex.printStackTrace(System.err);
         } finally {
             console.close();
         }

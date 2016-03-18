@@ -76,6 +76,19 @@ and choose one of:
 
 \* The Gradle Wrapper is bundled with this project. Gradle tasks may be used without installing Gradle CLI by substituting `./gradlew` for `gradle` in the instructions below.
 
+### Spring Tool Suite or Eclipse
+
+This project uses Checkstyle static code analysis and reporting to ensure contributions are formatted in a consistent manner.  To ease the burden for contributing software engineers, the Eclipse Java Code Formatter configuration is supplied.  The formatting configuration may be used in Eclipse, the Spring Tool Suite, or any derivative of the Eclipse IDE.
+
+The Java Code Formatter configuration is located in the source at: `etc/eclipse/java-formatter.xml`.
+
+After importing the project into Eclipse, edit the project properties by selecting *Properties* from the *Project* drop-down menu.  Then, expand the *Java Code Style* menu and select *Formatter*.  Click the *Import* button to import the configuration file.  Next, expand the *Java Editor* menu and select *Save Actions*.  Ensure that the following selections are checked:
+* Enable project specific settings
+* Perform the selected actions on save
+  * Format source code
+    * Format all lines
+  * Organize imports
+
 ## Running
 
 The project supports [Maven](http://maven.apache.org/) and [Gradle](http://gradle.org/) for build, package, and test workflow automation.  
