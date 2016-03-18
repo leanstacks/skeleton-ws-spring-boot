@@ -12,6 +12,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'project-report'
+apply plugin: 'build-dashboard'
 
 ext {
   guavaVersion = '19.0'
@@ -54,3 +55,5 @@ task wrapper(type: Wrapper) {
 }
 
 check.finalizedBy projectReport
+
+projectReport.finalizedBy buildDashboard
