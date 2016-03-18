@@ -11,10 +11,12 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
+apply plugin: 'jacoco'
 apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
 
 ext {
+  jacocoVersion = '0.7.5.201505241946'
   guavaVersion = '19.0'
   jadiraVersion = '4.0.0.GA'
   swaggerVersion = '2.3.0'
@@ -53,6 +55,20 @@ defaultTasks 'clean', 'build'
 task wrapper(type: Wrapper) {
   gradleVersion = '2.12'
 }
+
+jacoco {
+  toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+  reports {
+    html.enabled = true
+    xml.enabled = true
+    csv.enabled = false
+  }
+}
+
+test.finalizedBy jacocoTestReport
 
 check.finalizedBy projectReport
 
