@@ -46,6 +46,8 @@ dependencies {
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
 
+defaultTasks 'clean', 'build'
+
 task wrapper(type: Wrapper) {
   gradleVersion = '2.12'
 }
