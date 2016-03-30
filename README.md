@@ -208,7 +208,7 @@ gradle clean assemble
 ./gradlew clean assemble
 ```
 
-#### build
+#### build (default)
 
 The `build` Gradle task performs the following workflow steps:
 
@@ -216,7 +216,7 @@ The `build` Gradle task performs the following workflow steps:
 * copies all resources to the /build directory
 * executes the unit test suites
 * analyzes unit test code coverage
-* produces unit test, code coverage, and other project reports
+* produces unit test, code coverage, and other project reports in the /build/reports directory
 * prepares an executable JAR file in the /build/libs directory
 
 The `build` Gradle task is prepares the application for distribution to server environments. The application and all dependencies are packaged into a single, executable JAR file.

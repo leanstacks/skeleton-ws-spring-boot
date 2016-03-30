@@ -13,12 +13,14 @@ apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 apply plugin: 'jacoco'
 apply plugin: 'checkstyle'
+apply plugin: 'pmd'
 apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
 
 ext {
   jacocoVersion = '0.7.5.201505241946'
   checkstyleVersion = '6.16.1'
+  pmdVersion = '5.4.1'
   guavaVersion = '19.0'
   jadiraVersion = '4.0.0.GA'
   swaggerVersion = '2.3.0'
@@ -70,12 +72,18 @@ jacocoTestReport {
   }
 }
 
+test.finalizedBy jacocoTestReport
+
 checkstyle {
   toolVersion = checkstyleVersion
   config = rootProject.resources.text.fromFile('etc/checkstyle/rules.xml')
 }
 
-test.finalizedBy jacocoTestReport
+pmd {
+  toolVersion = pmdVersion
+  ruleSetConfig = rootProject.resources.text.fromFile('etc/pmd/ruleset.xml')
+  ignoreFailures = true
+}
 
 check.finalizedBy projectReport
 
