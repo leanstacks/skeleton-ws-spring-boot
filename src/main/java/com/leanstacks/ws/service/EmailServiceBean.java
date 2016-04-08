@@ -5,10 +5,10 @@ import java.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import com.leanstacks.ws.model.Greeting;
-import com.leanstacks.ws.util.AsyncResponse;
 
 /**
  * The EmailServiceBean encapsulates all business behaviors defined by the EmailService interface.
@@ -64,19 +64,10 @@ public class EmailServiceBean implements EmailService {
     public Future<Boolean> sendAsyncWithResult(final Greeting greeting) {
         logger.info("> sendAsyncWithResult");
 
-        final AsyncResponse<Boolean> response = new AsyncResponse<Boolean>();
-
-        try {
-            final Boolean success = send(greeting);
-            response.complete(success);
-        } catch (Exception ex) {
-            // Should catch a specific type (or types) of Exception thrown from send.
-            logger.warn("Exception caught sending asynchronous mail.", ex);
-            response.completeExceptionally(ex);
-        }
+        final Boolean success = send(greeting);
 
         logger.info("< sendAsyncWithResult");
-        return response;
+        return new AsyncResult<Boolean>(success);
     }
 
 }
