@@ -262,7 +262,7 @@ The `encodePassword` Gradle task executes the `BCryptPasswordEncoderUtil` utilit
 To execute the `encodePassword` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle -q encodePassword -Pmainargs=<password>
+gradle -q encodePassword -Pmainargs=<password>[,<password>]
 
 ...OR...
 
