@@ -73,7 +73,7 @@ public class TransactionalEntity implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -81,7 +81,7 @@ public class TransactionalEntity implements Serializable {
         return referenceId;
     }
 
-    public void setReferenceId(String referenceId) {
+    public void setReferenceId(final String referenceId) {
         this.referenceId = referenceId;
     }
 
@@ -89,7 +89,7 @@ public class TransactionalEntity implements Serializable {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(final Integer version) {
         this.version = version;
     }
 
@@ -97,7 +97,7 @@ public class TransactionalEntity implements Serializable {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(final String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -105,7 +105,7 @@ public class TransactionalEntity implements Serializable {
         return createdAt;
     }
 
-    public void setCreatedAt(DateTime createdAt) {
+    public void setCreatedAt(final DateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -113,7 +113,7 @@ public class TransactionalEntity implements Serializable {
         return updatedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
+    public void setUpdatedBy(final String updatedBy) {
         this.updatedBy = updatedBy;
     }
 
@@ -121,7 +121,7 @@ public class TransactionalEntity implements Serializable {
         return updatedAt;
     }
 
-    public void setUpdatedAt(DateTime updatedAt) {
+    public void setUpdatedAt(final DateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -133,7 +133,7 @@ public class TransactionalEntity implements Serializable {
      */
     @PrePersist
     public void beforePersist() {
-        String username = RequestContext.getUsername();
+        final String username = RequestContext.getUsername();
         if (username == null) {
             throw new IllegalArgumentException("Cannot persist a TransactionalEntity without a username "
                     + "in the RequestContext for this thread.");
@@ -151,7 +151,7 @@ public class TransactionalEntity implements Serializable {
      */
     @PreUpdate
     public void beforeUpdate() {
-        String username = RequestContext.getUsername();
+        final String username = RequestContext.getUsername();
         if (username == null) {
             throw new IllegalArgumentException("Cannot update a TransactionalEntity without a username "
                     + "in the RequestContext for this thread.");
@@ -170,12 +170,12 @@ public class TransactionalEntity implements Serializable {
      * @return A boolean
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object that) {
+    public boolean equals(final Object that) {
         if (that == null) {
             return false;
         }
         if (this.getClass().equals(that.getClass())) {
-            TransactionalEntity thatEntity = (TransactionalEntity) that;
+            final TransactionalEntity thatEntity = (TransactionalEntity) that;
             if (this.getId() == null || thatEntity.getId() == null) {
                 return false;
             }

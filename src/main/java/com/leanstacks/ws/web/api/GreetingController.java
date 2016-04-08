@@ -1,8 +1,11 @@
 package com.leanstacks.ws.web.api;
 
 import java.util.Collection;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,23 +31,27 @@ import com.leanstacks.ws.service.GreetingService;
 public class GreetingController extends BaseController {
 
     /**
+     * The Logger for this Class.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
+
+    /**
      * The GreetingService business service.
      */
     @Autowired
-    private GreetingService greetingService;
+    private transient GreetingService greetingService;
 
     /**
      * The EmailService business service.
      */
     @Autowired
-    private EmailService emailService;
+    private transient EmailService emailService;
 
     /**
      * Web service endpoint to fetch all Greeting entities. The service returns the collection of Greeting entities as
      * JSON.
      * 
      * @return A ResponseEntity containing a Collection of Greeting objects.
-     * @throws Exception Thrown if a problem occurs completing the request.
      */
     @RequestMapping(value = "/api/greetings",
             method = RequestMethod.GET,
@@ -52,7 +59,7 @@ public class GreetingController extends BaseController {
     public ResponseEntity<Collection<Greeting>> getGreetings() {
         logger.info("> getGreetings");
 
-        Collection<Greeting> greetings = greetingService.findAll();
+        final Collection<Greeting> greetings = greetingService.findAll();
 
         logger.info("< getGreetings");
         return new ResponseEntity<Collection<Greeting>>(greetings, HttpStatus.OK);
@@ -70,15 +77,14 @@ public class GreetingController extends BaseController {
      * @param id A Long URL path variable containing the Greeting primary key identifier.
      * @return A ResponseEntity containing a single Greeting object, if found, and a HTTP status code as described in
      *         the method comment.
-     * @throws Exception Thrown if a problem occurs completing the request.
      */
     @RequestMapping(value = "/api/greetings/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> getGreeting(@PathVariable Long id) {
+    public ResponseEntity<Greeting> getGreeting(@PathVariable final Long id) {
         logger.info("> getGreeting");
 
-        Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id);
         if (greeting == null) {
             logger.info("< getGreeting");
             return new ResponseEntity<Greeting>(HttpStatus.NOT_FOUND);
@@ -101,16 +107,15 @@ public class GreetingController extends BaseController {
      * @param greeting The Greeting object to be created.
      * @return A ResponseEntity containing a single Greeting object, if created successfully, and a HTTP status code as
      *         described in the method comment.
-     * @throws Exception Thrown if a problem occurs completing the request.
      */
     @RequestMapping(value = "/api/greetings",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> createGreeting(@RequestBody Greeting greeting) {
+    public ResponseEntity<Greeting> createGreeting(@RequestBody final Greeting greeting) {
         logger.info("> createGreeting");
 
-        Greeting savedGreeting = greetingService.create(greeting);
+        final Greeting savedGreeting = greetingService.create(greeting);
 
         logger.info("< createGreeting");
         return new ResponseEntity<Greeting>(savedGreeting, HttpStatus.CREATED);
@@ -130,16 +135,15 @@ public class GreetingController extends BaseController {
      * @param greeting The Greeting object to be updated.
      * @return A ResponseEntity containing a single Greeting object, if updated successfully, and a HTTP status code as
      *         described in the method comment.
-     * @throws Exception Thrown if a problem occurs completing the request.
      */
     @RequestMapping(value = "/api/greetings/{id}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> updateGreeting(@RequestBody Greeting greeting) {
+    public ResponseEntity<Greeting> updateGreeting(@RequestBody final Greeting greeting) {
         logger.info("> updateGreeting");
 
-        Greeting updatedGreeting = greetingService.update(greeting);
+        final Greeting updatedGreeting = greetingService.update(greeting);
 
         logger.info("< updateGreeting");
         return new ResponseEntity<Greeting>(updatedGreeting, HttpStatus.OK);
@@ -157,11 +161,10 @@ public class GreetingController extends BaseController {
      * 
      * @param id A Long URL path variable containing the Greeting primary key identifier.
      * @return A ResponseEntity with an empty response body and a HTTP status code as described in the method comment.
-     * @throws Exception Throw if a problem occurs completing the request.
      */
     @RequestMapping(value = "/api/greetings/{id}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<Greeting> deleteGreeting(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<Greeting> deleteGreeting(@PathVariable("id") final Long id) {
         logger.info("> deleteGreeting");
 
         greetingService.delete(id);
@@ -188,12 +191,12 @@ public class GreetingController extends BaseController {
     @RequestMapping(value = "/api/greetings/{id}/send",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> sendGreeting(@PathVariable("id") Long id, @RequestParam(value = "wait",
-            defaultValue = "false") boolean waitForAsyncResult) {
+    public ResponseEntity<Greeting> sendGreeting(@PathVariable("id") final Long id, @RequestParam(value = "wait",
+            defaultValue = "false") final boolean waitForAsyncResult) {
 
         logger.info("> sendGreeting");
 
-        Greeting greeting = null;
+        Greeting greeting;
 
         try {
             greeting = greetingService.findOne(id);
@@ -203,13 +206,13 @@ public class GreetingController extends BaseController {
             }
 
             if (waitForAsyncResult) {
-                Future<Boolean> asyncResponse = emailService.sendAsyncWithResult(greeting);
-                boolean emailSent = asyncResponse.get();
+                final Future<Boolean> asyncResponse = emailService.sendAsyncWithResult(greeting);
+                final boolean emailSent = asyncResponse.get();
                 logger.info("- greeting email sent? {}", emailSent);
             } else {
                 emailService.sendAsync(greeting);
             }
-        } catch (Exception ex) {
+        } catch (ExecutionException | InterruptedException ex) {
             logger.error("A problem occurred sending the Greeting.", ex);
             return new ResponseEntity<Greeting>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

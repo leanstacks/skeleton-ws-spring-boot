@@ -23,27 +23,32 @@ import com.leanstacks.ws.service.GreetingService;
 @Profile("batch")
 public class GreetingBatchBean {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * The Logger for this Class.
+     */
+    private static final Logger logger = LoggerFactory
+            .getLogger(GreetingBatchBean.class);
+
+    private static final String MESSAGE_FORMAT = "There are {} greetings in the data store.";
 
     /**
      * The <code>CounterService</code> captures metrics for Spring Actuator.
      */
     @Autowired
-    private CounterService counterService;
+    private transient CounterService counterService;
 
     /**
      * The GreetingService business service.
      */
     @Autowired
-    private GreetingService greetingService;
+    private transient GreetingService greetingService;
 
     /**
      * Use a cron expression to execute logic on a schedule. Expression: second
      * minute hour day-of-month month weekday
      * 
-     * @see http 
-     *      ://docs.spring.io/spring/docs/current/javadoc-api/org/springframework
-     *      /scheduling/support/CronSequenceGenerator.html
+     * @see http ://docs.spring.io/spring/docs/current/javadoc-api/org/
+     *      springframework /scheduling/support/CronSequenceGenerator.html
      */
     @Scheduled(
             cron = "${batch.greeting.cron}")
@@ -54,9 +59,8 @@ public class GreetingBatchBean {
 
         // Add scheduled logic here
 
-        Collection<Greeting> greetings = greetingService.findAll();
-        logger.info("There are {} greetings in the data store.",
-                greetings.size());
+        final Collection<Greeting> greetings = greetingService.findAll();
+        logger.info(MESSAGE_FORMAT, greetings.size());
 
         logger.info("< cronJob");
     }
@@ -76,9 +80,8 @@ public class GreetingBatchBean {
 
         // Add scheduled logic here
 
-        Collection<Greeting> greetings = greetingService.findAll();
-        logger.info("There are {} greetings in the data store.",
-                greetings.size());
+        final Collection<Greeting> greetings = greetingService.findAll();
+        logger.info(MESSAGE_FORMAT, greetings.size());
 
         logger.info("< fixedRateJob");
     }
@@ -96,14 +99,13 @@ public class GreetingBatchBean {
     public void fixedRateJobWithInitialDelay() {
         logger.info("> fixedRateJobWithInitialDelay");
 
-        counterService
-                .increment("method.invoked.greetingBatchBean.fixedRateJobWithInitialDelay");
+        counterService.increment(
+                "method.invoked.greetingBatchBean.fixedRateJobWithInitialDelay");
 
         // Add scheduled logic here
 
-        Collection<Greeting> greetings = greetingService.findAll();
-        logger.info("There are {} greetings in the data store.",
-                greetings.size());
+        final Collection<Greeting> greetings = greetingService.findAll();
+        logger.info(MESSAGE_FORMAT, greetings.size());
 
         logger.info("< fixedRateJobWithInitialDelay");
     }
@@ -123,9 +125,8 @@ public class GreetingBatchBean {
 
         // Add scheduled logic here
 
-        Collection<Greeting> greetings = greetingService.findAll();
-        logger.info("There are {} greetings in the data store.",
-                greetings.size());
+        final Collection<Greeting> greetings = greetingService.findAll();
+        logger.info(MESSAGE_FORMAT, greetings.size());
 
         logger.info("< fixedDelayJob");
     }
@@ -143,14 +144,13 @@ public class GreetingBatchBean {
     public void fixedDelayJobWithInitialDelay() {
         logger.info("> fixedDelayJobWithInitialDelay");
 
-        counterService
-                .increment("method.invoked.greetingBatchBean.fixedDelayJobWithInitialDelay");
+        counterService.increment(
+                "method.invoked.greetingBatchBean.fixedDelayJobWithInitialDelay");
 
         // Add scheduled logic here
 
-        Collection<Greeting> greetings = greetingService.findAll();
-        logger.info("There are {} greetings in the data store.",
-                greetings.size());
+        final Collection<Greeting> greetings = greetingService.findAll();
+        logger.info(MESSAGE_FORMAT, greetings.size());
 
         logger.info("< fixedDelayJobWithInitialDelay");
     }

@@ -17,69 +17,65 @@ import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.leanstacks.ws.web.api.BaseController;
 
 /**
- * This class extends the functionality of AbstractTest. AbstractControllerTest
- * is the parent of all web controller unit test classes. The class ensures that
- * a type of WebApplicationContext is built and prepares a MockMvc instance for
- * use in test methods.
+ * This class extends the functionality of AbstractTest. AbstractControllerTest is the parent of all web controller unit
+ * test classes. The class ensures that a type of WebApplicationContext is built and prepares a MockMvc instance for use
+ * in test methods.
  * 
  * @author Matt Warman
  */
 @WebAppConfiguration
 public abstract class AbstractControllerTest extends AbstractTest {
 
-    protected MockMvc mvc;
+    protected transient MockMvc mvc;
 
     @Autowired
-    protected WebApplicationContext webApplicationContext;
+    protected transient WebApplicationContext webApplicationContext;
 
     /**
-     * Prepares the test class for execution of web tests. Builds a MockMvc
-     * instance. Call this method from the concrete JUnit test class in the
-     * <code>@Before</code> setup method.
+     * Prepares the test class for execution of web tests. Builds a MockMvc instance. Call this method from the concrete
+     * JUnit test class in the <code>@Before</code> setup method.
      */
     protected void setUp() {
-        super.setUp();
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     /**
-     * Prepares the test class for execution of web tests. Builds a MockMvc
-     * instance using standalone configuration facilitating the injection of
-     * Mockito resources into the controller class.
+     * Prepares the test class for execution of web tests. Builds a MockMvc instance using standalone configuration
+     * facilitating the injection of Mockito resources into the controller class.
+     * 
      * @param controller A controller object to be tested.
      */
-    protected void setUp(BaseController controller) {
+    protected void setUp(final BaseController controller) {
         mvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 
     /**
      * Maps an Object into a JSON String. Uses a Jackson ObjectMapper.
+     * 
      * @param obj The Object to map.
      * @return A String of JSON.
      * @throws JsonProcessingException Thrown if an error occurs while mapping.
      */
-    protected String mapToJson(Object obj) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
+    protected String mapToJson(final Object obj) throws JsonProcessingException {
+        final ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JodaModule());
         return mapper.writeValueAsString(obj);
     }
 
     /**
-     * Maps a String of JSON into an instance of a Class of type T. Uses a
-     * Jackson ObjectMapper.
+     * Maps a String of JSON into an instance of a Class of type T. Uses a Jackson ObjectMapper.
+     * 
      * @param json A String of JSON.
-     * @param clazz A Class of type T. The mapper will attempt to convert the
-     *        JSON into an Object of this Class type.
+     * @param clazz A Class of type T. The mapper will attempt to convert the JSON into an Object of this Class type.
      * @return An Object of type T.
      * @throws JsonParseException Thrown if an error occurs while mapping.
      * @throws JsonMappingException Thrown if an error occurs while mapping.
      * @throws IOException Thrown if an error occurs while mapping.
      */
-    protected <T> T mapFromJson(String json, Class<T> clazz)
+    protected <T> T mapFromJson(final String json, final Class<T> clazz)
             throws JsonParseException, JsonMappingException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-                false);
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.registerModule(new JodaModule());
         return mapper.readValue(json, clazz);
     }

@@ -60,6 +60,14 @@ task wrapper(type: Wrapper) {
   gradleVersion = '2.12'
 }
 
+task encodePassword(type: JavaExec) {
+  classpath = sourceSets.test.runtimeClasspath
+  main = 'com.leanstacks.ws.util.BCryptPasswordEncoderUtil'
+  if(project.hasProperty('mainargs')) {
+    args(mainargs.split(','))
+  }
+}
+
 jacoco {
   toolVersion = jacocoVersion
 }

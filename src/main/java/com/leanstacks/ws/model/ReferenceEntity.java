@@ -9,8 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.joda.time.DateTime;
 
 /**
- * The parent class for all reference entities (i.e. reference data as opposed
- * to transactional data).
+ * The parent class for all reference entities (i.e. reference data as opposed to transactional data).
  * 
  * @see com.leanstacks.ws.model.TransactionalEntity
  * 
@@ -49,15 +48,14 @@ public class ReferenceEntity implements Serializable {
     private Integer ordinal;
 
     /**
-     * The timestamp at which the entity's values may be applied or used by the
-     * system.
+     * The timestamp at which the entity's values may be applied or used by the system.
      */
     @NotNull
     private DateTime effectiveAt;
 
     /**
-     * The timestamp at which the entity's values cease to be used by the
-     * system. If <code>null</code> the entity is not expired.
+     * The timestamp at which the entity's values cease to be used by the system. If <code>null</code> the entity is not
+     * expired.
      */
     private DateTime expiresAt;
 
@@ -71,7 +69,7 @@ public class ReferenceEntity implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -79,7 +77,7 @@ public class ReferenceEntity implements Serializable {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.code = code;
     }
 
@@ -87,7 +85,7 @@ public class ReferenceEntity implements Serializable {
         return label;
     }
 
-    public void setLabel(String label) {
+    public void setLabel(final String label) {
         this.label = label;
     }
 
@@ -95,7 +93,7 @@ public class ReferenceEntity implements Serializable {
         return ordinal;
     }
 
-    public void setOrdinal(Integer ordinal) {
+    public void setOrdinal(final Integer ordinal) {
         this.ordinal = ordinal;
     }
 
@@ -103,7 +101,7 @@ public class ReferenceEntity implements Serializable {
         return effectiveAt;
     }
 
-    public void setEffectiveAt(DateTime effectiveAt) {
+    public void setEffectiveAt(final DateTime effectiveAt) {
         this.effectiveAt = effectiveAt;
     }
 
@@ -111,7 +109,7 @@ public class ReferenceEntity implements Serializable {
         return expiresAt;
     }
 
-    public void setExpiresAt(DateTime expiresAt) {
+    public void setExpiresAt(final DateTime expiresAt) {
         this.expiresAt = expiresAt;
     }
 
@@ -119,7 +117,7 @@ public class ReferenceEntity implements Serializable {
         return createdAt;
     }
 
-    public void setCreatedAt(DateTime createdAt) {
+    public void setCreatedAt(final DateTime createdAt) {
         this.createdAt = createdAt;
     }
 

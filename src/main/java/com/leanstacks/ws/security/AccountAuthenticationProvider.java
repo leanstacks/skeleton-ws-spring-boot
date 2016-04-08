@@ -27,23 +27,26 @@ import com.leanstacks.ws.util.RequestContext;
 @Component
 public class AccountAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * The Logger for this Class.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AccountAuthenticationProvider.class);
 
     /**
      * A Spring Security UserDetailsService implementation based upon the Account entity model.
      */
     @Autowired
-    private AccountUserDetailsService userDetailsService;
+    private transient AccountUserDetailsService userDetailsService;
 
     /**
      * A PasswordEncoder instance to hash clear test password values.
      */
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private transient PasswordEncoder passwordEncoder;
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken token)
-            throws AuthenticationException {
+    protected void additionalAuthenticationChecks(final UserDetails userDetails,
+            final UsernamePasswordAuthenticationToken token) throws AuthenticationException {
         logger.info("> additionalAuthenticationChecks");
 
         if (token.getCredentials() == null || userDetails.getPassword() == null) {
@@ -62,11 +65,11 @@ public class AccountAuthenticationProvider extends AbstractUserDetailsAuthentica
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken token)
+    protected UserDetails retrieveUser(final String username, final UsernamePasswordAuthenticationToken token)
             throws AuthenticationException {
         logger.info("> retrieveUser");
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         logger.info("< retrieveUser");
         return userDetails;

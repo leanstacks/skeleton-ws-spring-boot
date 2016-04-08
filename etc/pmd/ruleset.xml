@@ -18,7 +18,13 @@
 
 	<!-- Use the entire 'controversial' ruleset -->
 	<rule ref="rulesets/java/controversial.xml">
+	    <exclude name="AtLeastOneConstructor" />
 		<exclude name="OnlyOneReturn" />
+	</rule>
+	<rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">
+		<properties>
+			<property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*" />
+		</properties>
 	</rule>
 
 	<!-- Use the entire 'coupling' ruleset -->

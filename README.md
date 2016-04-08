@@ -254,3 +254,19 @@ By default, the batch and hsqldb profiles are active.  To run the application wi
 ```
 java -jar build/libs/example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
+
+#### encodePassword
+
+The `encodePassword` Gradle task executes the `BCryptPasswordEncoderUtil` utility class to encode password values which may be included in the sample database scripts.  The clear text password values are passed as a Gradle `-P` property arguments on the command line.
+
+To execute the `encodePassword` Gradle task, type the following command at a terminal prompt in the project base directory.
+
+```
+gradle -q encodePassword -Pmainargs=<password>
+
+...OR...
+
+./gradlew -q encodePassword -Pmainargs=<password>[,<password>]
+```
+
+The value of the `mainargs` property is passed as the arguments to the Java main method of the `BCryptPasswordEncoderUtil` class.  Separate multiple passwords with a comma.

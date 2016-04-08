@@ -1,32 +1,47 @@
 package com.leanstacks.ws;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.leanstacks.ws.util.RequestContext;
 
 /**
- * The AbstractTest class is the parent of all JUnit test classes. This class
- * configures the test ApplicationContext and test runner environment.
+ * The AbstractTest class is the parent of all JUnit test classes. This class configures the test ApplicationContext and
+ * test runner environment.
  * 
  * @author Matt Warman
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(
-        classes = Application.class)
+@SpringApplicationConfiguration(classes = Application.class)
 public abstract class AbstractTest {
 
+    /**
+     * The username value used in the RequestContext for Unit Tests.
+     */
     public static final String USERNAME = "unittest";
 
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    protected void setUp() {
-
+    @Before
+    public void before() {
         RequestContext.setUsername(AbstractTest.USERNAME);
-
+        doBeforeEachTest();
     }
+
+    /**
+     * Perform initialization tasks before the execution of each test method.
+     */
+    public abstract void doBeforeEachTest();
+
+    @After
+    public void after() {
+        doAfterEachTest();
+    }
+
+    /**
+     * Perform clean up tasks after the execution of each test method.
+     */
+    public abstract void doAfterEachTest();
 
 }

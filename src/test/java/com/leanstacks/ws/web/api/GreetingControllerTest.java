@@ -1,7 +1,6 @@
 package com.leanstacks.ws.web.api;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,6 +8,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.leanstacks.ws.AbstractControllerTest;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.GreetingService;
@@ -28,89 +28,93 @@ import com.leanstacks.ws.service.GreetingService;
 @Transactional
 public class GreetingControllerTest extends AbstractControllerTest {
 
+    private static final String RESOURCE_URI = "/api/greetings";
+    private static final String RESOURCE_ITEM_URI = "/api/greetings/{id}";
+
     /**
      * The GreetingService business service.
      */
     @Autowired
-    private GreetingService greetingService;
+    private transient GreetingService greetingService;
 
-    /**
-     * Setup each test method.
-     */
-    @Before
-    public void setUp() {
+    @Override
+    public void doBeforeEachTest() {
         super.setUp();
         greetingService.evictCache();
 
     }
 
+    @Override
+    public void doAfterEachTest() {
+        // perform test clean up
+    }
+
     @Test
     public void testGetGreetings() throws Exception {
 
-        String uri = "/api/greetings";
+        final MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.get(RESOURCE_URI).accept(MediaType.APPLICATION_JSON)).andReturn();
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
     }
 
     @Test
     public void testGetGreeting() throws Exception {
 
-        String uri = "/api/greetings/{id}";
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).accept(MediaType.APPLICATION_JSON))
+        final MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.get(RESOURCE_ITEM_URI, id).accept(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
     }
 
     @Test
     public void testGetGreetingNotFound() throws Exception {
 
-        String uri = "/api/greetings/{id}";
-        Long id = Long.MAX_VALUE;
+        final Long id = Long.MAX_VALUE;
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).accept(MediaType.APPLICATION_JSON))
+        final MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.get(RESOURCE_ITEM_URI, id).accept(MediaType.APPLICATION_JSON))
                 .andReturn();
 
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         Assert.assertEquals("failure - expected HTTP status 404", 404, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty", content.trim().length() == 0);
+        Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
 
     }
 
     @Test
     public void testCreateGreeting() throws Exception {
 
-        String uri = "/api/greetings";
-        Greeting greeting = new Greeting();
+        final Greeting greeting = new Greeting();
         greeting.setText("test");
-        String inputJson = super.mapToJson(greeting);
+        final String inputJson = super.mapToJson(greeting);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.post(RESOURCE_URI)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(inputJson))
+                .andReturn();
 
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         Assert.assertEquals("failure - expected HTTP status 201", 201, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
-        Greeting createdGreeting = super.mapFromJson(content, Greeting.class);
+        final Greeting createdGreeting = super.mapFromJson(content, Greeting.class);
 
         Assert.assertNotNull("failure - expected greeting not null", createdGreeting);
         Assert.assertNotNull("failure - expected greeting.id not null", createdGreeting.getId());
@@ -121,23 +125,25 @@ public class GreetingControllerTest extends AbstractControllerTest {
     @Test
     public void testUpdateGreeting() throws Exception {
 
-        String uri = "/api/greetings/{id}";
-        Long id = new Long(1);
-        Greeting greeting = greetingService.findOne(id);
-        String updatedText = greeting.getText() + " test";
+        final Long id = new Long(1);
+        final Greeting greeting = greetingService.findOne(id);
+        final String updatedText = greeting.getText() + " test";
+
         greeting.setText(updatedText);
-        String inputJson = super.mapToJson(greeting);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.put(uri, id).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        final String inputJson = super.mapToJson(greeting);
 
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.put(RESOURCE_ITEM_URI, id)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(inputJson))
+                .andReturn();
+
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
-        Greeting updatedGreeting = super.mapFromJson(content, Greeting.class);
+        final Greeting updatedGreeting = super.mapFromJson(content, Greeting.class);
 
         Assert.assertNotNull("failure - expected greeting not null", updatedGreeting);
         Assert.assertEquals("failure - expected greeting.id unchanged", greeting.getId(), updatedGreeting.getId());
@@ -148,20 +154,20 @@ public class GreetingControllerTest extends AbstractControllerTest {
     @Test
     public void testDeleteGreeting() throws Exception {
 
-        String uri = "/api/greetings/{id}";
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(uri, id)).andReturn();
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(RESOURCE_ITEM_URI, id)).andReturn();
 
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         Assert.assertEquals("failure - expected HTTP status 204", 204, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty", content.trim().length() == 0);
+        Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
 
-        Greeting deletedGreeting = greetingService.findOne(id);
+        final Greeting deletedGreeting = greetingService.findOne(id);
 
         Assert.assertNull("failure - expected greeting to be null", deletedGreeting);
 
     }
+
 }

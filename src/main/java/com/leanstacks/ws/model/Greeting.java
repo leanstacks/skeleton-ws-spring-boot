@@ -17,14 +17,19 @@ public class Greeting extends TransactionalEntity {
     private String text;
 
     public Greeting() {
+        super();
+    }
 
+    public Greeting(final String text) {
+        super();
+        this.text = text;
     }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 

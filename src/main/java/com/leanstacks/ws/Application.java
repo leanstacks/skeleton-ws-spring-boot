@@ -23,25 +23,28 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class Application {
 
     /**
+     * The name of the Cache for Greeting entities.
+     */
+    public static final String CACHE_GREETINGS = "greetings";
+
+    /**
      * Entry point for the application.
      * 
      * @param args Command line arguments.
-     * @throws Exception Thrown when an unexpected Exception is thrown from the
-     *         application.
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(final String... args) {
         SpringApplication.run(Application.class, args);
     }
 
     /**
-     * Create a CacheManager implementation class to be used by Spring where
-     * <code>@Cacheable</code> annotations are applied.
+     * Create a CacheManager implementation class to be used by Spring where <code>@Cacheable</code> annotations are
+     * applied.
      * 
      * @return A CacheManager instance.
      */
     @Bean
     public CacheManager cacheManager() {
-        GuavaCacheManager cacheManager = new GuavaCacheManager("greetings");
+        final GuavaCacheManager cacheManager = new GuavaCacheManager(CACHE_GREETINGS);
 
         return cacheManager;
     }

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,6 +18,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.base.Strings;
 import com.leanstacks.ws.AbstractControllerTest;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.EmailService;
@@ -39,59 +39,63 @@ import com.leanstacks.ws.service.GreetingService;
 @Transactional
 public class GreetingControllerMocksTest extends AbstractControllerTest {
 
+    private static final String RESOURCE_URI = "/api/greetings";
+    private static final String RESOURCE_ITEM_URI = "/api/greetings/{id}";
+
     /**
      * A mocked GreetingService.
      */
     @Mock
-    private GreetingService greetingService;
+    private transient GreetingService greetingService;
 
     /**
      * A mocked EmailService.
      */
     @Mock
-    private EmailService emailService;
+    private transient EmailService emailService;
 
     /**
      * A GreetingController instance with <code>@Mock</code> components injected into it.
      */
     @InjectMocks
-    private GreetingController greetingController;
+    private transient GreetingController greetingController;
 
-    /**
-     * Setup each test method. Initialize Mockito mock and spy objects. Scan for Mockito annotations.
-     */
-    @Before
-    public void setUp() {
+    @Override
+    public void doBeforeEachTest() {
         // Initialize Mockito annotated components
         MockitoAnnotations.initMocks(this);
         // Prepare the Spring MVC Mock components for standalone testing
         setUp(greetingController);
     }
 
+    @Override
+    public void doAfterEachTest() {
+        // perform test clean up
+    }
+
     @Test
     public void testGetGreetings() throws Exception {
 
         // Create some test data
-        Collection<Greeting> list = getEntityListStubData();
+        final Collection<Greeting> list = getEntityListStubData();
 
         // Stub the GreetingService.findAll method return value
         when(greetingService.findAll()).thenReturn(list);
 
         // Perform the behavior being tested
-        String uri = "/api/greetings";
-
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+        final MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.get(RESOURCE_URI).accept(MediaType.APPLICATION_JSON)).andReturn();
 
         // Extract the response status and body
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         // Verify the GreetingService.findAll method was invoked once
         verify(greetingService, times(1)).findAll();
 
         // Perform standard JUnit assertions on the response
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
     }
 
@@ -99,55 +103,53 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     public void testGetGreeting() throws Exception {
 
         // Create some test data
-        Long id = new Long(1);
-        Greeting entity = getEntityStubData();
+        final Long id = new Long(1);
+        final Greeting entity = getEntityStubData();
 
         // Stub the GreetingService.findOne method return value
         when(greetingService.findOne(id)).thenReturn(entity);
 
         // Perform the behavior being tested
-        String uri = "/api/greetings/{id}";
-
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).accept(MediaType.APPLICATION_JSON))
+        final MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.get(RESOURCE_ITEM_URI, id).accept(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         // Extract the response status and body
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         // Verify the GreetingService.findOne method was invoked once
         verify(greetingService, times(1)).findOne(id);
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
     }
 
     @Test
     public void testGetGreetingNotFound() throws Exception {
 
         // Create some test data
-        Long id = Long.MAX_VALUE;
+        final Long id = Long.MAX_VALUE;
 
         // Stub the GreetingService.findOne method return value
         when(greetingService.findOne(id)).thenReturn(null);
 
         // Perform the behavior being tested
-        String uri = "/api/greetings/{id}";
-
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).accept(MediaType.APPLICATION_JSON))
+        final MvcResult result = mvc
+                .perform(MockMvcRequestBuilders.get(RESOURCE_ITEM_URI, id).accept(MediaType.APPLICATION_JSON))
                 .andReturn();
 
         // Extract the response status and body
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         // Verify the GreetingService.findOne method was invoked once
         verify(greetingService, times(1)).findOne(id);
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 404", 404, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty", content.trim().length() == 0);
+        Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
 
     }
 
@@ -155,30 +157,30 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     public void testCreateGreeting() throws Exception {
 
         // Create some test data
-        Greeting entity = getEntityStubData();
+        final Greeting entity = getEntityStubData();
 
         // Stub the GreetingService.create method return value
         when(greetingService.create(any(Greeting.class))).thenReturn(entity);
 
         // Perform the behavior being tested
-        String uri = "/api/greetings";
-        String inputJson = super.mapToJson(entity);
+        final String inputJson = super.mapToJson(entity);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.post(RESOURCE_URI)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(inputJson))
+                .andReturn();
 
         // Extract the response status and body
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         // Verify the GreetingService.create method was invoked once
         verify(greetingService, times(1)).create(any(Greeting.class));
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 201", 201, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
-        Greeting createdEntity = super.mapFromJson(content, Greeting.class);
+        final Greeting createdEntity = super.mapFromJson(content, Greeting.class);
 
         Assert.assertNotNull("failure - expected entity not null", createdEntity);
         Assert.assertNotNull("failure - expected id attribute not null", createdEntity.getId());
@@ -189,32 +191,32 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     public void testUpdateGreeting() throws Exception {
 
         // Create some test data
-        Greeting entity = getEntityStubData();
+        final Greeting entity = getEntityStubData();
         entity.setText(entity.getText() + " test");
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
         // Stub the GreetingService.update method return value
         when(greetingService.update(any(Greeting.class))).thenReturn(entity);
 
         // Perform the behavior being tested
-        String uri = "/api/greetings/{id}";
-        String inputJson = super.mapToJson(entity);
+        final String inputJson = super.mapToJson(entity);
 
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.put(uri, id).contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON).content(inputJson)).andReturn();
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.put(RESOURCE_ITEM_URI, id)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(inputJson))
+                .andReturn();
 
         // Extract the response status and body
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         // Verify the GreetingService.update method was invoked once
         verify(greetingService, times(1)).update(any(Greeting.class));
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue("failure - expected HTTP response body to have a value", content.trim().length() > 0);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
-        Greeting updatedEntity = super.mapFromJson(content, Greeting.class);
+        final Greeting updatedEntity = super.mapFromJson(content, Greeting.class);
 
         Assert.assertNotNull("failure - expected entity not null", updatedEntity);
         Assert.assertEquals("failure - expected id attribute unchanged", entity.getId(), updatedEntity.getId());
@@ -226,34 +228,32 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     public void testDeleteGreeting() throws Exception {
 
         // Create some test data
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
         // Perform the behavior being tested
-        String uri = "/api/greetings/{id}";
-
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(uri, id)).andReturn();
+        final MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(RESOURCE_ITEM_URI, id)).andReturn();
 
         // Extract the response status and body
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
 
         // Verify the GreetingService.delete method was invoked once
         verify(greetingService, times(1)).delete(id);
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 204", 204, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty", content.trim().length() == 0);
+        Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
 
     }
 
     private Collection<Greeting> getEntityListStubData() {
-        Collection<Greeting> list = new ArrayList<Greeting>();
+        final Collection<Greeting> list = new ArrayList<Greeting>();
         list.add(getEntityStubData());
         return list;
     }
 
     private Greeting getEntityStubData() {
-        Greeting entity = new Greeting();
+        final Greeting entity = new Greeting();
         entity.setId(1L);
         entity.setText("hello");
         return entity;

@@ -14,9 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 /**
- * The SimpleCORSFilter class is a standard web Filter which intercepts all
- * inbound HTTP requests. The filter sets several Headers on the HTTP response
- * which inform a browser that the web services handle Cross-Origin requests.
+ * The SimpleCORSFilter class is a standard web Filter which intercepts all inbound HTTP requests. The filter sets
+ * several Headers on the HTTP response which inform a browser that the web services handle Cross-Origin requests.
  * 
  * @author Matt Warman
  */
@@ -26,20 +25,18 @@ public class SimpleCorsFilter extends GenericFilterBean {
     /**
      * The Logger for this class.
      */
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(SimpleCorsFilter.class);
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp,
-            FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest req, final ServletResponse resp, final FilterChain chain)
+            throws IOException, ServletException {
         logger.info("> doFilter");
 
-        HttpServletResponse response = (HttpServletResponse) resp;
+        final HttpServletResponse response = (HttpServletResponse) resp;
         response.setHeader("Access-Control-Allow-Origin", "*");
-        response.setHeader("Access-Control-Allow-Methods",
-                "DELETE, GET, OPTIONS, PATCH, POST, PUT");
+        response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, PATCH, POST, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers",
-                "x-requested-with, content-type");
+        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, content-type");
 
         chain.doFilter(req, resp);
         logger.info("< doFilter");

@@ -9,27 +9,30 @@ import com.leanstacks.ws.model.Account;
 import com.leanstacks.ws.repository.AccountRepository;
 
 /**
- * The AccountServiceBean encapsulates all business behaviors for operations on
- * the Account entity model and some related entities such as Role.
+ * The AccountServiceBean encapsulates all business behaviors for operations on the Account entity model and some
+ * related entities such as Role.
  * 
  * @author Matt Warman
  */
 @Service
 public class AccountServiceBean implements AccountService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * The Logger for this Class.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AccountServiceBean.class);
 
     /**
      * The Spring Data repository for Account entities.
      */
     @Autowired
-    private AccountRepository accountRepository;
+    private transient AccountRepository accountRepository;
 
     @Override
-    public Account findByUsername(String username) {
+    public Account findByUsername(final String username) {
         logger.info("> findByUsername");
 
-        Account account = accountRepository.findByUsername(username);
+        final Account account = accountRepository.findByUsername(username);
 
         logger.info("< findByUsername");
         return account;
