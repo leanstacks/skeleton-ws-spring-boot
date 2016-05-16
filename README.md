@@ -72,7 +72,7 @@ The project requires the following dependencies be installed on the host machine
 
 and choose one of:
 * Apache Maven 3 or later
-* Gradle 2.4 or later \*
+* Gradle 2.12 or later \*
 
 \* The Gradle Wrapper is bundled with this project. Gradle tasks may be used without installing Gradle CLI by substituting `./gradlew` for `gradle` in the instructions below.
 
