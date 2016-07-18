@@ -68,7 +68,7 @@ Fork the [Spring Boot web services skeleton project](https://github.com/mwarman/
 
 The project requires the following dependencies be installed on the host machine:
 
-* Java Development Kit 7 or later
+* Java Development Kit 8 or later
 
 and choose one of:
 * Apache Maven 3 or later
