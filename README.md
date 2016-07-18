@@ -68,11 +68,26 @@ Fork the [Spring Boot web services skeleton project](https://github.com/mwarman/
 
 The project requires the following dependencies be installed on the host machine:
 
-* Java Development Kit 7 or later
+* Java Development Kit 8 or later
 
 and choose one of:
 * Apache Maven 3 or later
-* Gradle 2.4 or later
+* Gradle 2.12 or later \*
+
+\* The Gradle Wrapper is bundled with this project. Gradle tasks may be used without installing Gradle CLI by substituting `./gradlew` for `gradle` in the instructions below.
+
+### Spring Tool Suite or Eclipse
+
+This project uses Checkstyle static code analysis and reporting to ensure contributions are formatted in a consistent manner.  To ease the burden for contributing software engineers, the Eclipse Java Code Formatter configuration is supplied.  The formatting configuration may be used in Eclipse, the Spring Tool Suite, or any derivative of the Eclipse IDE.
+
+The Java Code Formatter configuration is located in the source at: `etc/eclipse/java-formatter.xml`.
+
+After importing the project into Eclipse, edit the project properties by selecting *Properties* from the *Project* drop-down menu.  Then, expand the *Java Code Style* menu and select *Formatter*.  Click the *Import* button to import the configuration file.  Next, expand the *Java Editor* menu and select *Save Actions*.  Ensure that the following selections are checked:
+* Enable project specific settings
+* Perform the selected actions on save
+  * Format source code
+    * Format all lines
+  * Organize imports
 
 ## Running
 
@@ -162,7 +177,11 @@ The `bootRun` Gradle task performs the following workflow steps:
 To execute the `bootRun` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle bootRun
+gradle clean bootRun
+
+...OR...
+
+./gradlew clean bootRun
 ```
 
 Type `ctrl-C` to halt the web server.
@@ -183,16 +202,21 @@ To execute the `assemble` Gradle task, type the following command at a terminal 
 
 ```
 gradle clean assemble
+
+...OR...
+
+./gradlew clean assemble
 ```
 
-#### build
+#### build (default)
 
 The `build` Gradle task performs the following workflow steps:
 
 * compiles Java classes to the /build directory
 * copies all resources to the /build directory
 * executes the unit test suites
-* produces unit test reports
+* analyzes unit test code coverage
+* produces unit test, code coverage, and other project reports in the /build/reports directory
 * prepares an executable JAR file in the /build/libs directory
 
 The `build` Gradle task is prepares the application for distribution to server environments. The application and all dependencies are packaged into a single, executable JAR file.
@@ -203,6 +227,20 @@ To execute the `build` Gradle task, type the following command at a terminal pro
 
 ```
 gradle clean build
+
+...OR...
+
+./gradlew clean build
+```
+
+The `clean` and `build` tasks are the default tasks for this project.  Therefore, simply typing `gradle` (or `./gradlew` to use the Gradle Wrapper) will produce the same result as `gradle clean build`.
+
+```
+gradle
+
+...OR...
+
+./gradlew
 ```
 
 The application distribution artifact is placed in the /build/libs directory and is named using the project name and version from the `build.gradle` file.  To run the JAR file use the following command:
@@ -216,3 +254,19 @@ By default, the batch and hsqldb profiles are active.  To run the application wi
 ```
 java -jar build/libs/example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
+
+#### encodePassword
+
+The `encodePassword` Gradle task executes the `BCryptPasswordEncoderUtil` utility class to encode password values which may be included in the sample database scripts.  The clear text password values are passed as a Gradle `-P` property arguments on the command line.
+
+To execute the `encodePassword` Gradle task, type the following command at a terminal prompt in the project base directory.
+
+```
+gradle -q encodePassword -Pmainargs=<password>[,<password>]
+
+...OR...
+
+./gradlew -q encodePassword -Pmainargs=<password>[,<password>]
+```
+
+The value of the `mainargs` property is passed as the arguments to the Java main method of the `BCryptPasswordEncoderUtil` class.  Separate multiple passwords with a comma.

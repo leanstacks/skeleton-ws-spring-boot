@@ -9,29 +9,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 /**
- * The BaseController class implements common functionality for all Controller
- * classes. The <code>@ExceptionHandler</code> methods provide a consistent
- * response when Exceptions are thrown from <code>@RequestMapping</code>
- * Controller methods.
+ * The BaseController class implements common functionality for all Controller classes. The
+ * <code>@ExceptionHandler</code> methods provide a consistent response when Exceptions are thrown from
+ * <code>@RequestMapping</code> Controller methods.
  * 
  * @author Matt Warman
  */
 public class BaseController {
 
-    protected Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * The Logger for this Class.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     /**
-     * Handles JPA NoResultExceptions thrown from web service controller
-     * methods. Creates a response with an empty body and HTTP status code 404,
-     * not found.
+     * Handles JPA NoResultExceptions thrown from web service controller methods. Creates a response with an empty body
+     * and HTTP status code 404, not found.
      * 
      * @param nre A NoResultException instance.
-     * @return A ResponseEntity with an empty response body and HTTP status code
-     *         404.
+     * @return A ResponseEntity with an empty response body and HTTP status code 404.
      */
     @ExceptionHandler(NoResultException.class)
-    public ResponseEntity<Exception> handleNoResultException(
-            NoResultException nre) {
+    public ResponseEntity<Exception> handleNoResultException(final NoResultException nre) {
         logger.error("> handleNoResultException");
         logger.error("- NoResultException: ", nre);
         logger.error("< handleNoResultException");
@@ -39,22 +38,18 @@ public class BaseController {
     }
 
     /**
-     * Handles all Exceptions not addressed by more specific
-     * <code>@ExceptionHandler</code> methods. Creates a response with the
-     * Exception detail in the response body as JSON and a HTTP status code of
-     * 500, internal server error.
+     * Handles all Exceptions not addressed by more specific <code>@ExceptionHandler</code> methods. Creates a response
+     * with the Exception detail in the response body as JSON and a HTTP status code of 500, internal server error.
      * 
-     * @param e An Exception instance.
-     * @return A ResponseEntity containing a the Exception attributes in the
-     *         response body and a HTTP status code 500.
+     * @param ex An Exception instance.
+     * @return A ResponseEntity containing a the Exception attributes in the response body and a HTTP status code 500.
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Exception> handleException(Exception e) {
+    public ResponseEntity<Exception> handleException(final Exception ex) {
         logger.error("> handleException");
-        logger.error("- Exception: ", e);
+        logger.error("- Exception: ", ex);
         logger.error("< handleException");
-        return new ResponseEntity<Exception>(e,
-                HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<Exception>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }

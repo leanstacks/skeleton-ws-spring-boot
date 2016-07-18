@@ -4,21 +4,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The RequestContext facilitates the storage of information for the duration of
- * a single request (or web service transaction).
- * 
+ * <p>
+ * The RequestContext facilitates the storage of information for the duration of a single request (or web service
+ * transaction).
+ * </p>
+ * <p>
  * RequestContext attributes are stored in ThreadLocal objects.
+ * </p>
  * 
  * @author Matt Warman
  * 
  */
-public class RequestContext {
+public final class RequestContext {
 
     /**
-     * The Logger for this class.
+     * The Logger for this Class.
      */
-    private static Logger logger = LoggerFactory
-            .getLogger(RequestContext.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestContext.class);
 
     /**
      * ThreadLocal storage of username Strings.
@@ -43,10 +45,9 @@ public class RequestContext {
      * 
      * @param username A String username.
      */
-    public static void setUsername(String username) {
+    public static void setUsername(final String username) {
         usernames.set(username);
-        logger.debug("RequestContext added username {} to current thread",
-                username);
+        logger.debug("RequestContext added username {} to current thread", username);
     }
 
     /**

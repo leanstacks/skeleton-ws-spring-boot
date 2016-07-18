@@ -36,8 +36,7 @@ public class TransactionalEntity implements Serializable {
     private Long id;
 
     /**
-     * A secondary unique identifier which may be used as a reference to this
-     * entity by external systems.
+     * A secondary unique identifier which may be used as a reference to this entity by external systems.
      */
     @NotNull
     private String referenceId = UUID.randomUUID().toString();
@@ -61,8 +60,7 @@ public class TransactionalEntity implements Serializable {
     private DateTime createdAt;
 
     /**
-     * A reference to the entity or process which most recently updated this
-     * entity instance.
+     * A reference to the entity or process which most recently updated this entity instance.
      */
     private String updatedBy;
 
@@ -75,7 +73,7 @@ public class TransactionalEntity implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -83,7 +81,7 @@ public class TransactionalEntity implements Serializable {
         return referenceId;
     }
 
-    public void setReferenceId(String referenceId) {
+    public void setReferenceId(final String referenceId) {
         this.referenceId = referenceId;
     }
 
@@ -91,7 +89,7 @@ public class TransactionalEntity implements Serializable {
         return version;
     }
 
-    public void setVersion(Integer version) {
+    public void setVersion(final Integer version) {
         this.version = version;
     }
 
@@ -99,7 +97,7 @@ public class TransactionalEntity implements Serializable {
         return createdBy;
     }
 
-    public void setCreatedBy(String createdBy) {
+    public void setCreatedBy(final String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -107,7 +105,7 @@ public class TransactionalEntity implements Serializable {
         return createdAt;
     }
 
-    public void setCreatedAt(DateTime createdAt) {
+    public void setCreatedAt(final DateTime createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -115,7 +113,7 @@ public class TransactionalEntity implements Serializable {
         return updatedBy;
     }
 
-    public void setUpdatedBy(String updatedBy) {
+    public void setUpdatedBy(final String updatedBy) {
         this.updatedBy = updatedBy;
     }
 
@@ -123,26 +121,22 @@ public class TransactionalEntity implements Serializable {
         return updatedAt;
     }
 
-    public void setUpdatedAt(DateTime updatedAt) {
+    public void setUpdatedAt(final DateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     /**
-     * A listener method which is invoked on instances of TransactionalEntity
-     * (or their subclasses) prior to initial persistence. Sets the
-     * <code>created</code> audit values for the entity. Attempts to obtain this
-     * thread's instance of a username from the RequestContext. If none exists,
-     * throws an IllegalArgumentException. The username is used to set the
-     * <code>createdBy</code> value. The <code>createdAt</code> value is set to
-     * the current timestamp.
+     * A listener method which is invoked on instances of TransactionalEntity (or their subclasses) prior to initial
+     * persistence. Sets the <code>created</code> audit values for the entity. Attempts to obtain this thread's instance
+     * of a username from the RequestContext. If none exists, throws an IllegalArgumentException. The username is used
+     * to set the <code>createdBy</code> value. The <code>createdAt</code> value is set to the current timestamp.
      */
     @PrePersist
     public void beforePersist() {
-        String username = RequestContext.getUsername();
+        final String username = RequestContext.getUsername();
         if (username == null) {
-            throw new IllegalArgumentException(
-                    "Cannot persist a TransactionalEntity without a username "
-                            + "in the RequestContext for this thread.");
+            throw new IllegalArgumentException("Cannot persist a TransactionalEntity without a username "
+                    + "in the RequestContext for this thread.");
         }
         setCreatedBy(username);
 
@@ -150,21 +144,17 @@ public class TransactionalEntity implements Serializable {
     }
 
     /**
-     * A listener method which is invoked on instances of TransactionalEntity
-     * (or their subclasses) prior to being updated. Sets the
-     * <code>updated</code> audit values for the entity. Attempts to obtain this
-     * thread's instance of username from the RequestContext. If none exists,
-     * throws an IllegalArgumentException. The username is used to set the
-     * <code>updatedBy</code> value. The <code>updatedAt</code> value is set to
-     * the current timestamp.
+     * A listener method which is invoked on instances of TransactionalEntity (or their subclasses) prior to being
+     * updated. Sets the <code>updated</code> audit values for the entity. Attempts to obtain this thread's instance of
+     * username from the RequestContext. If none exists, throws an IllegalArgumentException. The username is used to set
+     * the <code>updatedBy</code> value. The <code>updatedAt</code> value is set to the current timestamp.
      */
     @PreUpdate
     public void beforeUpdate() {
-        String username = RequestContext.getUsername();
+        final String username = RequestContext.getUsername();
         if (username == null) {
-            throw new IllegalArgumentException(
-                    "Cannot update a TransactionalEntity without a username "
-                            + "in the RequestContext for this thread.");
+            throw new IllegalArgumentException("Cannot update a TransactionalEntity without a username "
+                    + "in the RequestContext for this thread.");
         }
         setUpdatedBy(username);
 
@@ -172,25 +162,24 @@ public class TransactionalEntity implements Serializable {
     }
 
     /**
-     * Determines the equality of two TransactionalEntity objects. If the
-     * supplied object is null, returns false. If both objects are of the same
-     * class, and their <code>id</code> values are populated and equal, return
+     * Determines the equality of two TransactionalEntity objects. If the supplied object is null, returns false. If
+     * both objects are of the same class, and their <code>id</code> values are populated and equal, return
      * <code>true</code>. Otherwise, return <code>false</code>.
      * 
      * @param that An Object
      * @return A boolean
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object that) {
+    public boolean equals(final Object that) {
         if (that == null) {
             return false;
         }
         if (this.getClass().equals(that.getClass())) {
-            TransactionalEntity thatTE = (TransactionalEntity) that;
-            if (this.getId() == null || thatTE.getId() == null) {
+            final TransactionalEntity thatEntity = (TransactionalEntity) that;
+            if (this.getId() == null || thatEntity.getId() == null) {
                 return false;
             }
-            if (this.getId().equals(thatTE.getId())) {
+            if (this.getId().equals(thatEntity.getId())) {
                 return true;
             }
         }

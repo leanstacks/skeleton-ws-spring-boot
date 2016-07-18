@@ -4,22 +4,30 @@ buildscript {
   }
   
   dependencies {
-    classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.3.3.RELEASE'
+    classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.3.6.RELEASE'
   }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'project-report'
+apply plugin: 'build-dashboard'
 
 ext {
+  jacocoVersion = '0.7.5.201505241946'
+  checkstyleVersion = '6.16.1'
+  pmdVersion = '5.4.1'
   guavaVersion = '19.0'
   jadiraVersion = '4.0.0.GA'
   swaggerVersion = '2.3.0'
 }
 
 sourceCompatibility = 1.8
-version = '1.5.2'
+version = '1.6.0'
 
 repositories {
   jcenter()
@@ -46,6 +54,45 @@ dependencies {
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 }
 
+defaultTasks 'clean', 'build'
+
 task wrapper(type: Wrapper) {
-  gradleVersion = '2.11'
+  gradleVersion = '2.14.1'
 }
+
+task encodePassword(type: JavaExec) {
+  classpath = sourceSets.test.runtimeClasspath
+  main = 'com.leanstacks.ws.util.BCryptPasswordEncoderUtil'
+  if(project.hasProperty('mainargs')) {
+    args(mainargs.split(','))
+  }
+}
+
+jacoco {
+  toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+  reports {
+    html.enabled = true
+    xml.enabled = true
+    csv.enabled = false
+  }
+}
+
+test.finalizedBy jacocoTestReport
+
+checkstyle {
+  toolVersion = checkstyleVersion
+  config = rootProject.resources.text.fromFile('etc/checkstyle/rules.xml')
+}
+
+pmd {
+  toolVersion = pmdVersion
+  ruleSetConfig = rootProject.resources.text.fromFile('etc/pmd/ruleset.xml')
+  ignoreFailures = true
+}
+
+check.finalizedBy projectReport
+
+projectReport.finalizedBy buildDashboard

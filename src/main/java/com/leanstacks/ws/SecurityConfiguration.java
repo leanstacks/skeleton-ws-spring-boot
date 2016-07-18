@@ -26,8 +26,12 @@ import com.leanstacks.ws.security.AccountAuthenticationProvider;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    /**
+     * The AccountAuthenticationProvider is a custom Spring Security
+     * AuthenticationProvider.
+     */
     @Autowired
-    private AccountAuthenticationProvider accountAuthenticationProvider;
+    private transient AccountAuthenticationProvider accountAuthenticationProvider;
 
     /**
      * Supplies a PasswordEncoder instance to the Spring ApplicationContext. The
@@ -51,7 +55,7 @@ public class SecurityConfiguration {
      *         AuthenticationProvider.
      */
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth)
+    public void configureGlobal(final AuthenticationManagerBuilder auth)
             throws Exception {
 
         auth.authenticationProvider(accountAuthenticationProvider);
@@ -70,7 +74,7 @@ public class SecurityConfiguration {
             extends WebSecurityConfigurerAdapter {
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        protected void configure(final HttpSecurity http) throws Exception {
 
             // @formatter:off
             
@@ -103,7 +107,7 @@ public class SecurityConfiguration {
             extends WebSecurityConfigurerAdapter {
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        protected void configure(final HttpSecurity http) throws Exception {
 
             // @formatter:off
             
@@ -136,7 +140,7 @@ public class SecurityConfiguration {
             extends WebSecurityConfigurerAdapter {
 
         @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        protected void configure(final HttpSecurity http) throws Exception {
 
             // @formatter:off
             

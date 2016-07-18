@@ -10,17 +10,29 @@ import org.springframework.stereotype.Component;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.GreetingService;
 
+/**
+ * The GreetingHealthIndicator is an example implementation of a Spring Boot
+ * Actuator HealthIndicator. When Actuator's Health Endpoint is invoked, it
+ * polls all HealthIndicator implementations to ascertain an aggregate status of
+ * the application's health status.
+ * 
+ * @author Matt Warman
+ *
+ */
 @Component
 public class GreetingHealthIndicator implements HealthIndicator {
 
+    /**
+     * The GreetingService business service.
+     */
     @Autowired
-    private GreetingService greetingService;
+    private transient GreetingService greetingService;
 
     @Override
     public Health health() {
-        Collection<Greeting> greetings = greetingService.findAll();
+        final Collection<Greeting> greetings = greetingService.findAll();
 
-        if (greetings == null || greetings.size() == 0) {
+        if (greetings == null || greetings.isEmpty()) {
             return Health.down().withDetail("count", 0).build();
         }
 

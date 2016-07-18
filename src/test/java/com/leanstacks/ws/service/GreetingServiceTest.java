@@ -6,7 +6,6 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,45 +21,49 @@ import com.leanstacks.ws.model.Greeting;
 @Transactional
 public class GreetingServiceTest extends AbstractTest {
 
-    @Autowired
-    private GreetingService greetingService;
+    private static final String VALUE_TEXT = "test";
 
-    @Before
-    public void setUp() {
-        super.setUp();
+    @Autowired
+    private transient GreetingService greetingService;
+
+    @Override
+    public void doBeforeEachTest() {
         greetingService.evictCache();
+    }
+
+    @Override
+    public void doAfterEachTest() {
+        // perform test clean up
     }
 
     @Test
     public void testGetGreetings() {
 
-        Collection<Greeting> greetings = greetingService.findAll();
+        final Collection<Greeting> greetings = greetingService.findAll();
 
         Assert.assertNotNull("failure - expected not null", greetings);
-        Assert.assertEquals("failure - expected 2 greetings", 2,
-                greetings.size());
+        Assert.assertEquals("failure - expected 2 greetings", 2, greetings.size());
 
     }
 
     @Test
     public void testGetGreeting() {
 
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
-        Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id);
 
         Assert.assertNotNull("failure - expected not null", greeting);
-        Assert.assertEquals("failure - expected greeting.id match", id,
-                greeting.getId());
+        Assert.assertEquals("failure - expected greeting.id match", id, greeting.getId());
 
     }
 
     @Test
     public void testGetGreetingNotFound() {
 
-        Long id = Long.MAX_VALUE;
+        final Long id = Long.MAX_VALUE;
 
-        Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id);
 
         Assert.assertNull("failure - expected null", greeting);
 
@@ -69,109 +72,98 @@ public class GreetingServiceTest extends AbstractTest {
     @Test
     public void testCreateGreeting() {
 
-        Greeting greeting = new Greeting();
-        greeting.setText("test");
+        final Greeting greeting = new Greeting();
+        greeting.setText(VALUE_TEXT);
 
-        Greeting createdGreeting = greetingService.create(greeting);
+        final Greeting createdGreeting = greetingService.create(greeting);
 
-        Assert.assertNotNull("failure - expected greeting not null",
-                createdGreeting);
-        Assert.assertNotNull("failure - expected greeting.id not null",
-                createdGreeting.getId());
-        Assert.assertEquals("failure - expected greeting.text match", "test",
-                createdGreeting.getText());
+        Assert.assertNotNull("failure - expected greeting not null", createdGreeting);
+        Assert.assertNotNull("failure - expected greeting.id not null", createdGreeting.getId());
+        Assert.assertEquals("failure - expected greeting.text match", VALUE_TEXT, createdGreeting.getText());
 
-        Collection<Greeting> greetings = greetingService.findAll();
+        final Collection<Greeting> greetings = greetingService.findAll();
 
-        Assert.assertEquals("failure - expected 3 greetings", 3,
-                greetings.size());
+        Assert.assertEquals("failure - expected 3 greetings", 3, greetings.size());
 
     }
 
     @Test
     public void testCreateGreetingWithId() {
 
-        Exception e = null;
+        Exception exception = null;
 
-        Greeting greeting = new Greeting();
+        final Greeting greeting = new Greeting();
         greeting.setId(Long.MAX_VALUE);
-        greeting.setText("test");
+        greeting.setText(VALUE_TEXT);
 
         try {
-            Greeting createdGreeting = greetingService.create(greeting);
+            greetingService.create(greeting);
         } catch (EntityExistsException eee) {
-            e = eee;
+            exception = eee;
         }
 
-        Assert.assertNotNull("failure - expected exception", e);
-        Assert.assertTrue("failure - expected EntityExistsException",
-                e instanceof EntityExistsException);
+        Assert.assertNotNull("failure - expected exception", exception);
+        Assert.assertTrue("failure - expected EntityExistsException", exception instanceof EntityExistsException);
 
     }
 
     @Test
     public void testUpdateGreeting() {
 
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
-        Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id);
 
         Assert.assertNotNull("failure - expected greeting not null", greeting);
 
-        String updatedText = greeting.getText() + " test";
+        final String updatedText = greeting.getText() + " test";
         greeting.setText(updatedText);
-        Greeting updatedGreeting = greetingService.update(greeting);
+        final Greeting updatedGreeting = greetingService.update(greeting);
 
-        Assert.assertNotNull("failure - expected updated greeting not null",
-                updatedGreeting);
-        Assert.assertEquals("failure - expected updated greeting id unchanged",
-                id, updatedGreeting.getId());
-        Assert.assertEquals("failure - expected updated greeting text match",
-                updatedText, updatedGreeting.getText());
+        Assert.assertNotNull("failure - expected updated greeting not null", updatedGreeting);
+        Assert.assertEquals("failure - expected updated greeting id unchanged", id, updatedGreeting.getId());
+        Assert.assertEquals("failure - expected updated greeting text match", updatedText, updatedGreeting.getText());
 
     }
 
     @Test
     public void testUpdateGreetingNotFound() {
 
-        Exception e = null;
+        Exception exception = null;
 
-        Greeting greeting = new Greeting();
+        final Greeting greeting = new Greeting();
         greeting.setId(Long.MAX_VALUE);
         greeting.setText("test");
 
         try {
-            Greeting updatedGreeting = greetingService.update(greeting);
+            greetingService.update(greeting);
         } catch (NoResultException nre) {
-            e = nre;
+            exception = nre;
         }
 
-        Assert.assertNotNull("failure - expected exception", e);
-        Assert.assertTrue("failure - expected NoResultException",
-                e instanceof NoResultException);
+        Assert.assertNotNull("failure - expected exception", exception);
+        Assert.assertTrue("failure - expected NoResultException", exception instanceof NoResultException);
 
     }
 
     @Test
     public void testDeleteGreeting() {
 
-        Long id = new Long(1);
+        final Long id = new Long(1);
 
-        Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id);
 
         Assert.assertNotNull("failure - expected greeting not null", greeting);
 
         greetingService.delete(id);
 
-        Collection<Greeting> greetings = greetingService.findAll();
+        final Collection<Greeting> greetings = greetingService.findAll();
 
-        Assert.assertEquals("failure - expected 1 greeting", 1,
-                greetings.size());
+        Assert.assertEquals("failure - expected 1 greeting", 1, greetings.size());
 
-        Greeting deletedGreeting = greetingService.findOne(id);
+        final Greeting deletedGreeting = greetingService.findOne(id);
 
-        Assert.assertNull("failure - expected greeting to be deleted",
-                deletedGreeting);
+        Assert.assertNull("failure - expected greeting to be deleted", deletedGreeting);
 
     }
 

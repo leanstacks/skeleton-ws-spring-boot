@@ -2,6 +2,7 @@ package com.leanstacks.ws.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,47 +20,48 @@ import com.leanstacks.ws.model.Role;
 import com.leanstacks.ws.service.AccountService;
 
 /**
- * A Spring Security UserDetailsService implementation which creates UserDetails
- * objects from the Account and Role entities.
+ * A Spring Security UserDetailsService implementation which creates UserDetails objects from the Account and Role
+ * entities.
  * 
  * @author Matt Warman
  */
 @Service
 public class AccountUserDetailsService implements UserDetailsService {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    /**
+     * The Logger for this Class.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(AccountUserDetailsService.class);
 
     /**
      * The AccountService business service.
      */
     @Autowired
-    private AccountService accountService;
+    private transient AccountService accountService;
 
     @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         logger.info("> loadUserByUsername {}", username);
 
-        Account account = accountService.findByUsername(username);
+        final Account account = accountService.findByUsername(username);
         if (account == null) {
             // Not found...
             throw new UsernameNotFoundException("Invalid credentials.");
         }
 
-        if (account.getRoles() == null || account.getRoles().isEmpty()) {
+        final Set<Role> roles = account.getRoles();
+        if (roles == null || roles.isEmpty()) {
             // No Roles assigned to Account...
             throw new UsernameNotFoundException("Invalid credentials.");
         }
 
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        for (Role role : account.getRoles()) {
+        final Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+        for (final Role role : roles) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getCode()));
         }
 
-        User userDetails = new User(account.getUsername(),
-                account.getPassword(), account.isEnabled(),
-                !account.isExpired(), !account.isCredentialsexpired(),
-                !account.isLocked(), grantedAuthorities);
+        final User userDetails = new User(account.getUsername(), account.getPassword(), account.isEnabled(),
+                !account.isExpired(), !account.isCredentialsexpired(), !account.isLocked(), grantedAuthorities);
 
         logger.info("< loadUserByUsername {}", username);
         return userDetails;
