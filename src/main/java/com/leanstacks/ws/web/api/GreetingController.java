@@ -140,8 +140,11 @@ public class GreetingController extends BaseController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> updateGreeting(@RequestBody final Greeting greeting) {
+    public ResponseEntity<Greeting> updateGreeting(@PathVariable("id") final Long id,
+            @RequestBody final Greeting greeting) {
         logger.info("> updateGreeting");
+
+        greeting.setId(id);
 
         final Greeting updatedGreeting = greetingService.update(greeting);
 
