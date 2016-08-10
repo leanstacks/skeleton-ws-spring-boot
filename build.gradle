@@ -23,7 +23,7 @@ ext {
   pmdVersion = '5.5.1'
   guavaVersion = '19.0'
   jadiraVersion = '5.0.0.GA'
-  swaggerVersion = '2.3.0'
+  swaggerVersion = '2.5.0'
 }
 
 group = 'com.leanstacks'
