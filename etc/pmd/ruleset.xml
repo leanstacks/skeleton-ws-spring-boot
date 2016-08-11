@@ -46,7 +46,10 @@
 	<rule ref="rulesets/java/javabeans.xml" />
 
 	<!-- Use the entire 'java logging' ruleset -->
-	<rule ref="rulesets/java/logging-java.xml" />
+	<rule ref="rulesets/java/logging-java.xml">
+	    <!-- InvalidSlf4jMessageFormat has bug in PMD 5.5.1 -->
+		<exclude name="InvalidSlf4jMessageFormat" />
+	</rule>
 
 	<!-- Use the entire 'junit' ruleset -->
 	<rule ref="rulesets/java/junit.xml" />
