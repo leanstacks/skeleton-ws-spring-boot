@@ -20,7 +20,7 @@ apply plugin: 'build-dashboard'
 ext {
   jacocoVersion = '0.7.7.201606060606'
   checkstyleVersion = '7.2'
-  pmdVersion = '5.5.1'
+  pmdVersion = '5.5.2'
   guavaVersion = '20.0'
   jadiraVersion = '5.0.0.GA'
   swaggerVersion = '2.6.1'
