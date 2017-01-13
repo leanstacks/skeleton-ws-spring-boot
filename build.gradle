@@ -63,6 +63,7 @@ task encodePassword(type: JavaExec) {
 }
 
 springBoot {
+  executable = true
   buildInfo()
 }
 
