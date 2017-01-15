@@ -22,10 +22,13 @@ The project demonstrates the encapsulation of business behaviors into domain-spe
 The project shows the use of Spring Data JPA repositories, `@Repository`, for data access and management.  Illustrates the `@Entity` annotation and other JPA entity model annotations for attribute and relationship mapping.
 
 #### HSQLDB In-Memory Database
-The project illustrates how to use the HSQLDB in-memory database which is useful for rapid prototyping or unit test execution in a continuous integration environment.  The project contains schema and data SQL scripts to build and destroy the database dynamically as the application is started and stopped.
+The project illustrates how to use the HSQLDB in-memory database which is useful for rapid prototyping or unit test execution in a continuous integration environment.
 
 #### MySQL Database
-In addition to HSQLDB support, the project also supports integration with MySQL.  The project contains MySQL schema and data scripts.
+In addition to HSQLDB support, the project also supports integration with MySQL.
+
+#### Liquibase
+The project demonstrates the use of  [Liquibase](http://www.liquibase.org/) change logs to automatically create and update the database structure and initial content. The Liquibase change logs have been tested with the HSQLDB and MySQL database engines.
 
 #### Transaction Management
 The project contains examples of the `@Transactional` annotation on business service methods.
@@ -43,13 +46,13 @@ The project illustrates the use of the `@Async` annotation and provides examples
 The project provides examples of Spring Security integration.  The web service endpoints are secured using Basic Auth, backed by database authentication and authorization.  The project illustrates declarative authorization for resources by role.
 
 #### Spring Profiles
-The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, and mysql.
+The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, mysql, and docs.
 
 #### Unit Tests
 The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects.  Perform complete end-to-end testing with Spring MVC mocking or leverage Mockito to stub or spy business components.
 
 #### Actuator Monitoring and Management
-The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics and the creation of custom health checks.  Also, custom Maven project attributes are incorporated into the Actuator info endpoint.
+The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics and the creation of custom health checks.  Also, custom Maven and Gradle project attributes are incorporated into the Actuator info endpoint.
 
 #### API Documentation Generator
 The project includes [Springfox](http://springfox.github.io/springfox/) Swagger integration to automatically generate API docs for the RESTful web service endpoints.  This feature may be activated using the *"docs"* Spring profile.
