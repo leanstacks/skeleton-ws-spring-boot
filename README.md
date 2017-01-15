@@ -57,6 +57,9 @@ The project illustrates the use of Spring Boot Actuator for application monitori
 #### API Documentation Generator
 The project includes [Springfox](http://springfox.github.io/springfox/) Swagger integration to automatically generate API docs for the RESTful web service endpoints.  This feature may be activated using the *"docs"* Spring profile.
 
+#### Executable Jar
+The Maven and Gradle builds produce a fully executable Spring Boot Jar file. The Jar file may be executed directly from the command line without the *"java -jar"* command and may be installed on servers as a Linux service.
+
 ## Languages
 
 This project is authored in Java.
