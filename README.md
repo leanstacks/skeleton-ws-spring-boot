@@ -22,10 +22,13 @@ The project demonstrates the encapsulation of business behaviors into domain-spe
 The project shows the use of Spring Data JPA repositories, `@Repository`, for data access and management.  Illustrates the `@Entity` annotation and other JPA entity model annotations for attribute and relationship mapping.
 
 #### HSQLDB In-Memory Database
-The project illustrates how to use the HSQLDB in-memory database which is useful for rapid prototyping or unit test execution in a continuous integration environment.  The project contains schema and data SQL scripts to build and destroy the database dynamically as the application is started and stopped.
+The project illustrates how to use the HSQLDB in-memory database which is useful for rapid prototyping or unit test execution in a continuous integration environment.
 
 #### MySQL Database
-In addition to HSQLDB support, the project also supports integration with MySQL.  The project contains MySQL schema and data scripts.
+In addition to HSQLDB support, the project also supports integration with MySQL.
+
+#### Liquibase Database Migration
+The project demonstrates the use of  [Liquibase](http://www.liquibase.org/) change logs to automatically create and update the database structure and initial content. The Liquibase change logs have been tested with the HSQLDB and MySQL database engines.
 
 #### Transaction Management
 The project contains examples of the `@Transactional` annotation on business service methods.
@@ -43,16 +46,19 @@ The project illustrates the use of the `@Async` annotation and provides examples
 The project provides examples of Spring Security integration.  The web service endpoints are secured using Basic Auth, backed by database authentication and authorization.  The project illustrates declarative authorization for resources by role.
 
 #### Spring Profiles
-The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, and mysql.
+The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, mysql, and docs.
 
 #### Unit Tests
 The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects.  Perform complete end-to-end testing with Spring MVC mocking or leverage Mockito to stub or spy business components.
 
 #### Actuator Monitoring and Management
-The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics and the creation of custom health checks.  Also, custom Maven project attributes are incorporated into the Actuator info endpoint.
+The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics and the creation of custom health checks.  Also, custom Maven and Gradle project attributes are incorporated into the Actuator info endpoint.
 
 #### API Documentation Generator
 The project includes [Springfox](http://springfox.github.io/springfox/) Swagger integration to automatically generate API docs for the RESTful web service endpoints.  This feature may be activated using the *"docs"* Spring profile.
+
+#### Executable Jar
+The Maven and Gradle builds produce a fully executable Spring Boot Jar file. The Jar file may be executed directly from the command line without the *"java -jar"* command and may be installed on servers as a Linux service.
 
 ## Languages
 
@@ -76,6 +82,11 @@ and choose one of:
 
 \* The Gradle Wrapper is bundled with this project. Gradle tasks may be used without installing Gradle CLI by substituting `./gradlew` for `gradle` in the instructions below.
 
+and, optionally, install:
+* MySQL 5.5 or later \*
+
+\* By default, the project uses the bundled, in-memory HyperSQL database (HSQLDB). However, MySQL may be used by activating the *"mysql"* Spring profile.
+
 ### Spring Tool Suite or Eclipse
 
 This project uses Checkstyle static code analysis and reporting to ensure contributions are formatted in a consistent manner.  To ease the burden for contributing software engineers, the Eclipse Java Code Formatter configuration is supplied.  The formatting configuration may be used in Eclipse, the Spring Tool Suite, or any derivative of the Eclipse IDE.
@@ -88,6 +99,25 @@ After importing the project into Eclipse, edit the project properties by selecti
   * Format source code
     * Format all lines
   * Organize imports
+
+### MySQL
+
+By default the project uses the bundled, in-memory HyperSQL database. To switch from HSQLDB to MySQL, simply replace the *"hsqldb"* Spring profile with *"mysql"*. Do **not** use both profiles simultaneously. Specify the active profiles in the `application.properties` file.
+
+To prepare MySQL, create an empty database schema and a user account.
+
+Execute the following SQL statement to create an empty schema for the project:
+
+```
+CREATE SCHEMA `skeleton` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+```
+
+Execute the following SQL statements to create a user account for the application. Review the database schema name, and user account credentials in the `application-mysql.properties` configuration file and make updates if necessary.
+
+```
+create user 'userName'@'localhost' identified by 'somePassword';
+grant all on skeleton.* to 'userName'@'localhost';
+```
 
 ## Running
 
@@ -154,12 +184,20 @@ The application distribution artifact is placed in the /target directory and is 
 
 ```
 java -jar example-1.0.0.jar
+
+...OR simply...
+
+./example-1.0.0.jar
 ```
 
 By default, the batch and hsqldb profiles are active.  To run the application with a specific set of active profiles, supply the `--spring.profiles.active` command line argument.  For example, to start the project using MySQL instad of HSQLDB and enable the batch process:
 
 ```
 java -jar example-1.0.0.jar --spring.profiles.active=mysql,batch
+
+...OR simply...
+
+./example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
 
 ### Gradle
@@ -247,12 +285,20 @@ The application distribution artifact is placed in the /build/libs directory and
 
 ```
 java -jar build/libs/example-1.0.0.jar
+
+...OR simply...
+
+./example-1.0.0.jar
 ```
 
 By default, the batch and hsqldb profiles are active.  To run the application with a specific set of active profiles, supply the `--spring.profiles.active` command line argument.  For example, to start the project using MySQL instad of HSQLDB and enable the batch process:
 
 ```
 java -jar build/libs/example-1.0.0.jar --spring.profiles.active=mysql,batch
+
+...OR simply
+
+./example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
 
 #### encodePassword
@@ -270,3 +316,12 @@ gradle -q encodePassword -Pmainargs=<password>[,<password>]
 ```
 
 The value of the `mainargs` property is passed as the arguments to the Java main method of the `BCryptPasswordEncoderUtil` class.  Separate multiple passwords with a comma.
+
+**Example:**
+```
+Command:
+./gradlew -q encodePassword -Pmainargs=clearTextPassword
+
+Console Output:
+Argument: clearTextPassword     Encoded: $2a$10$/BxBDZJrjJ5k9KN7gERjd.IJOZDuVYMq0HxuurnTCILGL/vbrNmBe
+```

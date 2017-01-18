@@ -5,14 +5,14 @@
 
   <groupId>com.leanstacks</groupId>
   <artifactId>skeleton-ws-spring-boot</artifactId>
-  <version>1.6.3</version>
+  <version>1.7.0</version>
   <name>Web Services Stack</name>
   <description>Starter application stack for RESTful web services using Spring Boot.</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.4.2.RELEASE</version>
+    <version>1.4.3.RELEASE</version>
   </parent>
   
   <properties>
@@ -56,6 +56,10 @@
       <groupId>org.jadira.usertype</groupId>
       <artifactId>usertype.extended</artifactId>
       <version>${jadira.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
     </dependency>
 
     <!-- Dependencies for CacheManager -->
@@ -108,6 +112,9 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <executable>true</executable>
+        </configuration>
         <executions>
           <execution>
             <goals>

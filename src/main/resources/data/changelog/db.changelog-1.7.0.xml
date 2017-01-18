@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet id="1" author="mwarman">
+    <createTable tableName="Greeting">
+      <column name="id" type="bigint(20)" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="referenceId" type="varchar(255)">
+        <constraints unique="true" uniqueConstraintName="UQ_Greeting_ReferenceId" nullable="false" />
+      </column>
+      <column name="text" type="varchar(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="version" type="int(10)" defaultValue="0">
+        <constraints nullable="false" />
+      </column>
+      <column name="createdBy" type="varchar(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="createdAt" type="datetime">
+        <constraints nullable="false" />
+      </column>
+      <column name="updatedBy" type="varchar(100)" />
+      <column name="updatedAt" type="datetime" />
+    </createTable>
+  </changeSet>
+    
+  <changeSet id="2" author="mwarman">
+    <insert tableName="Greeting">
+        <column name="referenceId" value="1e0d5287-67fd-4043-9ac4-b8d358d6d7ce" />
+        <column name="text" value="Hello World!" />
+        <column name="createdBy" value="user" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+    <insert tableName="Greeting">
+        <column name="referenceId" value="37c3178d-3b49-47b6-99d1-277b1a3e8df8" />
+        <column name="text" value="Hola Mundo!" />
+        <column name="createdBy" value="user" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+  </changeSet>
+
+  <changeSet id="3" author="mwarman">
+    <createTable tableName="Account">
+      <column name="id" type="bigint(20)" autoIncrement="true">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="referenceId" type="varchar(255)">
+        <constraints unique="true" uniqueConstraintName="UQ_Account_ReferenceId" nullable="false" />
+      </column>
+      <column name="username" type="varchar(100)">
+        <constraints unique="true" uniqueConstraintName="UQ_Account_Username" nullable="false" />
+      </column>
+      <column name="password" type="varchar(200)">
+        <constraints nullable="false" />
+      </column>
+      <column name="enabled" type="boolean" defaultValueBoolean="true">
+        <constraints nullable="false" />
+      </column>
+      <column name="credentialsexpired" type="boolean" defaultValueBoolean="false">
+        <constraints nullable="false" />
+      </column>
+      <column name="expired" type="boolean" defaultValueBoolean="false">
+        <constraints nullable="false" />
+      </column>
+      <column name="locked" type="boolean" defaultValueBoolean="false">
+        <constraints nullable="false" />
+      </column>
+      <column name="version" type="int(10)" defaultValue="0">
+        <constraints nullable="false" />
+      </column>
+      <column name="createdBy" type="varchar(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="createdAt" type="datetime">
+        <constraints nullable="false" />
+      </column>
+      <column name="updatedBy" type="varchar(100)" />
+      <column name="updatedAt" type="datetime" />
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="4" author="mwarman">
+    <createTable tableName="Role">
+      <column name="id" type="bigint(20)">
+        <constraints primaryKey="true" nullable="false" />
+      </column>
+      <column name="code" type="varchar(50)">
+        <constraints unique="true" uniqueConstraintName="UQ_Role_Code" nullable="false" />
+      </column>
+      <column name="label" type="varchar(100)">
+        <constraints nullable="false" />
+      </column>
+      <column name="ordinal" type="int(10)">
+        <constraints nullable="false" />
+      </column>
+      <column name="effectiveAt" type="datetime">
+        <constraints nullable="false" />
+      </column>
+      <column name="expiresAt" type="datetime" />
+      <column name="createdAt" type="datetime">
+        <constraints nullable="false" />
+      </column>
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="5" author="mwarman">
+    <createTable tableName="AccountRole">
+      <column name="accountId" type="bigint(20)">
+        <constraints references="Account(id)" foreignKeyName="FK_AccountRole_AccountId" deleteCascade="true" nullable="false" />
+      </column>
+      <column name="roleId" type="bigint(20)">
+        <constraints references="Role(id)" foreignKeyName="FK_AccountRole_RoleId" deleteCascade="true" nullable="false" />
+      </column>
+    </createTable>
+  </changeSet>
+  
+  <changeSet id="6" author="mwarman">
+    <!-- password is 'password' -->
+    <insert tableName="Account">
+        <column name="referenceId" value="a07bd221-3ecd-4893-a0f0-78d7c0fbf94e" />
+        <column name="username" value="user" />
+        <column name="password" value="$2a$10$9/44Rne7kQqPXa0cY6NfG.3XzScMrCxFYjapoLq/wFmHz7EC9praK" />
+        <column name="enabled" valueBoolean="true" />
+        <column name="credentialsExpired" valueBoolean="false" />
+        <column name="expired" valueBoolean="false" />
+        <column name="locked" valueBoolean="false" />
+        <column name="createdBy" value="user" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+    <!-- password is 'operations' -->
+    <insert tableName="Account">
+        <column name="referenceId" value="7bd137c8-ab64-4a45-bf2d-d9bae3574622" />
+        <column name="username" value="operations" />
+        <column name="password" value="$2a$10$CoMVfutnv1qZ.fNlHY1Na.rteiJhsDF0jB1o.76qXcfdWN6As27Zm" />
+        <column name="enabled" valueBoolean="true" />
+        <column name="credentialsExpired" valueBoolean="false" />
+        <column name="expired" valueBoolean="false" />
+        <column name="locked" valueBoolean="false" />
+        <column name="createdBy" value="user" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+  </changeSet>
+
+  <changeSet id="7" author="mwarman">
+    <insert tableName="Role">
+        <column name="id" value="1" />
+        <column name="code" value="ROLE_USER" />
+        <column name="label" value="User" />
+        <column name="ordinal" value="0" />
+        <column name="effectiveAt" valueDate="2015-01-01T00:00:00" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+    <insert tableName="Role">
+        <column name="id" value="2" />
+        <column name="code" value="ROLE_ADMIN" />
+        <column name="label" value="Admin" />
+        <column name="ordinal" value="1" />
+        <column name="effectiveAt" valueDate="2015-01-01T00:00:00" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+    <insert tableName="Role">
+        <column name="id" value="3" />
+        <column name="code" value="ROLE_SYSADMIN" />
+        <column name="label" value="System Admin" />
+        <column name="ordinal" value="2" />
+        <column name="effectiveAt" valueDate="2015-01-01T00:00:00" />
+        <column name="createdAt" valueComputed="NOW()" />
+    </insert>
+  </changeSet>
+
+  <changeSet id="8" author="mwarman">
+    <sql>
+      INSERT INTO AccountRole (accountId, roleId) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'user' and r.code = 'ROLE_USER'
+    </sql>
+    <sql>
+      INSERT INTO AccountRole (accountId, roleId) SELECT a.id, r.id FROM Account a, Role r WHERE a.username = 'operations' and r.code = 'ROLE_SYSADMIN'
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

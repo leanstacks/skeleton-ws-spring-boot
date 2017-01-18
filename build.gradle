@@ -1,21 +1,13 @@
-buildscript {
-  repositories {
-    jcenter()
-  }
-  
-  dependencies {
-    classpath group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: '1.4.2.RELEASE'
-  }
+plugins {
+  id 'java'
+  id 'org.springframework.boot' version '1.4.3.RELEASE'
+  id 'eclipse'
+  id 'jacoco'
+  id 'checkstyle'
+  id 'pmd'
+  id 'project-report'
+  id 'build-dashboard'
 }
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'jacoco'
-apply plugin: 'checkstyle'
-apply plugin: 'pmd'
-apply plugin: 'project-report'
-apply plugin: 'build-dashboard'
 
 ext {
   jacocoVersion = '0.7.7.201606060606'
@@ -27,7 +19,7 @@ ext {
 }
 
 group = 'com.leanstacks'
-version = '1.6.3'
+version = '1.7.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -47,6 +39,7 @@ dependencies {
   compile group: 'com.google.guava', name: 'guava', version: guavaVersion
   compile group: 'com.github.ben-manes.caffeine', name: 'caffeine'
   compile group: 'org.jadira.usertype', name: 'usertype.extended', version: jadiraVersion
+  compile group: 'org.liquibase', name: 'liquibase-core'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion
   
@@ -71,6 +64,7 @@ task encodePassword(type: JavaExec) {
 }
 
 springBoot {
+  executable = true
   buildInfo()
 }
 
