@@ -4,6 +4,7 @@ import javax.persistence.NoResultException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +35,21 @@ public class BaseController {
         logger.error("> handleNoResultException");
         logger.error("- NoResultException: ", nre);
         logger.error("< handleNoResultException");
+        return new ResponseEntity<Exception>(HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Handles EmptyResultDataAccessException thrown from web service controller methods. Creates a response with an
+     * empty body and HTTP status code 404, not found.
+     * 
+     * @param nre An EmptyResultDataAccessException instance.
+     * @return A ResponseEntity with an empty response body and HTTP status code 404.
+     */
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<Exception> handleEmptyResultDataAccessException(final EmptyResultDataAccessException erdae) {
+        logger.error("> handleEmptyResultDataAccessException");
+        logger.error("- EmptyResultDataAccessException: ", erdae);
+        logger.error("< handleEmptyResultDataAccessException");
         return new ResponseEntity<Exception>(HttpStatus.NOT_FOUND);
     }
 
