@@ -10,62 +10,80 @@ import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
-import com.leanstacks.ws.AbstractControllerTest;
+import com.leanstacks.ws.AbstractTest;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.EmailService;
 import com.leanstacks.ws.service.GreetingService;
 
 /**
  * <p>
- * Unit tests for the GreetingController using Mockito mocks and spies.
+ * Unit tests for the GreetingController using mocked business components.
  * </p>
  * <p>
- * These tests utilize the Mockito framework objects to simulate interaction with back-end components. The controller
- * methods are invoked directly bypassing the Spring MVC mappings. Back-end components are mocked and injected into the
- * controller. Mockito spies and verifications are performed ensuring controller behaviors.
+ * These tests utilize Spring's Test Framework to mock objects to simulate interaction with back-end components.
+ * Back-end components are mocked and injected into the controller. Verifications are performed ensuring controller
+ * behaviors.
  * </p>
  * 
  * @author Matt Warman
  */
-@Transactional
-public class GreetingControllerMocksTest extends AbstractControllerTest {
+@RunWith(SpringRunner.class)
+@WebMvcTest(GreetingController.class)
+public class GreetingControllerTest extends AbstractTest {
 
+    /**
+     * The base resource URI.
+     */
     private static final String RESOURCE_URI = "/api/greetings";
+    /**
+     * The resource single item URI.
+     */
     private static final String RESOURCE_ITEM_URI = "/api/greetings/{id}";
+    /**
+     * The resource single item URI with the 'send' action.
+     */
+    private static final String RESOURCE_ITEM_URI_ACTION_SEND = "/api/greetings/{id}/send";
 
     /**
      * A mocked GreetingService.
      */
-    @Mock
+    @MockBean
     private transient GreetingService greetingService;
 
     /**
      * A mocked EmailService.
      */
-    @Mock
+    @MockBean
     private transient EmailService emailService;
 
     /**
-     * A GreetingController instance with <code>@Mock</code> components injected into it.
+     * A mock servlet environment.
      */
-    @InjectMocks
-    private transient GreetingController greetingController;
+    @Autowired
+    private transient MockMvc mvc;
+
+    /**
+     * A Jackson ObjectMapper for JSON conversion.
+     */
+    @Autowired
+    private transient ObjectMapper mapper;
 
     @Override
     public void doBeforeEachTest() {
-        // Initialize Mockito annotated components
-        MockitoAnnotations.initMocks(this);
-        // Prepare the Spring MVC Mock components for standalone testing
-        setUp(greetingController);
+        // perform test initialization
     }
 
     @Override
@@ -74,6 +92,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetGreetings() throws Exception {
 
         // Create some test data
@@ -100,6 +119,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetGreeting() throws Exception {
 
         // Create some test data
@@ -127,6 +147,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testGetGreetingNotFound() throws Exception {
 
         // Create some test data
@@ -154,6 +175,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testCreateGreeting() throws Exception {
 
         // Create some test data
@@ -163,7 +185,8 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         when(greetingService.create(any(Greeting.class))).thenReturn(entity);
 
         // Perform the behavior being tested
-        final String inputJson = super.mapToJson(entity);
+        // final String inputJson = json.mapToJson(entity);
+        final String inputJson = mapper.writeValueAsString(entity);
 
         final MvcResult result = mvc.perform(MockMvcRequestBuilders.post(RESOURCE_URI)
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(inputJson))
@@ -180,7 +203,8 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         Assert.assertEquals("failure - expected HTTP status 201", 201, status);
         Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
-        final Greeting createdEntity = super.mapFromJson(content, Greeting.class);
+        // final Greeting createdEntity = json.mapFromJson(content, Greeting.class);
+        final Greeting createdEntity = mapper.readValue(content, Greeting.class);
 
         Assert.assertNotNull("failure - expected entity not null", createdEntity);
         Assert.assertNotNull("failure - expected id attribute not null", createdEntity.getId());
@@ -188,6 +212,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testUpdateGreeting() throws Exception {
 
         // Create some test data
@@ -199,7 +224,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         when(greetingService.update(any(Greeting.class))).thenReturn(entity);
 
         // Perform the behavior being tested
-        final String inputJson = super.mapToJson(entity);
+        final String inputJson = mapper.writeValueAsString(entity);
 
         final MvcResult result = mvc.perform(MockMvcRequestBuilders.put(RESOURCE_ITEM_URI, id)
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).content(inputJson))
@@ -216,7 +241,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         Assert.assertEquals("failure - expected HTTP status 200", 200, status);
         Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
-        final Greeting updatedEntity = super.mapFromJson(content, Greeting.class);
+        final Greeting updatedEntity = mapper.readValue(content, Greeting.class);
 
         Assert.assertNotNull("failure - expected entity not null", updatedEntity);
         Assert.assertEquals("failure - expected id attribute unchanged", entity.getId(), updatedEntity.getId());
@@ -225,6 +250,7 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
     }
 
     @Test
+    @WithMockUser
     public void testDeleteGreeting() throws Exception {
 
         // Create some test data
@@ -244,6 +270,37 @@ public class GreetingControllerMocksTest extends AbstractControllerTest {
         Assert.assertEquals("failure - expected HTTP status 204", 204, status);
         Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
 
+    }
+
+    @Test
+    @WithMockUser
+    public void testSendGreetingAsync() throws Exception {
+
+        // Create some test data
+        final Long id = new Long(1);
+        final Greeting entity = getEntityStubData();
+
+        // Stub the GreetingService.findOne method return value
+        when(greetingService.findOne(id)).thenReturn(entity);
+
+        // Perform the behavior being tested
+        final MvcResult result = mvc.perform(
+                MockMvcRequestBuilders.post(RESOURCE_ITEM_URI_ACTION_SEND, id).accept(MediaType.APPLICATION_JSON))
+                .andReturn();
+
+        // Extract the response status and body
+        final String content = result.getResponse().getContentAsString();
+        final int status = result.getResponse().getStatus();
+
+        // Verify the GreetingService.findOne method was invoked once
+        verify(greetingService, times(1)).findOne(id);
+
+        // Verify the EmailService.sendAsync method was invoked once
+        verify(emailService, times(1)).sendAsync(any(Greeting.class));
+
+        // Perform standard JUnit assertions on the test results
+        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
     }
 
     private Collection<Greeting> getEntityListStubData() {
