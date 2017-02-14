@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '1.4.3.RELEASE'
+  id 'org.springframework.boot' version '1.5.1.RELEASE'
   id 'eclipse'
   id 'jacoco'
   id 'checkstyle'
@@ -19,7 +19,7 @@ ext {
 }
 
 group = 'com.leanstacks'
-version = '1.7.1'
+version = '1.7.2'
 sourceCompatibility = 1.8
 
 repositories {
@@ -47,6 +47,7 @@ dependencies {
   runtime group: 'mysql', name: 'mysql-connector-java'
   
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+  testCompile group: 'org.springframework.security', name: 'spring-security-test'
 }
 
 defaultTasks 'clean', 'build'

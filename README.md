@@ -13,7 +13,7 @@ This is a project skeleton for a [Spring Boot](http://projects.spring.io/spring-
 ### Features
 
 #### RESTful Web Service Family
-The project contains examples of **C** reate, **R** ead, **U** pdate, and **D** elete web services.  The project illustrates the use of `@ExceptionHandler` methods to manage web service responses when common exceptional conditions arise.
+The project contains examples of **C** reate, **R** ead, **U** pdate, and **D** elete web services.  The project illustrates the use of `@ExceptionHandler` methods and `@ControllerAdvice` classes to manage web service responses when common exceptional conditions arise.
 
 #### Business Services
 The project demonstrates the encapsulation of business behaviors into domain-specific, Spring-managed services annotated with `@Service`.
@@ -49,7 +49,7 @@ The project provides examples of Spring Security integration.  The web service e
 The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.  The profiles illustrated are: batch, hsqldb, mysql, and docs.
 
 #### Unit Tests
-The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects.  Perform complete end-to-end testing with Spring MVC mocking or leverage Mockito to stub or spy business components.
+The project contains unit and integration test examples for standard components such as business services or batch beans and examples for the web service endpoints using mock objects.  Examples using the Spring Boot `@*Test` annotations for specific test cases are provided.
 
 #### Actuator Monitoring and Management
 The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics and the creation of custom health checks.  Also, custom Maven and Gradle project attributes are incorporated into the Actuator info endpoint.

@@ -28,7 +28,7 @@ import com.leanstacks.ws.service.GreetingService;
  * @author Matt Warman
  */
 @RestController
-public class GreetingController extends BaseController {
+public class GreetingController {
 
     /**
      * The Logger for this Class.
