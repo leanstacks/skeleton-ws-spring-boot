@@ -54,8 +54,7 @@ public class ApiDocsConfiguration {
     private ApiInfo apiInfo() {
 
         // @formatter:off
-        final ApiInfo apiInfo = 
-            new ApiInfoBuilder()
+        return new ApiInfoBuilder()
                 .title("Project Skeleton for Spring Boot Web Services")
                 .description("The Spring Boot web services starter project provides a foundation "
                         + "to rapidly construct a RESTful web services application.")
@@ -64,7 +63,6 @@ public class ApiDocsConfiguration {
                 .build();
         // @formatter:on
 
-        return apiInfo;
     }
 
     /**
@@ -78,15 +76,13 @@ public class ApiDocsConfiguration {
         final Predicate<String> paths = PathSelectors.ant("/api/**");
 
         // @formatter:off
-        final Docket docket = 
-            new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
                     .paths(paths)
                 .build();
         // @formatter:on
 
-        return docket;
     }
 
 }

@@ -12,7 +12,7 @@ plugins {
 ext {
   jacocoVersion = '0.7.9'
   checkstyleVersion = '7.6.1'
-  pmdVersion = '5.5.2'
+  pmdVersion = '5.6.0'
   guavaVersion = '20.0'
   jadiraVersion = '5.0.0.GA'
   swaggerVersion = '2.6.1'
