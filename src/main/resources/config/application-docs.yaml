@@ -1,0 +1,19 @@
+GreetingController:
+  getGreetings:
+    title: 'Find all Greetings'
+    notes: 'Retrieves a Collection of Greeting objects from the data store and returns them as JSON.'
+  getGreeting:
+    title: 'Find Greeting by ID'
+    notes: 'Retrieves a Greeting object from the data store by its Identifier and returns it as JSON.'
+  createGreeting:
+    title: 'Create a Greeting'
+    notes: 'Creates a Greeting object in the data store and returns it as JSON.'
+  updateGreeting:
+    title: 'Update a Greeting'
+    notes: 'Updates a Greeting object in the data store and returns it as JSON.'
+  deleteGreeting:
+    title: 'Delete a Greeting'
+    notes: 'Deletes a Greeting object from the data store.'
+  sendGreeting:
+    title: 'Send a Greeting'
+    notes: 'Send a Greeting object via Email and returns it as JSON.'
