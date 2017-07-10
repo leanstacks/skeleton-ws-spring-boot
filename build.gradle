@@ -1,6 +1,6 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '1.5.3.RELEASE'
+  id 'org.springframework.boot' version '1.5.4.RELEASE'
   id 'eclipse'
   id 'jacoco'
   id 'checkstyle'
@@ -11,15 +11,15 @@ plugins {
 
 ext {
   jacocoVersion = '0.7.9'
-  checkstyleVersion = '7.6.1'
-  pmdVersion = '5.6.0'
+  checkstyleVersion = '7.8.2'
+  pmdVersion = '5.8.1'
   guavaVersion = '20.0'
   jadiraVersion = '5.0.0.GA'
-  swaggerVersion = '2.6.1'
+  swaggerVersion = '2.7.0'
 }
 
 group = 'com.leanstacks'
-version = '1.7.3'
+version = '1.7.4'
 sourceCompatibility = 1.8
 
 repositories {
@@ -53,7 +53,7 @@ dependencies {
 defaultTasks 'clean', 'build'
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '3.5'
+  gradleVersion = '3.5.1'
 }
 
 task encodePassword(type: JavaExec) {

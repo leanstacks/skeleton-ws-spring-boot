@@ -21,6 +21,11 @@ import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.EmailService;
 import com.leanstacks.ws.service.GreetingService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 /**
  * The GreetingController class is a RESTful web service controller. The <code>@RestController</code> annotation informs
  * Spring that each <code>@RequestMapping</code> method returns a <code>@ResponseBody</code>.
@@ -53,6 +58,15 @@ public class GreetingController {
      * 
      * @return A ResponseEntity containing a Collection of Greeting objects.
      */
+    @ApiOperation(value = "${GreetingController.getGreetings.title}",
+            notes = "${GreetingController.getGreetings.notes}",
+            response = Greeting.class,
+            responseContainer = "List")
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
+            value = "Basic auth_creds",
+            required = true,
+            dataType = "string",
+            paramType = "header"))
     @RequestMapping(value = "/api/greetings",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -78,10 +92,18 @@ public class GreetingController {
      * @return A ResponseEntity containing a single Greeting object, if found, and a HTTP status code as described in
      *         the method comment.
      */
+    @ApiOperation(value = "${GreetingController.getGreeting.title}",
+            notes = "${GreetingController.getGreeting.notes}",
+            response = Greeting.class)
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
+            value = "Basic auth_creds",
+            required = true,
+            dataType = "string",
+            paramType = "header"))
     @RequestMapping(value = "/api/greetings/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> getGreeting(@PathVariable final Long id) {
+    public ResponseEntity<Greeting> getGreeting(@ApiParam("Greeting ID") @PathVariable final Long id) {
         logger.info("> getGreeting");
 
         final Greeting greeting = greetingService.findOne(id);
@@ -108,6 +130,15 @@ public class GreetingController {
      * @return A ResponseEntity containing a single Greeting object, if created successfully, and a HTTP status code as
      *         described in the method comment.
      */
+    @ApiOperation(value = "${GreetingController.createGreeting.title}",
+            notes = "${GreetingController.createGreeting.notes}",
+            response = Greeting.class,
+            code = 201)
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
+            value = "Basic auth_creds",
+            required = true,
+            dataType = "string",
+            paramType = "header"))
     @RequestMapping(value = "/api/greetings",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -136,11 +167,19 @@ public class GreetingController {
      * @return A ResponseEntity containing a single Greeting object, if updated successfully, and a HTTP status code as
      *         described in the method comment.
      */
+    @ApiOperation(value = "${GreetingController.updateGreeting.title}",
+            notes = "${GreetingController.updateGreeting.notes}",
+            response = Greeting.class)
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
+            value = "Basic auth_creds",
+            required = true,
+            dataType = "string",
+            paramType = "header"))
     @RequestMapping(value = "/api/greetings/{id}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> updateGreeting(@PathVariable("id") final Long id,
+    public ResponseEntity<Greeting> updateGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
             @RequestBody final Greeting greeting) {
         logger.info("> updateGreeting");
 
@@ -165,15 +204,23 @@ public class GreetingController {
      * @param id A Long URL path variable containing the Greeting primary key identifier.
      * @return A ResponseEntity with an empty response body and a HTTP status code as described in the method comment.
      */
+    @ApiOperation(value = "${GreetingController.deleteGreeting.title}",
+            notes = "${GreetingController.deleteGreeting.notes}",
+            code = 204)
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
+            value = "Basic auth_creds",
+            required = true,
+            dataType = "string",
+            paramType = "header"))
     @RequestMapping(value = "/api/greetings/{id}",
             method = RequestMethod.DELETE)
-    public ResponseEntity<Greeting> deleteGreeting(@PathVariable("id") final Long id) {
+    public ResponseEntity<Void> deleteGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id) {
         logger.info("> deleteGreeting");
 
         greetingService.delete(id);
 
         logger.info("< deleteGreeting");
-        return new ResponseEntity<Greeting>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -191,11 +238,20 @@ public class GreetingController {
      * @return A ResponseEntity containing a single Greeting object, if found, and a HTTP status code as described in
      *         the method comment.
      */
+    @ApiOperation(value = "${GreetingController.sendGreeting.title}",
+            notes = "${GreetingController.sendGreeting.notes}",
+            response = Greeting.class)
+    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
+            value = "Basic auth_creds",
+            required = true,
+            dataType = "string",
+            paramType = "header"))
     @RequestMapping(value = "/api/greetings/{id}/send",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> sendGreeting(@PathVariable("id") final Long id, @RequestParam(value = "wait",
-            defaultValue = "false") final boolean waitForAsyncResult) {
+    public ResponseEntity<Greeting> sendGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
+            @ApiParam("Wait for Response") @RequestParam(value = "wait",
+                    defaultValue = "false") final boolean waitForAsyncResult) {
 
         logger.info("> sendGreeting");
 
