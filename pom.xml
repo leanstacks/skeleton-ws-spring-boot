@@ -19,7 +19,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
     <guava.version>20.0</guava.version>
-    <swagger.version>2.6.1</swagger.version>
+    <swagger.version>2.7.0</swagger.version>
     <jadira.version>5.0.0.GA</jadira.version>
   </properties>
   
