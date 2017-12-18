@@ -5,7 +5,7 @@
 
   <groupId>com.leanstacks</groupId>
   <artifactId>skeleton-ws-spring-boot</artifactId>
-  <version>1.7.5</version>
+  <version>1.7.6</version>
   <name>Web Services Stack</name>
   <description>Starter application stack for RESTful web services using Spring Boot.</description>
 
