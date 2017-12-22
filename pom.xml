@@ -5,14 +5,14 @@
 
   <groupId>com.leanstacks</groupId>
   <artifactId>skeleton-ws-spring-boot</artifactId>
-  <version>1.7.5</version>
+  <version>1.7.6</version>
   <name>Web Services Stack</name>
   <description>Starter application stack for RESTful web services using Spring Boot.</description>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.6.RELEASE</version>
+    <version>1.5.9.RELEASE</version>
   </parent>
   
   <properties>

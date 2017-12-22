@@ -76,12 +76,6 @@ The project requires the following dependencies be installed on the host machine
 
 * Java Development Kit 8 or later
 
-and choose one of:
-* Apache Maven 3 or later
-* Gradle 2.12 or later \*
-
-\* The Gradle Wrapper is bundled with this project. Gradle tasks may be used without installing Gradle CLI by substituting `./gradlew` for `gradle` in the instructions below.
-
 and, optionally, install:
 * MySQL 5.5 or later \*
 
@@ -138,7 +132,7 @@ The `spring-boot:run` Maven goal performs the following workflow steps:
 To execute the `spring-boot:run` Maven goal, type the following command at a terminal prompt in the project base directory.
 
 ```
-mvn spring-boot:run
+./mvnw spring-boot:run
 ```
 
 Type `ctrl-C` to halt the web server.
@@ -159,7 +153,7 @@ The `test` Maven goal is designed to allow engineers the means to run the unit t
 To execute the `test` Maven goal, type the following command at a terminal prompt in the project base directory.
 
 ```
-mvn clean test
+./mvnw clean test
 ```
 
 #### package
@@ -177,7 +171,7 @@ The `package` Maven goal is designed to prepare the application for distribution
 To execute the `package` goal, type the following command at a terminal prompt in the project base directory.
 
 ```
-mvn clean package
+./mvnw clean package
 ```
 
 The application distribution artifact is placed in the /target directory and is named using the `artifactId` and `version` from the pom.xml file.  To run the JAR file use the following command:
@@ -215,10 +209,6 @@ The `bootRun` Gradle task performs the following workflow steps:
 To execute the `bootRun` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle clean bootRun
-
-...OR...
-
 ./gradlew clean bootRun
 ```
 
@@ -239,10 +229,6 @@ The `assemble` Gradle task is designed to allow engineers the means to compile t
 To execute the `assemble` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle clean assemble
-
-...OR...
-
 ./gradlew clean assemble
 ```
 
@@ -264,20 +250,12 @@ This task is ideal for use on continuous integration servers such as Jenkins, et
 To execute the `build` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle clean build
-
-...OR...
-
 ./gradlew clean build
 ```
 
 The `clean` and `build` tasks are the default tasks for this project.  Therefore, simply typing `gradle` (or `./gradlew` to use the Gradle Wrapper) will produce the same result as `gradle clean build`.
 
 ```
-gradle
-
-...OR...
-
 ./gradlew
 ```
 
@@ -308,10 +286,6 @@ The `encodePassword` Gradle task executes the `BCryptPasswordEncoderUtil` utilit
 To execute the `encodePassword` Gradle task, type the following command at a terminal prompt in the project base directory.
 
 ```
-gradle -q encodePassword -Pmainargs=<password>[,<password>]
-
-...OR...
-
 ./gradlew -q encodePassword -Pmainargs=<password>[,<password>]
 ```
 
