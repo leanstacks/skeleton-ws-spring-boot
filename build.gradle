@@ -1,6 +1,7 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '1.5.10.RELEASE'
+  id 'org.springframework.boot' version '2.0.2.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.5.RELEASE'
   id 'eclipse'
   id 'jacoco'
   id 'checkstyle'
@@ -46,6 +47,8 @@ dependencies {
   runtime group: 'org.hsqldb', name: 'hsqldb'
   runtime group: 'mysql', name: 'mysql-connector-java'
   
+  runtime("org.springframework.boot:spring-boot-properties-migrator")
+  
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testCompile group: 'org.springframework.security', name: 'spring-security-test'
 }
@@ -53,7 +56,7 @@ dependencies {
 defaultTasks 'clean', 'build'
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '3.5.1'
+  gradleVersion = '4.7'
 }
 
 task encodePassword(type: JavaExec) {
@@ -65,7 +68,6 @@ task encodePassword(type: JavaExec) {
 }
 
 springBoot {
-  executable = true
   buildInfo()
 }
 
