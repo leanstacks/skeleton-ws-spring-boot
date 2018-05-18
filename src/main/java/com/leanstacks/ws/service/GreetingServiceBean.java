@@ -8,7 +8,6 @@ import javax.persistence.NoResultException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.leanstacks.ws.Application;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.repository.GreetingRepository;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 
 /**
  * The GreetingServiceBean encapsulates all business behaviors operating on the Greeting entity model.
@@ -32,23 +34,41 @@ public class GreetingServiceBean implements GreetingService {
      */
     private static final Logger logger = LoggerFactory.getLogger(GreetingServiceBean.class);
 
-    /**
-     * The <code>CounterService</code> captures metrics for Spring Actuator.
-     */
-    @Autowired
-    private transient CounterService counterService;
+    // Metric Counters
+    private Counter findAllMethodInvocationCounter;
+    private Counter findOneMethodInvocationCounter;
+    private Counter createMethodInvocationCounter;
+    private Counter updateMethodInvocationCounter;
+    private Counter deleteMethodInvocationCounter;
+    private Counter evictCacheMethodInvocationCounter;
 
     /**
      * The Spring Data repository for Greeting entities.
      */
-    @Autowired
     private transient GreetingRepository greetingRepository;
+
+    /**
+     * Construct a GreetingServiceBean.
+     * 
+     * @param greetingRepository A GreetingRepository.
+     * @param meterRegistry A MeterRegistry.
+     */
+    @Autowired
+    public GreetingServiceBean(final GreetingRepository greetingRepository, final MeterRegistry meterRegistry) {
+        this.greetingRepository = greetingRepository;
+        this.findAllMethodInvocationCounter = meterRegistry.counter("method.invoked.greetingServiceBean.findAll");
+        this.findOneMethodInvocationCounter = meterRegistry.counter("method.invoked.greetingServiceBean.findOne");
+        this.createMethodInvocationCounter = meterRegistry.counter("method.invoked.greetingServiceBean.create");
+        this.updateMethodInvocationCounter = meterRegistry.counter("method.invoked.greetingServiceBean.update");
+        this.deleteMethodInvocationCounter = meterRegistry.counter("method.invoked.greetingServiceBean.delete");
+        this.evictCacheMethodInvocationCounter = meterRegistry.counter("method.invoked.greetingServiceBean.evictCache");
+    }
 
     @Override
     public Collection<Greeting> findAll() {
         logger.info("> findAll");
 
-        counterService.increment("method.invoked.greetingServiceBean.findAll");
+        findAllMethodInvocationCounter.increment();
 
         final Collection<Greeting> greetings = greetingRepository.findAll();
 
@@ -62,9 +82,9 @@ public class GreetingServiceBean implements GreetingService {
     public Greeting findOne(final Long id) {
         logger.info("> findOne {}", id);
 
-        counterService.increment("method.invoked.greetingServiceBean.findOne");
+        findOneMethodInvocationCounter.increment();
 
-        final Greeting greeting = greetingRepository.findOne(id);
+        final Greeting greeting = greetingRepository.getOne(id);
 
         logger.info("< findOne {}", id);
         return greeting;
@@ -77,7 +97,7 @@ public class GreetingServiceBean implements GreetingService {
     public Greeting create(final Greeting greeting) {
         logger.info("> create");
 
-        counterService.increment("method.invoked.greetingServiceBean.create");
+        createMethodInvocationCounter.increment();
 
         // Ensure the entity object to be created does NOT exist in the
         // repository. Prevent the default behavior of save() which will update
@@ -102,7 +122,7 @@ public class GreetingServiceBean implements GreetingService {
     public Greeting update(final Greeting greeting) {
         logger.info("> update {}", greeting.getId());
 
-        counterService.increment("method.invoked.greetingServiceBean.update");
+        updateMethodInvocationCounter.increment();
 
         // Ensure the entity object to be updated exists in the repository to
         // prevent the default behavior of save() which will persist a new
@@ -128,9 +148,9 @@ public class GreetingServiceBean implements GreetingService {
     public void delete(final Long id) {
         logger.info("> delete {}", id);
 
-        counterService.increment("method.invoked.greetingServiceBean.delete");
+        deleteMethodInvocationCounter.increment();
 
-        greetingRepository.delete(id);
+        greetingRepository.deleteById(id);
 
         logger.info("< delete {}", id);
     }
@@ -141,7 +161,7 @@ public class GreetingServiceBean implements GreetingService {
     public void evictCache() {
         logger.info("> evictCache");
 
-        counterService.increment("method.invoked.greetingServiceBean.evictCache");
+        evictCacheMethodInvocationCounter.increment();
 
         logger.info("< evictCache");
     }

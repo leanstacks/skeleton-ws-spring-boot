@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.metrics.CounterService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,9 +12,12 @@ import org.springframework.stereotype.Component;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.GreetingService;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+
 /**
- * The GreetingBatchBean contains <code>@Scheduled</code> methods operating on
- * Greeting entities to perform batch operations.
+ * The GreetingBatchBean contains <code>@Scheduled</code> methods operating on Greeting entities to perform batch
+ * operations.
  * 
  * @author Matt Warman
  */
@@ -26,36 +28,51 @@ public class GreetingBatchBean {
     /**
      * The Logger for this Class.
      */
-    private static final Logger logger = LoggerFactory
-            .getLogger(GreetingBatchBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(GreetingBatchBean.class);
 
     private static final String MESSAGE_FORMAT = "There are {} greetings in the data store.";
 
-    /**
-     * The <code>CounterService</code> captures metrics for Spring Actuator.
-     */
-    @Autowired
-    private transient CounterService counterService;
+    // Metric Counters
+    private transient Counter cronMethodCounter;
+    private transient Counter fixedRateMethodCounter;
+    private transient Counter fixedRateInitialDelayMethodCounter;
+    private transient Counter fixedDelayMethodCounter;
+    private transient Counter fixedDelayInitialDelayMethodCounter;
 
     /**
      * The GreetingService business service.
      */
-    @Autowired
     private transient GreetingService greetingService;
 
     /**
-     * Use a cron expression to execute logic on a schedule. Expression: second
-     * minute hour day-of-month month weekday
+     * Construct a GreetingBatchBean with supplied dependencies.
      * 
-     * @see http ://docs.spring.io/spring/docs/current/javadoc-api/org/
-     *      springframework /scheduling/support/CronSequenceGenerator.html
+     * @param greetingService A GreetingService.
+     * @param meterRegistry A MeterRegistry.
      */
-    @Scheduled(
-            cron = "${batch.greeting.cron}")
+    @Autowired
+    public GreetingBatchBean(final GreetingService greetingService, final MeterRegistry meterRegistry) {
+        this.greetingService = greetingService;
+        this.cronMethodCounter = meterRegistry.counter("method.invoked.greetingBatchBean.cronJob");
+        this.fixedRateMethodCounter = meterRegistry.counter("method.invoked.greetingBatchBean.fixedRateJob");
+        this.fixedRateInitialDelayMethodCounter = meterRegistry
+                .counter("method.invoked.greetingBatchBean.fixedRateJobWithInitialDelay");
+        this.fixedDelayMethodCounter = meterRegistry.counter("method.invoked.greetingBatchBean.fixedDelayJob");
+        this.fixedDelayInitialDelayMethodCounter = meterRegistry
+                .counter("method.invoked.greetingBatchBean.fixedDelayJobWithInitialDelay");
+    }
+
+    /**
+     * Use a cron expression to execute logic on a schedule. Expression: second minute hour day-of-month month weekday
+     * 
+     * @see http ://docs.spring.io/spring/docs/current/javadoc-api/org/ springframework
+     *      /scheduling/support/CronSequenceGenerator.html
+     */
+    @Scheduled(cron = "${batch.greeting.cron}")
     public void cronJob() {
         logger.info("> cronJob");
 
-        counterService.increment("method.invoked.greetingBatchBean.cronJob");
+        cronMethodCounter.increment();
 
         // Add scheduled logic here
 
@@ -66,17 +83,14 @@ public class GreetingBatchBean {
     }
 
     /**
-     * Execute logic beginning at fixed intervals. Use the
-     * <code>fixedRate</code> element to indicate how frequently the method is
-     * to be invoked.
+     * Execute logic beginning at fixed intervals. Use the <code>fixedRate</code> element to indicate how frequently the
+     * method is to be invoked.
      */
-    @Scheduled(
-            fixedRateString = "${batch.greeting.fixedrate}")
+    @Scheduled(fixedRateString = "${batch.greeting.fixedrate}")
     public void fixedRateJob() {
         logger.info("> fixedRateJob");
 
-        counterService
-                .increment("method.invoked.greetingBatchBean.fixedRateJob");
+        fixedRateMethodCounter.increment();
 
         // Add scheduled logic here
 
@@ -87,20 +101,17 @@ public class GreetingBatchBean {
     }
 
     /**
-     * Execute logic beginning at fixed intervals with a delay after the
-     * application starts. Use the <code>fixedRate</code> element to indicate
-     * how frequently the method is to be invoked. Use the
-     * <code>initialDelay</code> element to indicate how long to wait after
-     * application startup to schedule the first execution.
+     * Execute logic beginning at fixed intervals with a delay after the application starts. Use the
+     * <code>fixedRate</code> element to indicate how frequently the method is to be invoked. Use the
+     * <code>initialDelay</code> element to indicate how long to wait after application startup to schedule the first
+     * execution.
      */
-    @Scheduled(
-            initialDelayString = "${batch.greeting.initialdelay}",
+    @Scheduled(initialDelayString = "${batch.greeting.initialdelay}",
             fixedRateString = "${batch.greeting.fixedrate}")
     public void fixedRateJobWithInitialDelay() {
         logger.info("> fixedRateJobWithInitialDelay");
 
-        counterService.increment(
-                "method.invoked.greetingBatchBean.fixedRateJobWithInitialDelay");
+        fixedRateInitialDelayMethodCounter.increment();
 
         // Add scheduled logic here
 
@@ -111,17 +122,14 @@ public class GreetingBatchBean {
     }
 
     /**
-     * Execute logic with a delay between the end of the last execution and the
-     * beginning of the next. Use the <code>fixedDelay</code> element to
-     * indicate the time to wait between executions.
+     * Execute logic with a delay between the end of the last execution and the beginning of the next. Use the
+     * <code>fixedDelay</code> element to indicate the time to wait between executions.
      */
-    @Scheduled(
-            fixedDelayString = "${batch.greeting.fixeddelay}")
+    @Scheduled(fixedDelayString = "${batch.greeting.fixeddelay}")
     public void fixedDelayJob() {
         logger.info("> fixedDelayJob");
 
-        counterService
-                .increment("method.invoked.greetingBatchBean.fixedDelayJob");
+        fixedDelayMethodCounter.increment();
 
         // Add scheduled logic here
 
@@ -132,20 +140,17 @@ public class GreetingBatchBean {
     }
 
     /**
-     * Execute logic with a delay between the end of the last execution and the
-     * beginning of the next. Use the <code>fixedDelay</code> element to
-     * indicate the time to wait between executions. Use the
-     * <code>initialDelay</code> element to indicate how long to wait after
-     * application startup to schedule the first execution.
+     * Execute logic with a delay between the end of the last execution and the beginning of the next. Use the
+     * <code>fixedDelay</code> element to indicate the time to wait between executions. Use the
+     * <code>initialDelay</code> element to indicate how long to wait after application startup to schedule the first
+     * execution.
      */
-    @Scheduled(
-            initialDelayString = "${batch.greeting.initialdelay}",
+    @Scheduled(initialDelayString = "${batch.greeting.initialdelay}",
             fixedDelayString = "${batch.greeting.fixeddelay}")
     public void fixedDelayJobWithInitialDelay() {
         logger.info("> fixedDelayJobWithInitialDelay");
 
-        counterService.increment(
-                "method.invoked.greetingBatchBean.fixedDelayJobWithInitialDelay");
+        fixedDelayInitialDelayMethodCounter.increment();
 
         // Add scheduled logic here
 
