@@ -1,6 +1,7 @@
 package com.leanstacks.ws.service;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
@@ -84,10 +85,10 @@ public class GreetingServiceBean implements GreetingService {
 
         findOneMethodInvocationCounter.increment();
 
-        final Greeting greeting = greetingRepository.getOne(id);
+        final Optional<Greeting> result = greetingRepository.findById(id);
 
         logger.info("< findOne {}", id);
-        return greeting;
+        return result.get();
     }
 
     @CachePut(value = Application.CACHE_GREETINGS,

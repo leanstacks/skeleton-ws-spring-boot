@@ -1,5 +1,7 @@
 package com.leanstacks.ws.web.api;
 
+import java.util.NoSuchElementException;
+
 import javax.persistence.NoResultException;
 
 import org.slf4j.Logger;
@@ -37,6 +39,24 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         final ExceptionDetail detail = new ExceptionDetailBuilder().exception(ex).httpStatus(HttpStatus.NOT_FOUND)
                 .webRequest(request).build();
         logger.info("< handleNoResultException");
+        return handleExceptionInternal(ex, detail, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    /**
+     * Handles JPA NoSuchElementException thrown when an empty Optional is accessed. Creates a response with an empty
+     * body and HTTP status code 404, not found.
+     * 
+     * @param ex A NoSuchElementException instance.
+     * @return A ResponseEntity with an empty response body and HTTP status code 404.
+     */
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> handleNoSuchElementException(final NoSuchElementException ex,
+            final WebRequest request) {
+        logger.info("> handleNoSuchElementException");
+        logger.info("- NoSuchElementException: ", ex);
+        final ExceptionDetail detail = new ExceptionDetailBuilder().exception(ex).httpStatus(HttpStatus.NOT_FOUND)
+                .webRequest(request).build();
+        logger.info("< handleNoSuchElementException");
         return handleExceptionInternal(ex, detail, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
