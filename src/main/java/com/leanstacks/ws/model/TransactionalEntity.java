@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -39,7 +40,7 @@ public class TransactionalEntity implements Serializable {
             readOnly = true,
             example = "1")
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     /**
