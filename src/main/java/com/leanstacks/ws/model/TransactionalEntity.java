@@ -40,7 +40,7 @@ public class TransactionalEntity implements Serializable {
             readOnly = true,
             example = "1")
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
