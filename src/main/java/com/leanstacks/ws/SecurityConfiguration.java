@@ -1,11 +1,11 @@
 package com.leanstacks.ws;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,8 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 import com.leanstacks.ws.security.AccountAuthenticationProvider;
+import com.leanstacks.ws.security.RestBasicAuthenticationEntryPoint;
 
 /**
  * The SecurityConfiguration class provides a centralized location for application security configuration. This class
@@ -76,13 +78,26 @@ public class SecurityConfiguration {
               .authorizeRequests()
                 .anyRequest().hasRole("USER")
             .and()
-            .httpBasic()
+            .httpBasic().authenticationEntryPoint(authenticationEntryPoint())
             .and()
             .sessionManagement()
               .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             
             // @formatter:on
 
+        }
+
+        /**
+         * Create a RestBasicAuthenticationEntryPoint bean. Overrides the default BasicAuthenticationEntryPoint behavior
+         * to support Basic Authentication for REST API interaction.
+         * 
+         * @return An AuthenticationEntryPoint instance.
+         */
+        @Bean
+        public AuthenticationEntryPoint authenticationEntryPoint() {
+            final RestBasicAuthenticationEntryPoint entryPoint = new RestBasicAuthenticationEntryPoint();
+            entryPoint.setRealmName("api realm");
+            return entryPoint;
         }
 
     }
@@ -104,20 +119,33 @@ public class SecurityConfiguration {
             
             http
             .csrf().disable()
-            .antMatcher("/actuators/**")
+            .requestMatcher(EndpointRequest.toAnyEndpoint())
               .authorizeRequests()
                 // Permit access to health check
-                .antMatchers(HttpMethod.GET, "/actuators/health").permitAll()
+                .requestMatchers(EndpointRequest.to("health")).permitAll()
                 // Require authorization for everthing else
                 .anyRequest().hasRole("SYSADMIN")
             .and()
-            .httpBasic()
+            .httpBasic().authenticationEntryPoint(authenticationEntryPoint())
             .and()
             .sessionManagement()
               .sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
             
             // @formatter:on
 
+        }
+
+        /**
+         * Create a RestBasicAuthenticationEntryPoint bean. Overrides the default BasicAuthenticationEntryPoint behavior
+         * to support Basic Authentication for REST API interaction.
+         * 
+         * @return An AuthenticationEntryPoint instance.
+         */
+        @Bean
+        public AuthenticationEntryPoint authenticationEntryPoint() {
+            final RestBasicAuthenticationEntryPoint entryPoint = new RestBasicAuthenticationEntryPoint();
+            entryPoint.setRealmName("actuator realm");
+            return entryPoint;
         }
 
     }
@@ -130,6 +158,7 @@ public class SecurityConfiguration {
      */
     @Profile("docs")
     @Configuration
+    @Order(3)
     public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Override

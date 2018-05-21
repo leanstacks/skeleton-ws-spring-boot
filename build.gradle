@@ -1,6 +1,7 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '1.5.10.RELEASE'
+  id 'org.springframework.boot' version '2.0.2.RELEASE'
+  id 'io.spring.dependency-management' version '1.0.5.RELEASE'
   id 'eclipse'
   id 'jacoco'
   id 'checkstyle'
@@ -14,12 +15,12 @@ ext {
   checkstyleVersion = '7.8.2'
   pmdVersion = '5.8.1'
   guavaVersion = '20.0'
-  jadiraVersion = '5.0.0.GA'
+  jadiraVersion = '7.0.0.CR1'
   swaggerVersion = '2.7.0'
 }
 
 group = 'com.leanstacks'
-version = '1.7.8'
+version = '2.0.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -38,7 +39,7 @@ dependencies {
   compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda'
   compile group: 'com.google.guava', name: 'guava', version: guavaVersion
   compile group: 'com.github.ben-manes.caffeine', name: 'caffeine'
-  compile group: 'org.jadira.usertype', name: 'usertype.extended', version: jadiraVersion
+  compile group: 'org.jadira.usertype', name: 'usertype.core', version: jadiraVersion
   compile group: 'org.liquibase', name: 'liquibase-core'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion
@@ -53,7 +54,7 @@ dependencies {
 defaultTasks 'clean', 'build'
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '3.5.1'
+  gradleVersion = '4.7'
 }
 
 task encodePassword(type: JavaExec) {
@@ -65,7 +66,6 @@ task encodePassword(type: JavaExec) {
 }
 
 springBoot {
-  executable = true
   buildInfo()
 }
 

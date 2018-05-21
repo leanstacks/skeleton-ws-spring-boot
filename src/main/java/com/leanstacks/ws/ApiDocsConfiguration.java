@@ -27,7 +27,7 @@ public class ApiDocsConfiguration {
     /**
      * The project version.
      */
-    public static final String PROJECT_VERSION = "1.7.8";
+    public static final String PROJECT_VERSION = "2.0.0";
     /**
      * The project contact name.
      */
