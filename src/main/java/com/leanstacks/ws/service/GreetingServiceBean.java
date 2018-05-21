@@ -36,17 +36,17 @@ public class GreetingServiceBean implements GreetingService {
     private static final Logger logger = LoggerFactory.getLogger(GreetingServiceBean.class);
 
     // Metric Counters
-    private Counter findAllMethodInvocationCounter;
-    private Counter findOneMethodInvocationCounter;
-    private Counter createMethodInvocationCounter;
-    private Counter updateMethodInvocationCounter;
-    private Counter deleteMethodInvocationCounter;
-    private Counter evictCacheMethodInvocationCounter;
+    private final transient Counter findAllMethodInvocationCounter;
+    private final transient Counter findOneMethodInvocationCounter;
+    private final transient Counter createMethodInvocationCounter;
+    private final transient Counter updateMethodInvocationCounter;
+    private final transient Counter deleteMethodInvocationCounter;
+    private final transient Counter evictCacheMethodInvocationCounter;
 
     /**
      * The Spring Data repository for Greeting entities.
      */
-    private transient GreetingRepository greetingRepository;
+    private final transient GreetingRepository greetingRepository;
 
     /**
      * Construct a GreetingServiceBean.

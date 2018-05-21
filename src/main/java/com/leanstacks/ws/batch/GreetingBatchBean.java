@@ -33,11 +33,11 @@ public class GreetingBatchBean {
     private static final String MESSAGE_FORMAT = "There are {} greetings in the data store.";
 
     // Metric Counters
-    private transient Counter cronMethodCounter;
-    private transient Counter fixedRateMethodCounter;
-    private transient Counter fixedRateInitialDelayMethodCounter;
-    private transient Counter fixedDelayMethodCounter;
-    private transient Counter fixedDelayInitialDelayMethodCounter;
+    private final transient Counter cronMethodCounter;
+    private final transient Counter fixedRateMethodCounter;
+    private final transient Counter fixedRateInitialDelayMethodCounter;
+    private final transient Counter fixedDelayMethodCounter;
+    private final transient Counter fixedDelayInitialDelayMethodCounter;
 
     /**
      * The GreetingService business service.
