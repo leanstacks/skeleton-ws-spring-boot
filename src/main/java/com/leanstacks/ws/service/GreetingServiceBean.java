@@ -88,7 +88,7 @@ public class GreetingServiceBean implements GreetingService {
         final Optional<Greeting> result = greetingRepository.findById(id);
 
         logger.info("< findOne {}", id);
-        return result.get();
+        return result.isPresent() ? result.get() : null;
     }
 
     @CachePut(value = Application.CACHE_GREETINGS,
