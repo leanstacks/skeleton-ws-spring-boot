@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.10.RELEASE</version>
+    <version>2.0.2.RELEASE</version>
   </parent>
   
   <properties>
@@ -20,7 +20,7 @@
     <java.version>1.8</java.version>
     <guava.version>20.0</guava.version>
     <swagger.version>2.7.0</swagger.version>
-    <jadira.version>5.0.0.GA</jadira.version>
+    <jadira.version>7.0.0.CR1</jadira.version>
   </properties>
   
   <dependencies>
@@ -54,7 +54,7 @@
     <!-- jadira custom Hibernate type mappings -->
     <dependency>
       <groupId>org.jadira.usertype</groupId>
-      <artifactId>usertype.extended</artifactId>
+      <artifactId>usertype.core</artifactId>
       <version>${jadira.version}</version>
     </dependency>
     <dependency>

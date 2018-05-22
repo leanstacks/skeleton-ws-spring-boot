@@ -65,6 +65,10 @@ task encodePassword(type: JavaExec) {
   }
 }
 
+bootJar {
+  launchScript()
+}
+
 springBoot {
   buildInfo()
 }
