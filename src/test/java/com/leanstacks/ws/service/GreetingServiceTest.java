@@ -9,11 +9,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.leanstacks.ws.AbstractTest;
+import com.leanstacks.ws.BasicTransactionalTest;
 import com.leanstacks.ws.model.Greeting;
 
 /**
@@ -22,8 +21,7 @@ import com.leanstacks.ws.model.Greeting;
  * @author Matt Warman
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest
-@Transactional
+@BasicTransactionalTest
 public class GreetingServiceTest extends AbstractTest {
 
     private static final String VALUE_TEXT = "test";

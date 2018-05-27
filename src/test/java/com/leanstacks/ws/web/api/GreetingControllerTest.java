@@ -1,6 +1,6 @@
 package com.leanstacks.ws.web.api;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -12,7 +12,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -24,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import com.leanstacks.ws.AbstractTest;
+import com.leanstacks.ws.RestControllerTest;
 import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.EmailService;
 import com.leanstacks.ws.service.GreetingService;
@@ -41,7 +41,8 @@ import com.leanstacks.ws.service.GreetingService;
  * @author Matt Warman
  */
 @RunWith(SpringRunner.class)
-@WebMvcTest(GreetingController.class)
+@RestControllerTest
+@WithMockUser
 public class GreetingControllerTest extends AbstractTest {
 
     /**
@@ -92,7 +93,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testGetGreetings() throws Exception {
 
         // Create some test data
@@ -119,7 +119,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testGetGreeting() throws Exception {
 
         // Create some test data
@@ -147,7 +146,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testGetGreetingNotFound() throws Exception {
 
         // Create some test data
@@ -175,7 +173,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testCreateGreeting() throws Exception {
 
         // Create some test data
@@ -212,7 +209,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testUpdateGreeting() throws Exception {
 
         // Create some test data
@@ -250,7 +246,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testDeleteGreeting() throws Exception {
 
         // Create some test data
@@ -273,7 +268,6 @@ public class GreetingControllerTest extends AbstractTest {
     }
 
     @Test
-    @WithMockUser
     public void testSendGreetingAsync() throws Exception {
 
         // Create some test data
