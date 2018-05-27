@@ -23,7 +23,10 @@ COPY ./build/libs/*.jar application.jar
 #       This is useful for supplying Spring Profile values or
 #       any environment-specific overrides.
 #
-#       Example: Run the application on port 80 with ONLY the 'dm' profile:
-#       docker container run --detach --publish 80:8080 -e SPRING_PROFILES_ACTIVE=dm leanstacks/greeting-ws:latest
+#       Example: Run the application on port 8080 with default configuration:
+#       docker container run --detach --publish 8080:8080 leanstacks/skeleton-ws-spring-boot:latest
+#
+#       Example: Run the application on port 8080 with specific Spring Profiles:
+#       docker container run --detach --publish 8080:8080 -e SPRING_PROFILES_ACTIVE=hsqldb leanstacks/skeleton-ws-spring-boot:latest
 #
 CMD java $JAVA_OPTS -jar application.jar
