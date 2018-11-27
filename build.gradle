@@ -19,7 +19,7 @@ ext {
 }
 
 group = 'com.leanstacks'
-version = '2.1.0'
+version = '2.2.0'
 sourceCompatibility = 1.8
 
 repositories {
