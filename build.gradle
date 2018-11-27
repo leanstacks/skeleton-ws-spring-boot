@@ -15,7 +15,6 @@ ext {
   jacocoVersion = '0.8.1'
   checkstyleVersion = '8.10'
   pmdVersion = '5.8.1'
-  guavaVersion = '20.0'
   swaggerVersion = '2.7.0'
 }
 
@@ -35,7 +34,6 @@ dependencies {
   
   compile group: 'org.springframework', name: 'spring-context-support'
   
-  compile group: 'com.google.guava', name: 'guava', version: guavaVersion
   compile group: 'com.github.ben-manes.caffeine', name: 'caffeine'
   compile group: 'org.liquibase', name: 'liquibase-core'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
