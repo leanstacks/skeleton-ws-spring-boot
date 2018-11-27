@@ -78,7 +78,7 @@ public class SecurityConfiguration {
               .authorizeRequests()
                 .anyRequest().hasRole("USER")
             .and()
-            .httpBasic().authenticationEntryPoint(authenticationEntryPoint())
+            .httpBasic().authenticationEntryPoint(apiAuthenticationEntryPoint())
             .and()
             .sessionManagement()
               .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -94,7 +94,7 @@ public class SecurityConfiguration {
          * @return An AuthenticationEntryPoint instance.
          */
         @Bean
-        public AuthenticationEntryPoint authenticationEntryPoint() {
+        public AuthenticationEntryPoint apiAuthenticationEntryPoint() {
             final RestBasicAuthenticationEntryPoint entryPoint = new RestBasicAuthenticationEntryPoint();
             entryPoint.setRealmName("api realm");
             return entryPoint;
@@ -126,7 +126,7 @@ public class SecurityConfiguration {
                 // Require authorization for everthing else
                 .anyRequest().hasRole("SYSADMIN")
             .and()
-            .httpBasic().authenticationEntryPoint(authenticationEntryPoint())
+            .httpBasic().authenticationEntryPoint(actuatorAuthenticationEntryPoint())
             .and()
             .sessionManagement()
               .sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
@@ -142,7 +142,7 @@ public class SecurityConfiguration {
          * @return An AuthenticationEntryPoint instance.
          */
         @Bean
-        public AuthenticationEntryPoint authenticationEntryPoint() {
+        public AuthenticationEntryPoint actuatorAuthenticationEntryPoint() {
             final RestBasicAuthenticationEntryPoint entryPoint = new RestBasicAuthenticationEntryPoint();
             entryPoint.setRealmName("actuator realm");
             return entryPoint;
