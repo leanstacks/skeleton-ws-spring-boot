@@ -1,14 +1,15 @@
 plugins {
-  id 'java'
-  id 'org.springframework.boot' version '2.0.2.RELEASE'
-  id 'io.spring.dependency-management' version '1.0.5.RELEASE'
-  id 'eclipse'
-  id 'jacoco'
-  id 'checkstyle'
-  id 'pmd'
-  id 'project-report'
-  id 'build-dashboard'
+  id 'org.springframework.boot' version '2.1.0.RELEASE'
 }
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'project-report'
+apply plugin: 'build-dashboard'
 
 ext {
   jacocoVersion = '0.8.1'
