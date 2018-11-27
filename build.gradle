@@ -16,7 +16,6 @@ ext {
   checkstyleVersion = '8.10'
   pmdVersion = '5.8.1'
   guavaVersion = '20.0'
-  jadiraVersion = '7.0.0.CR1'
   swaggerVersion = '2.7.0'
 }
 
@@ -36,11 +35,8 @@ dependencies {
   
   compile group: 'org.springframework', name: 'spring-context-support'
   
-  compile group: 'joda-time', name: 'joda-time'
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda'
   compile group: 'com.google.guava', name: 'guava', version: guavaVersion
   compile group: 'com.github.ben-manes.caffeine', name: 'caffeine'
-  compile group: 'org.jadira.usertype', name: 'usertype.core', version: jadiraVersion
   compile group: 'org.liquibase', name: 'liquibase-core'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion

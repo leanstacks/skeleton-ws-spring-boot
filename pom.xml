@@ -20,7 +20,6 @@
     <java.version>1.8</java.version>
     <guava.version>20.0</guava.version>
     <swagger.version>2.7.0</swagger.version>
-    <jadira.version>7.0.0.CR1</jadira.version>
   </properties>
   
   <dependencies>
@@ -51,12 +50,6 @@
       <artifactId>mysql-connector-java</artifactId>
       <scope>runtime</scope>
     </dependency>
-    <!-- jadira custom Hibernate type mappings -->
-    <dependency>
-      <groupId>org.jadira.usertype</groupId>
-      <artifactId>usertype.core</artifactId>
-      <version>${jadira.version}</version>
-    </dependency>
     <dependency>
       <groupId>org.liquibase</groupId>
       <artifactId>liquibase-core</artifactId>
@@ -73,14 +66,6 @@
     </dependency>
     
     <!-- Dependencies for Miscellaneous Functionality -->
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-joda</artifactId>
-    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
