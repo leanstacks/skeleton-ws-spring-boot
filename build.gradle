@@ -1,26 +1,25 @@
 plugins {
-  id 'java'
-  id 'org.springframework.boot' version '2.0.2.RELEASE'
-  id 'io.spring.dependency-management' version '1.0.5.RELEASE'
-  id 'eclipse'
-  id 'jacoco'
-  id 'checkstyle'
-  id 'pmd'
-  id 'project-report'
-  id 'build-dashboard'
+  id 'org.springframework.boot' version '2.1.0.RELEASE'
 }
+
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
+apply plugin: 'pmd'
+apply plugin: 'project-report'
+apply plugin: 'build-dashboard'
 
 ext {
   jacocoVersion = '0.8.1'
   checkstyleVersion = '8.10'
   pmdVersion = '5.8.1'
-  guavaVersion = '20.0'
-  jadiraVersion = '7.0.0.CR1'
   swaggerVersion = '2.7.0'
 }
 
 group = 'com.leanstacks'
-version = '2.0.0'
+version = '2.1.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -35,11 +34,7 @@ dependencies {
   
   compile group: 'org.springframework', name: 'spring-context-support'
   
-  compile group: 'joda-time', name: 'joda-time'
-  compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda'
-  compile group: 'com.google.guava', name: 'guava', version: guavaVersion
   compile group: 'com.github.ben-manes.caffeine', name: 'caffeine'
-  compile group: 'org.jadira.usertype', name: 'usertype.core', version: jadiraVersion
   compile group: 'org.liquibase', name: 'liquibase-core'
   compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
   compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion

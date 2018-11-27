@@ -1,6 +1,7 @@
 package com.leanstacks.ws.model;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.UUID;
 
 import javax.persistence.GeneratedValue;
@@ -11,8 +12,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-
-import org.joda.time.DateTime;
 
 import com.leanstacks.ws.util.RequestContext;
 
@@ -85,7 +84,7 @@ public class TransactionalEntity implements Serializable {
             readOnly = true,
             example = "1499418339522")
     @NotNull
-    private DateTime createdAt;
+    private Instant createdAt;
 
     /**
      * A reference to the entity or process which most recently updated this entity instance.
@@ -105,7 +104,7 @@ public class TransactionalEntity implements Serializable {
             position = Integer.MAX_VALUE - 100,
             readOnly = true,
             example = "1499418343681")
-    private DateTime updatedAt;
+    private Instant updatedAt;
 
     public Long getId() {
         return id;
@@ -139,11 +138,11 @@ public class TransactionalEntity implements Serializable {
         this.createdBy = createdBy;
     }
 
-    public DateTime getCreatedAt() {
+    public Instant getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final DateTime createdAt) {
+    public void setCreatedAt(final Instant createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -155,11 +154,11 @@ public class TransactionalEntity implements Serializable {
         this.updatedBy = updatedBy;
     }
 
-    public DateTime getUpdatedAt() {
+    public Instant getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(final DateTime updatedAt) {
+    public void setUpdatedAt(final Instant updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -178,7 +177,7 @@ public class TransactionalEntity implements Serializable {
         }
         setCreatedBy(username);
 
-        setCreatedAt(new DateTime());
+        setCreatedAt(Instant.now());
     }
 
     /**
@@ -196,7 +195,7 @@ public class TransactionalEntity implements Serializable {
         }
         setUpdatedBy(username);
 
-        setUpdatedAt(new DateTime());
+        setUpdatedAt(Instant.now());
     }
 
     /**

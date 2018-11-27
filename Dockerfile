@@ -1,5 +1,5 @@
 # From the OpenJDK image
-FROM openjdk:8u151-jre-alpine3.7
+FROM openjdk:8u181-jre-slim-stretch
 
 # Java Options
 ENV JAVA_OPTS="-server -Xms1024m -Xmx1024m -XX:+UseParallelGC -verbose:gc"
