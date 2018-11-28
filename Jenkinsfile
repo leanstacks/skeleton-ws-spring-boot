@@ -18,7 +18,7 @@ node {
         echo 'Building Docker Image...'
         def IMAGE_NAME = 'leanstacks/skeleton-ws-spring-boot'
         def image = docker.build("${IMAGE_NAME}:latest")
-        docker.withRegistry('', 'dockerhub') {
+        docker.withRegistry('', 'docker-hub-leanstacks') {
         	image.push()
         }
         sh "docker image rm ${IMAGE_NAME}:latest"
