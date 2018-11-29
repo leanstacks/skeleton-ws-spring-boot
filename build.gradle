@@ -12,15 +12,14 @@ apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
 
 ext {
-  jacocoVersion = '0.8.1'
-  checkstyleVersion = '8.10'
-  pmdVersion = '5.8.1'
+  jacocoVersion = '0.8.2'
+  checkstyleVersion = '8.14'
+  pmdVersion = '6.9.0'
   swaggerVersion = '2.7.0'
 }
 
 group = 'com.leanstacks'
 version = '2.2.0'
-sourceCompatibility = 1.8
 
 repositories {
   jcenter()
@@ -49,7 +48,7 @@ dependencies {
 defaultTasks 'clean', 'build'
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '4.7'
+  gradleVersion = '4.10.2'
 }
 
 task encodePassword(type: JavaExec) {
