@@ -20,6 +20,8 @@ ext {
 
 group = 'com.leanstacks'
 version = '2.2.0'
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
   jcenter()
