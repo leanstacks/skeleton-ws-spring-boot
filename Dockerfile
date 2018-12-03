@@ -2,7 +2,7 @@
 FROM openjdk:11.0.1-jre-slim
 
 # Java Options
-ENV JAVA_OPTS="-server -Xms1024m -Xmx1024m -XX:+UseParallelGC -verbose:gc"
+ENV JAVA_OPTS="-server -Xmn384m -Xms1024m -Xmx1024m -XX:+UseParallelGC -verbose:gc"
 
 # Listens to port 8080 for HTTP connections
 EXPOSE 8080
