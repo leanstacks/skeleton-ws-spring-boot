@@ -122,7 +122,7 @@ public class GreetingControllerTest extends AbstractTest {
     public void testGetGreeting() throws Exception {
 
         // Create some test data
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
         final Greeting entity = getEntityStubData();
 
         // Stub the GreetingService.findOne method return value
@@ -214,7 +214,7 @@ public class GreetingControllerTest extends AbstractTest {
         // Create some test data
         final Greeting entity = getEntityStubData();
         entity.setText(entity.getText() + " test");
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
 
         // Stub the GreetingService.update method return value
         when(greetingService.update(any(Greeting.class))).thenReturn(entity);
@@ -249,7 +249,7 @@ public class GreetingControllerTest extends AbstractTest {
     public void testDeleteGreeting() throws Exception {
 
         // Create some test data
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
 
         // Perform the behavior being tested
         final MvcResult result = mvc.perform(MockMvcRequestBuilders.delete(RESOURCE_ITEM_URI, id)).andReturn();
@@ -271,7 +271,7 @@ public class GreetingControllerTest extends AbstractTest {
     public void testSendGreetingAsync() throws Exception {
 
         // Create some test data
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
         final Greeting entity = getEntityStubData();
 
         // Stub the GreetingService.findOne method return value

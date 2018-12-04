@@ -52,7 +52,7 @@ public class GreetingServiceTest extends AbstractTest {
     @Test
     public void testGetGreeting() {
 
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
 
         final Greeting greeting = greetingService.findOne(id);
 
@@ -113,7 +113,7 @@ public class GreetingServiceTest extends AbstractTest {
     @Test
     public void testUpdateGreeting() {
 
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
 
         final Greeting greeting = greetingService.findOne(id);
 
@@ -152,7 +152,7 @@ public class GreetingServiceTest extends AbstractTest {
     @Test
     public void testDeleteGreeting() {
 
-        final Long id = new Long(1);
+        final Long id = Long.valueOf(1);
 
         final Greeting greeting = greetingService.findOne(id);
 
