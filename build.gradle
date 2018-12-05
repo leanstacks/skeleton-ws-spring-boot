@@ -19,7 +19,7 @@ ext {
 }
 
 group = 'com.leanstacks'
-version = '2.2.0'
+version = '2.3.0'
 sourceCompatibility = 11
 targetCompatibility = 11
 
