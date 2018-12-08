@@ -30,19 +30,36 @@ public class GreetingBatchBean {
      */
     private static final Logger logger = LoggerFactory.getLogger(GreetingBatchBean.class);
 
+    /**
+     * Format for printed messages.
+     */
     private static final String MESSAGE_FORMAT = "There are {} greetings in the data store.";
 
-    // Metric Counters
+    /**
+     * Metric Counter for cron method invocations.
+     */
     private final transient Counter cronMethodCounter;
+    /**
+     * Metric Counter for fixed rate method invocations.
+     */
     private final transient Counter fixedRateMethodCounter;
+    /**
+     * Metric Counter for fixed rate initial delay method invocations.
+     */
     private final transient Counter fixedRateInitialDelayMethodCounter;
+    /**
+     * Metric Counter for fixed delay method invocations.
+     */
     private final transient Counter fixedDelayMethodCounter;
+    /**
+     * Metric Counter for fixed delay initial delay method invocations.
+     */
     private final transient Counter fixedDelayInitialDelayMethodCounter;
 
     /**
      * The GreetingService business service.
      */
-    private transient GreetingService greetingService;
+    private final transient GreetingService greetingService;
 
     /**
      * Construct a GreetingBatchBean with supplied dependencies.

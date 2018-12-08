@@ -24,8 +24,14 @@ import com.leanstacks.ws.model.Greeting;
 @BasicTransactionalTest
 public class GreetingServiceTest extends AbstractTest {
 
+    /**
+     * Constant 'test'.
+     */
     private static final String VALUE_TEXT = "test";
 
+    /**
+     * The GreetingService business service.
+     */
     @Autowired
     private transient GreetingService greetingService;
 
@@ -39,6 +45,9 @@ public class GreetingServiceTest extends AbstractTest {
         // perform test clean up
     }
 
+    /**
+     * Test fetch a collection of Greetings.
+     */
     @Test
     public void testGetGreetings() {
 
@@ -49,6 +58,9 @@ public class GreetingServiceTest extends AbstractTest {
 
     }
 
+    /**
+     * Test fetch a single Greeting.
+     */
     @Test
     public void testGetGreeting() {
 
@@ -61,6 +73,9 @@ public class GreetingServiceTest extends AbstractTest {
 
     }
 
+    /**
+     * Test fetch a single greeting with invalid identifier.
+     */
     @Test
     public void testGetGreetingNotFound() {
 
@@ -72,6 +87,9 @@ public class GreetingServiceTest extends AbstractTest {
 
     }
 
+    /**
+     * Test create a Greeting.
+     */
     @Test
     public void testCreateGreeting() {
 
@@ -90,10 +108,11 @@ public class GreetingServiceTest extends AbstractTest {
 
     }
 
+    /**
+     * Test create a Greeting with invalid data.
+     */
     @Test
     public void testCreateGreetingWithId() {
-
-        Exception exception = null;
 
         final Greeting greeting = new Greeting();
         greeting.setId(Long.MAX_VALUE);
@@ -101,15 +120,16 @@ public class GreetingServiceTest extends AbstractTest {
 
         try {
             greetingService.create(greeting);
+            Assert.fail("failure - expected exception");
         } catch (EntityExistsException eee) {
-            exception = eee;
+            Assert.assertNotNull("failure - expected exception not null", eee);
         }
-
-        Assert.assertNotNull("failure - expected exception", exception);
-        Assert.assertTrue("failure - expected EntityExistsException", exception instanceof EntityExistsException);
 
     }
 
+    /**
+     * Test update a Greeting.
+     */
     @Test
     public void testUpdateGreeting() {
 
@@ -129,10 +149,11 @@ public class GreetingServiceTest extends AbstractTest {
 
     }
 
+    /**
+     * Test update a Greeting which does not exist.
+     */
     @Test
     public void testUpdateGreetingNotFound() {
-
-        Exception exception = null;
 
         final Greeting greeting = new Greeting();
         greeting.setId(Long.MAX_VALUE);
@@ -140,15 +161,16 @@ public class GreetingServiceTest extends AbstractTest {
 
         try {
             greetingService.update(greeting);
+            Assert.fail("failure - expected exception");
         } catch (NoResultException nre) {
-            exception = nre;
+            Assert.assertNotNull("failure - expected exception not null", nre);
         }
-
-        Assert.assertNotNull("failure - expected exception", exception);
-        Assert.assertTrue("failure - expected NoResultException", exception instanceof NoResultException);
 
     }
 
+    /**
+     * Test delete a Greeting.
+     */
     @Test
     public void testDeleteGreeting() {
 

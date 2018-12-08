@@ -92,6 +92,11 @@ public class GreetingControllerTest extends AbstractTest {
         // perform test clean up
     }
 
+    /**
+     * Test fetch collection of Greetings.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testGetGreetings() throws Exception {
 
@@ -118,6 +123,11 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test fetch a Greeting by identifier.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testGetGreeting() throws Exception {
 
@@ -145,6 +155,11 @@ public class GreetingControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
     }
 
+    /**
+     * Test fetch a Greeting with unknown identifier.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testGetGreetingNotFound() throws Exception {
 
@@ -172,6 +187,11 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test create a Greeting.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testCreateGreeting() throws Exception {
 
@@ -208,6 +228,11 @@ public class GreetingControllerTest extends AbstractTest {
         Assert.assertEquals("failure - expected text attribute match", entity.getText(), createdEntity.getText());
     }
 
+    /**
+     * Test update a Greeting.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testUpdateGreeting() throws Exception {
 
@@ -245,6 +270,11 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test delete a Greeting.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testDeleteGreeting() throws Exception {
 
@@ -267,6 +297,11 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test sending email asynchronously.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testSendGreetingAsync() throws Exception {
 

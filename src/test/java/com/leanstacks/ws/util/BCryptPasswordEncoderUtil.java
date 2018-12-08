@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
@@ -23,11 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *
  */
 public class BCryptPasswordEncoderUtil {
-
-    /**
-     * The Logger for this Class.
-     */
-    private static final Logger logger = LoggerFactory.getLogger(BCryptPasswordEncoderUtil.class);
 
     /**
      * The format for encoder messages.
@@ -54,8 +47,9 @@ public class BCryptPasswordEncoderUtil {
      * Facilitates gathering user input and invoking the class behavior.
      * 
      * @param args An array of command line input values. (not used)
+     * @throws IOException Thrown if performing IO operations fails.
      */
-    public static void main(final String... args) {
+    public static void main(final String... args) throws IOException {
 
         final BCryptPasswordEncoderUtil encoderUtil = new BCryptPasswordEncoderUtil();
 
@@ -73,32 +67,28 @@ public class BCryptPasswordEncoderUtil {
      * Writes a message to the console.
      * 
      * @param str A String message value.
+     * @throws IOException Thrown if writing output fails.
      */
-    private void write(final String str) {
+    private void write(final String str) throws IOException {
 
-        try {
-            if (writer == null) {
-                writer = new OutputStreamWriter(System.out);
-            }
-            writer.write(str);
-        } catch (IOException ioe) {
-            logger.error("Writer cannot write.", ioe);
-            System.exit(1);
+        if (writer == null) {
+            writer = new OutputStreamWriter(System.out);
         }
+        writer.write(str);
+
     }
 
     /**
      * Closes all system resources and prepares for application termination.
+     * 
+     * @throws IOException Thrown if closing the output stream fails.
      */
-    private void close() {
-        try {
-            if (writer != null) {
-                writer.close();
-            }
-        } catch (IOException ioe) {
-            logger.error("Problem closing resources.", ioe);
-            System.exit(1);
+    private void close() throws IOException {
+
+        if (writer != null) {
+            writer.close();
         }
+
     }
 
 }

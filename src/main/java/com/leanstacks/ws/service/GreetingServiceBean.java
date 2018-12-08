@@ -35,12 +35,29 @@ public class GreetingServiceBean implements GreetingService {
      */
     private static final Logger logger = LoggerFactory.getLogger(GreetingServiceBean.class);
 
-    // Metric Counters
+    /**
+     * Metric Counter for findAll method invocations.
+     */
     private final transient Counter findAllMethodInvocationCounter;
+    /**
+     * Metric Counter for findOne method invocations.
+     */
     private final transient Counter findOneMethodInvocationCounter;
+    /**
+     * Metric Counter for create method invocations.
+     */
     private final transient Counter createMethodInvocationCounter;
+    /**
+     * Metric Counter for update method invocations.
+     */
     private final transient Counter updateMethodInvocationCounter;
+    /**
+     * Metric Counter for delete method invocations.
+     */
     private final transient Counter deleteMethodInvocationCounter;
+    /**
+     * Metric Counter for evictCache method invocations.
+     */
     private final transient Counter evictCacheMethodInvocationCounter;
 
     /**
