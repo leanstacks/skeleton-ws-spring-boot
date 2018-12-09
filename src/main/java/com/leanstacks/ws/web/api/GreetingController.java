@@ -4,17 +4,21 @@ import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import javax.persistence.NoResultException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leanstacks.ws.model.Greeting;
@@ -33,6 +37,7 @@ import io.swagger.annotations.ApiParam;
  * @author Matt Warman
  */
 @RestController
+@RequestMapping("/api/greetings")
 public class GreetingController {
 
     /**
@@ -67,16 +72,14 @@ public class GreetingController {
             required = true,
             dataType = "string",
             paramType = "header"))
-    @RequestMapping(value = "/api/greetings",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Greeting>> getGreetings() {
+    @GetMapping
+    public Collection<Greeting> getGreetings() {
         logger.info("> getGreetings");
 
         final Collection<Greeting> greetings = greetingService.findAll();
 
         logger.info("< getGreetings");
-        return new ResponseEntity<Collection<Greeting>>(greetings, HttpStatus.OK);
+        return greetings;
     }
 
     /**
@@ -100,20 +103,18 @@ public class GreetingController {
             required = true,
             dataType = "string",
             paramType = "header"))
-    @RequestMapping(value = "/api/greetings/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> getGreeting(@ApiParam("Greeting ID") @PathVariable final Long id) {
+    @GetMapping("/{id}")
+    public Greeting getGreeting(@ApiParam("Greeting ID") @PathVariable final Long id) {
         logger.info("> getGreeting");
 
         final Greeting greeting = greetingService.findOne(id);
         if (greeting == null) {
             logger.info("< getGreeting");
-            return new ResponseEntity<Greeting>(HttpStatus.NOT_FOUND);
+            throw new NoResultException("Greeting not found.");
         }
 
         logger.info("< getGreeting");
-        return new ResponseEntity<Greeting>(greeting, HttpStatus.OK);
+        return greeting;
     }
 
     /**
@@ -139,17 +140,15 @@ public class GreetingController {
             required = true,
             dataType = "string",
             paramType = "header"))
-    @RequestMapping(value = "/api/greetings",
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> createGreeting(@RequestBody final Greeting greeting) {
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Greeting createGreeting(@RequestBody final Greeting greeting) {
         logger.info("> createGreeting");
 
         final Greeting savedGreeting = greetingService.create(greeting);
 
         logger.info("< createGreeting");
-        return new ResponseEntity<Greeting>(savedGreeting, HttpStatus.CREATED);
+        return savedGreeting;
     }
 
     /**
@@ -175,11 +174,8 @@ public class GreetingController {
             required = true,
             dataType = "string",
             paramType = "header"))
-    @RequestMapping(value = "/api/greetings/{id}",
-            method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> updateGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
+    @PutMapping("/{id}")
+    public Greeting updateGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
             @RequestBody final Greeting greeting) {
         logger.info("> updateGreeting");
 
@@ -188,7 +184,7 @@ public class GreetingController {
         final Greeting updatedGreeting = greetingService.update(greeting);
 
         logger.info("< updateGreeting");
-        return new ResponseEntity<Greeting>(updatedGreeting, HttpStatus.OK);
+        return updatedGreeting;
     }
 
     /**
@@ -202,7 +198,6 @@ public class GreetingController {
      * </p>
      * 
      * @param id A Long URL path variable containing the Greeting primary key identifier.
-     * @return A ResponseEntity with an empty response body and a HTTP status code as described in the method comment.
      */
     @ApiOperation(value = "${GreetingController.deleteGreeting.title}",
             notes = "${GreetingController.deleteGreeting.notes}",
@@ -212,15 +207,14 @@ public class GreetingController {
             required = true,
             dataType = "string",
             paramType = "header"))
-    @RequestMapping(value = "/api/greetings/{id}",
-            method = RequestMethod.DELETE)
-    public ResponseEntity<Void> deleteGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id) {
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id) {
         logger.info("> deleteGreeting");
 
         greetingService.delete(id);
 
         logger.info("< deleteGreeting");
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -246,10 +240,8 @@ public class GreetingController {
             required = true,
             dataType = "string",
             paramType = "header"))
-    @RequestMapping(value = "/api/greetings/{id}/send",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Greeting> sendGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
+    @PostMapping("/{id}/send")
+    public Greeting sendGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
             @ApiParam("Wait for Response") @RequestParam(value = "wait",
                     defaultValue = "false") final boolean waitForAsyncResult) {
 
@@ -261,7 +253,7 @@ public class GreetingController {
             greeting = greetingService.findOne(id);
             if (greeting == null) {
                 logger.info("< sendGreeting");
-                return new ResponseEntity<Greeting>(HttpStatus.NOT_FOUND);
+                throw new NoResultException("Greeting not found.");
             }
 
             if (waitForAsyncResult) {
@@ -273,11 +265,11 @@ public class GreetingController {
             }
         } catch (ExecutionException | InterruptedException ex) {
             logger.error("A problem occurred sending the Greeting.", ex);
-            return new ResponseEntity<Greeting>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new IllegalStateException(ex);
         }
 
         logger.info("< sendGreeting");
-        return new ResponseEntity<Greeting>(greeting, HttpStatus.OK);
+        return greeting;
 
     }
 

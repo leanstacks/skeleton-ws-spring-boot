@@ -183,7 +183,7 @@ public class GreetingControllerTest extends AbstractTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 404", 404, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
     }
 
