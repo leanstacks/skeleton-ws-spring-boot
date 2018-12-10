@@ -1,6 +1,7 @@
 package com.leanstacks.ws.service;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import com.leanstacks.ws.model.Greeting;
 
@@ -19,17 +20,17 @@ public interface GreetingService {
     /**
      * Find all Greeting entities.
      * 
-     * @return A Collection of Greeting objects.
+     * @return A List of Greeting objects.
      */
-    Collection<Greeting> findAll();
+    List<Greeting> findAll();
 
     /**
-     * Find a single Greeting entity by primary key identifier.
+     * Find a single Greeting entity by primary key identifier. Returns an Optional wrapped Greeting.
      * 
-     * @param id A BigInteger primary key identifier.
-     * @return A Greeting or <code>null</code> if none found.
+     * @param id A Long primary key identifier.
+     * @return A Optional Greeting
      */
-    Greeting findOne(Long id);
+    Optional<Greeting> findOne(Long id);
 
     /**
      * Persists a Greeting entity in the data store.
@@ -50,7 +51,7 @@ public interface GreetingService {
     /**
      * Removes a previously persisted Greeting entity from the data store.
      * 
-     * @param id A BigInteger primary key identifier.
+     * @param id A Long primary key identifier.
      */
     void delete(Long id);
 

@@ -1,9 +1,9 @@
 package com.leanstacks.ws.service;
 
 import java.util.Collection;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.NoResultException;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -66,7 +66,7 @@ public class GreetingServiceTest extends AbstractTest {
 
         final Long id = Long.valueOf(1);
 
-        final Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id).get();
 
         Assert.assertNotNull("failure - expected not null", greeting);
         Assert.assertEquals("failure - expected greeting.id match", id, greeting.getId());
@@ -81,9 +81,9 @@ public class GreetingServiceTest extends AbstractTest {
 
         final Long id = Long.MAX_VALUE;
 
-        final Greeting greeting = greetingService.findOne(id);
+        final Optional<Greeting> greetingOptional = greetingService.findOne(id);
 
-        Assert.assertNull("failure - expected null", greeting);
+        Assert.assertTrue("failure - expected null", greetingOptional.isEmpty());
 
     }
 
@@ -102,7 +102,7 @@ public class GreetingServiceTest extends AbstractTest {
         Assert.assertNotNull("failure - expected greeting.id not null", createdGreeting.getId());
         Assert.assertEquals("failure - expected greeting.text match", VALUE_TEXT, createdGreeting.getText());
 
-        final Collection<Greeting> greetings = greetingService.findAll();
+        final List<Greeting> greetings = greetingService.findAll();
 
         Assert.assertEquals("failure - expected 3 greetings", 3, greetings.size());
 
@@ -121,8 +121,8 @@ public class GreetingServiceTest extends AbstractTest {
         try {
             greetingService.create(greeting);
             Assert.fail("failure - expected exception");
-        } catch (EntityExistsException eee) {
-            Assert.assertNotNull("failure - expected exception not null", eee);
+        } catch (IllegalArgumentException ex) {
+            Assert.assertNotNull("failure - expected exception not null", ex);
         }
 
     }
@@ -135,7 +135,7 @@ public class GreetingServiceTest extends AbstractTest {
 
         final Long id = Long.valueOf(1);
 
-        final Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id).get();
 
         Assert.assertNotNull("failure - expected greeting not null", greeting);
 
@@ -162,8 +162,8 @@ public class GreetingServiceTest extends AbstractTest {
         try {
             greetingService.update(greeting);
             Assert.fail("failure - expected exception");
-        } catch (NoResultException nre) {
-            Assert.assertNotNull("failure - expected exception not null", nre);
+        } catch (NoSuchElementException ex) {
+            Assert.assertNotNull("failure - expected exception not null", ex);
         }
 
     }
@@ -176,19 +176,19 @@ public class GreetingServiceTest extends AbstractTest {
 
         final Long id = Long.valueOf(1);
 
-        final Greeting greeting = greetingService.findOne(id);
+        final Greeting greeting = greetingService.findOne(id).get();
 
         Assert.assertNotNull("failure - expected greeting not null", greeting);
 
         greetingService.delete(id);
 
-        final Collection<Greeting> greetings = greetingService.findAll();
+        final List<Greeting> greetings = greetingService.findAll();
 
         Assert.assertEquals("failure - expected 1 greeting", 1, greetings.size());
 
-        final Greeting deletedGreeting = greetingService.findOne(id);
+        final Optional<Greeting> deletedGreetingOptional = greetingService.findOne(id);
 
-        Assert.assertNull("failure - expected greeting to be deleted", deletedGreeting);
+        Assert.assertTrue("failure - expected greeting to be deleted", deletedGreetingOptional.isEmpty());
 
     }
 
