@@ -1,5 +1,7 @@
 package com.leanstacks.ws.service;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,13 @@ public class AccountServiceBean implements AccountService {
     private transient AccountRepository accountRepository;
 
     @Override
-    public Account findByUsername(final String username) {
+    public Optional<Account> findByUsername(final String username) {
         logger.info("> findByUsername");
 
-        final Account account = accountRepository.findByUsername(username);
+        final Optional<Account> accountOptional = accountRepository.findByUsername(username);
 
         logger.info("< findByUsername");
-        return account;
+        return accountOptional;
     }
 
 }
