@@ -1,8 +1,8 @@
 package com.leanstacks.ws.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +43,9 @@ public class AccountUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         logger.info("> loadUserByUsername {}", username);
 
-        final Account account = accountService.findByUsername(username);
-        if (account == null) {
-            // Not found...
-            throw new UsernameNotFoundException("Invalid credentials.");
-        }
+        final Optional<Account> accountOptional = accountService.findByUsername(username);
+        final Account account = accountOptional
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid credentials."));
 
         final Set<Role> roles = account.getRoles();
         if (roles == null || roles.isEmpty()) {
@@ -55,13 +53,11 @@ public class AccountUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Invalid credentials.");
         }
 
-        final Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        for (final Role role : roles) {
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getCode()));
-        }
+        final Set<GrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getCode()))
+                .collect(Collectors.toSet());
 
         final User userDetails = new User(account.getUsername(), account.getPassword(), account.isEnabled(),
-                !account.isExpired(), !account.isCredentialsexpired(), !account.isLocked(), grantedAuthorities);
+                !account.isExpired(), !account.isCredentialsexpired(), !account.isLocked(), authorities);
 
         logger.info("< loadUserByUsername {}", username);
         return userDetails;

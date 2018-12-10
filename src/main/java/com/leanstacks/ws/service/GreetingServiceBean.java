@@ -1,10 +1,7 @@
 package com.leanstacks.ws.service;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
-
-import javax.persistence.EntityExistsException;
-import javax.persistence.NoResultException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,12 +80,12 @@ public class GreetingServiceBean implements GreetingService {
     }
 
     @Override
-    public Collection<Greeting> findAll() {
+    public List<Greeting> findAll() {
         logger.info("> findAll");
 
         findAllMethodInvocationCounter.increment();
 
-        final Collection<Greeting> greetings = greetingRepository.findAll();
+        final List<Greeting> greetings = greetingRepository.findAll();
 
         logger.info("< findAll");
         return greetings;
@@ -97,19 +94,19 @@ public class GreetingServiceBean implements GreetingService {
     @Cacheable(value = Application.CACHE_GREETINGS,
             key = "#id")
     @Override
-    public Greeting findOne(final Long id) {
+    public Optional<Greeting> findOne(final Long id) {
         logger.info("> findOne {}", id);
 
         findOneMethodInvocationCounter.increment();
 
-        final Optional<Greeting> result = greetingRepository.findById(id);
+        final Optional<Greeting> greetingOptional = greetingRepository.findById(id);
 
         logger.info("< findOne {}", id);
-        return result.isPresent() ? result.get() : null;
+        return greetingOptional;
     }
 
     @CachePut(value = Application.CACHE_GREETINGS,
-            key = "#result.id")
+            key = "#result?.id")
     @Transactional
     @Override
     public Greeting create(final Greeting greeting) {
@@ -123,7 +120,7 @@ public class GreetingServiceBean implements GreetingService {
         if (greeting.getId() != null) {
             logger.error("Attempted to create a Greeting, but id attribute was not null.");
             logger.info("< create");
-            throw new EntityExistsException(
+            throw new IllegalArgumentException(
                     "Cannot create new Greeting with supplied id.  The id attribute must be null to create an entity.");
         }
 
@@ -142,15 +139,10 @@ public class GreetingServiceBean implements GreetingService {
 
         updateMethodInvocationCounter.increment();
 
-        // Ensure the entity object to be updated exists in the repository to
-        // prevent the default behavior of save() which will persist a new
+        // findOne returns an Optional which will throw NoSuchElementException when null.
+        // This will prevent the default behavior of save() which will persist a new
         // entity if the entity matching the id does not exist
-        final Greeting greetingToUpdate = findOne(greeting.getId());
-        if (greetingToUpdate == null) {
-            logger.error("Attempted to update a Greeting, but the entity does not exist.");
-            logger.info("< update {}", greeting.getId());
-            throw new NoResultException("Requested Greeting not found.");
-        }
+        final Greeting greetingToUpdate = findOne(greeting.getId()).get();
 
         greetingToUpdate.setText(greeting.getText());
         final Greeting updatedGreeting = greetingRepository.save(greetingToUpdate);

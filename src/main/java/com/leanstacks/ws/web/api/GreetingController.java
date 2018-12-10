@@ -1,10 +1,9 @@
 package com.leanstacks.ws.web.api;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-
-import javax.persistence.NoResultException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +60,7 @@ public class GreetingController {
      * Web service endpoint to fetch all Greeting entities. The service returns the collection of Greeting entities as
      * JSON.
      * 
-     * @return A ResponseEntity containing a Collection of Greeting objects.
+     * @return A List of Greeting objects.
      */
     @ApiOperation(value = "${GreetingController.getGreetings.title}",
             notes = "${GreetingController.getGreetings.notes}",
@@ -73,10 +72,10 @@ public class GreetingController {
             dataType = "string",
             paramType = "header"))
     @GetMapping
-    public Collection<Greeting> getGreetings() {
+    public List<Greeting> getGreetings() {
         logger.info("> getGreetings");
 
-        final Collection<Greeting> greetings = greetingService.findAll();
+        final List<Greeting> greetings = greetingService.findAll();
 
         logger.info("< getGreetings");
         return greetings;
@@ -92,8 +91,7 @@ public class GreetingController {
      * </p>
      * 
      * @param id A Long URL path variable containing the Greeting primary key identifier.
-     * @return A ResponseEntity containing a single Greeting object, if found, and a HTTP status code as described in
-     *         the method comment.
+     * @return A Greeting object, if found, and a HTTP status code as described in the method comment.
      */
     @ApiOperation(value = "${GreetingController.getGreeting.title}",
             notes = "${GreetingController.getGreeting.notes}",
@@ -107,14 +105,10 @@ public class GreetingController {
     public Greeting getGreeting(@ApiParam("Greeting ID") @PathVariable final Long id) {
         logger.info("> getGreeting");
 
-        final Greeting greeting = greetingService.findOne(id);
-        if (greeting == null) {
-            logger.info("< getGreeting");
-            throw new NoResultException("Greeting not found.");
-        }
+        final Optional<Greeting> greetingOptional = greetingService.findOne(id);
 
         logger.info("< getGreeting");
-        return greeting;
+        return greetingOptional.get();
     }
 
     /**
@@ -124,12 +118,11 @@ public class GreetingController {
      * </p>
      * <p>
      * If created successfully, the persisted Greeting is returned as JSON with HTTP status 201. If not created
-     * successfully, the service returns an empty response body with HTTP status 500.
+     * successfully, the service returns an ExceptionDetail response body with HTTP status 400 or 500.
      * </p>
      * 
      * @param greeting The Greeting object to be created.
-     * @return A ResponseEntity containing a single Greeting object, if created successfully, and a HTTP status code as
-     *         described in the method comment.
+     * @return A Greeting object, if created successfully, and a HTTP status code as described in the method comment.
      */
     @ApiOperation(value = "${GreetingController.createGreeting.title}",
             notes = "${GreetingController.createGreeting.notes}",
@@ -158,13 +151,12 @@ public class GreetingController {
      * </p>
      * <p>
      * If updated successfully, the persisted Greeting is returned as JSON with HTTP status 200. If not found, the
-     * service returns an empty response body and HTTP status 404. If not updated successfully, the service returns an
-     * empty response body with HTTP status 500.
+     * service returns an ExceptionDetail response body and HTTP status 404. If not updated successfully, the service
+     * returns an empty response body with HTTP status 400 or 500.
      * </p>
      * 
      * @param greeting The Greeting object to be updated.
-     * @return A ResponseEntity containing a single Greeting object, if updated successfully, and a HTTP status code as
-     *         described in the method comment.
+     * @return A Greeting object, if updated successfully, and a HTTP status code as described in the method comment.
      */
     @ApiOperation(value = "${GreetingController.updateGreeting.title}",
             notes = "${GreetingController.updateGreeting.notes}",
@@ -194,7 +186,7 @@ public class GreetingController {
      * </p>
      * <p>
      * If deleted successfully, the service returns an empty response body with HTTP status 204. If not deleted
-     * successfully, the service returns an empty response body with HTTP status 500.
+     * successfully, the service returns an ExceptionDetail response body with HTTP status 500.
      * </p>
      * 
      * @param id A Long URL path variable containing the Greeting primary key identifier.
@@ -223,14 +215,13 @@ public class GreetingController {
      * </p>
      * <p>
      * If found, the Greeting is returned as JSON with HTTP status 200 and sent via Email. If not found, the service
-     * returns an empty response body with HTTP status 404.
+     * returns an Exception response body with HTTP status 404.
      * </p>
      * 
      * @param id A Long URL path variable containing the Greeting primary key identifier.
      * @param waitForAsyncResult A boolean indicating if the web service should wait for the asynchronous email
      *            transmission.
-     * @return A ResponseEntity containing a single Greeting object, if found, and a HTTP status code as described in
-     *         the method comment.
+     * @return A Greeting object, if found, and a HTTP status code as described in the method comment.
      */
     @ApiOperation(value = "${GreetingController.sendGreeting.title}",
             notes = "${GreetingController.sendGreeting.notes}",
@@ -250,11 +241,7 @@ public class GreetingController {
         Greeting greeting;
 
         try {
-            greeting = greetingService.findOne(id);
-            if (greeting == null) {
-                logger.info("< sendGreeting");
-                throw new NoResultException("Greeting not found.");
-            }
+            greeting = greetingService.findOne(id).get();
 
             if (waitForAsyncResult) {
                 final Future<Boolean> asyncResponse = emailService.sendAsyncWithResult(greeting);

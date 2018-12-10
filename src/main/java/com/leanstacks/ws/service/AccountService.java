@@ -1,5 +1,7 @@
 package com.leanstacks.ws.service;
 
+import java.util.Optional;
+
 import com.leanstacks.ws.model.Account;
 
 /**
@@ -19,8 +21,8 @@ public interface AccountService {
      * Find an Account by the username attribute value.
      * 
      * @param username A String username to query the repository.
-     * @return An Account instance or <code>null</code> if none found.
+     * @return An Optional wrapped Account.
      */
-    Account findByUsername(String username);
+    Optional<Account> findByUsername(String username);
 
 }
