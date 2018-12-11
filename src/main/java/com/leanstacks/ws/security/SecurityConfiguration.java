@@ -1,11 +1,13 @@
-package com.leanstacks.ws;
+package com.leanstacks.ws.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,9 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-
-import com.leanstacks.ws.security.AccountAuthenticationProvider;
-import com.leanstacks.ws.security.RestBasicAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * The SecurityConfiguration class provides a centralized location for application security configuration. This class
@@ -26,6 +28,7 @@ import com.leanstacks.ws.security.RestBasicAuthenticationEntryPoint;
  */
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(CorsProperties.class)
 public class SecurityConfiguration {
 
     /**
@@ -67,21 +70,51 @@ public class SecurityConfiguration {
     @Order(1)
     public static class ApiWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
+        /**
+         * The CORS configuration.
+         */
+        @Autowired
+        private transient CorsProperties corsProperties;
+
+        /**
+         * Defines a ConfigurationSource for CORS attributes.
+         * 
+         * @return A CorsConfigurationSource.
+         */
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+            final CorsConfiguration configuration = new CorsConfiguration();
+            configuration.setAllowedOrigins(corsProperties.getAllowedOrigins());
+            configuration.setAllowedMethods(corsProperties.getAllowedMethods());
+            configuration.setAllowedHeaders(corsProperties.getAllowedHeaders());
+            configuration.setAllowCredentials(corsProperties.getAllowCredentials());
+            configuration.setExposedHeaders(corsProperties.getExposedHeaders());
+            configuration.setMaxAge(corsProperties.getMaxAgeSeconds());
+
+            final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration(corsProperties.getFilterRegistrationPath(), configuration);
+            return source;
+        }
+
         @Override
         protected void configure(final HttpSecurity http) throws Exception {
 
             // @formatter:off
             
             http
-            .csrf().disable()
-            .antMatcher("/api/**")
-              .authorizeRequests()
-                .anyRequest().hasRole("USER")
-            .and()
-            .httpBasic().authenticationEntryPoint(apiAuthenticationEntryPoint())
-            .and()
-            .sessionManagement()
-              .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .cors()
+                .and()
+                .csrf().disable()
+                .requestMatchers().antMatchers("/api/**")
+                .and()
+                .authorizeRequests()
+                    .antMatchers(HttpMethod.OPTIONS).permitAll()
+                    .anyRequest().hasRole("USER")
+                .and()
+                .httpBasic().authenticationEntryPoint(apiAuthenticationEntryPoint())
+                .and()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             
             // @formatter:on
 
@@ -118,18 +151,18 @@ public class SecurityConfiguration {
             // @formatter:off
             
             http
-            .csrf().disable()
-            .requestMatcher(EndpointRequest.toAnyEndpoint())
-              .authorizeRequests()
-                // Permit access to health check
-                .requestMatchers(EndpointRequest.to("health")).permitAll()
-                // Require authorization for everthing else
-                .anyRequest().hasRole("SYSADMIN")
-            .and()
-            .httpBasic().authenticationEntryPoint(actuatorAuthenticationEntryPoint())
-            .and()
-            .sessionManagement()
-              .sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
+                .csrf().disable()
+                .requestMatcher(EndpointRequest.toAnyEndpoint())
+                .authorizeRequests()
+                    // Permit access to health check
+                    .requestMatchers(EndpointRequest.to("health")).permitAll()
+                    // Require authorization for everthing else
+                    .anyRequest().hasRole("SYSADMIN")
+                .and()
+                .httpBasic().authenticationEntryPoint(actuatorAuthenticationEntryPoint())
+                .and()
+                .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
             
             // @formatter:on
 
@@ -167,11 +200,11 @@ public class SecurityConfiguration {
             // @formatter:off
             
             http
-              .csrf().disable()
-              .authorizeRequests()
-                .anyRequest().authenticated()
-              .and()
-              .formLogin();
+                .csrf().disable()
+                .authorizeRequests()
+                    .anyRequest().authenticated()
+                .and()
+                .formLogin();
             
             // @formatter:on
 
