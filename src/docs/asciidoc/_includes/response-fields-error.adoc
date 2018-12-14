@@ -1,0 +1,32 @@
+|===
+|Path|Type|Description
+
+|`+timestamp+`
+|`+String+`
+|The time the error occurred.
+
+|`+method+`
+|`+String+`
+|The HTTP method.
+
+|`+path+`
+|`+String+`
+|The request context path.
+
+|`+status+`
+|`+Number+`
+|The response HTTP status code.
+
+|`+statusText+`
+|`+String+`
+|The response HTTP status text.
+
+|`+exceptionClass+`
+|`+String+`
+|The exception class.
+
+|`+exceptionMessage+`
+|`+String+`
+|The exception message.
+
+|===

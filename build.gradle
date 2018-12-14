@@ -1,5 +1,6 @@
 plugins {
   id 'org.springframework.boot' version '2.1.1.RELEASE'
+  id 'org.asciidoctor.convert' version '1.5.3'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -12,6 +13,8 @@ apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
 
 ext {
+  snippetsDir = file('build/generated-snippets')
+  
   jacocoVersion = '0.8.2'
   checkstyleVersion = '8.14'
   pmdVersion = '6.9.0'
@@ -45,6 +48,9 @@ dependencies {
   
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testCompile group: 'org.springframework.security', name: 'spring-security-test'
+  testCompile group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc'
+  
+  asciidoctor group: 'org.springframework.restdocs', name: 'spring-restdocs-asciidoctor'
 }
 
 defaultTasks 'clean', 'build'
@@ -81,7 +87,15 @@ jacocoTestReport {
   }
 }
 
-test.finalizedBy jacocoTestReport
+test {
+  outputs.dir snippetsDir
+  finalizedBy jacocoTestReport
+}
+
+asciidoctor {
+  inputs.dir snippetsDir
+  dependsOn test
+}
 
 checkstyle {
   toolVersion = checkstyleVersion

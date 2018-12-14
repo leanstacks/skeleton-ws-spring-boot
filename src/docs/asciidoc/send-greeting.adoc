@@ -1,0 +1,44 @@
+= API Endpoint - Send Greeting
+LeanStacks;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:includedir: _includes
+
+== Send a greeting
+
+=== POST /api/greetings/{id}/send
+
+Email a specific greeting synchronously or asynchronously.
+
+=== Path Parameters
+
+include::{snippets}/send-greeting/path-parameters.adoc[]
+
+=== Request Parameters
+
+include::{snippets}/send-greeting/request-parameters.adoc[]
+
+=== Response Body Parameters
+
+include::{snippets}/send-greeting/response-fields.adoc[]
+
+=== Example Request
+
+Using cURL:
+
+include::{snippets}/send-greeting/curl-request.adoc[]
+
+The HTTP request:
+
+include::{snippets}/send-greeting/http-request.adoc[]
+
+=== Example Response
+
+include::{snippets}/send-greeting/http-response.adoc[]
+
+=== Example Error Response
+
+include::{includedir}/http-response-error.adoc[]
+
+include::{includedir}/response-fields-error.adoc[]

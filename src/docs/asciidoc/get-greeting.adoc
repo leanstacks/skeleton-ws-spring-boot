@@ -1,0 +1,40 @@
+= API Endpoint - Get Greeting
+LeanStacks;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:includedir: _includes
+
+== Get a specific greeting
+
+=== GET /api/greetings/{id}
+
+Get the information about a specific greeting.
+
+=== Path Parameters
+
+include::{snippets}/get-greeting/path-parameters.adoc[]
+
+=== Response Body Parameters
+
+include::{snippets}/get-greeting/response-fields.adoc[]
+
+=== Example Request
+
+Using cURL:
+
+include::{snippets}/get-greeting/curl-request.adoc[]
+
+The HTTP request:
+
+include::{snippets}/get-greeting/http-request.adoc[]
+
+=== Example Response
+
+include::{snippets}/get-greeting/http-response.adoc[]
+
+=== Example Error Response
+
+include::{includedir}/http-response-error.adoc[]
+
+include::{includedir}/response-fields-error.adoc[]

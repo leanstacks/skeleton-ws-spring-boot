@@ -1,0 +1,16 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 404
+Content-Length: 213
+Content-Type: application/json;charset=UTF-8
+
+{
+  "timestamp": "2018-12-12T13:16:11.771539Z",
+  "method": "GET",
+  "path": "/api/...",
+  "status": 404,
+  "statusText": "Not Found",
+  "exceptionClass": "java.util.NoSuchElementException",
+  "exceptionMessage": "No value present"
+}
+----
