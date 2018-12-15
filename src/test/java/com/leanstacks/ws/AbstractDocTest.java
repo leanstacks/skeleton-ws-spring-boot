@@ -35,7 +35,9 @@ public abstract class AbstractDocTest {
     private transient WebApplicationContext context;
 
     /**
-     * A JUnit 4.x Rule for Spring REST Documentation generation.
+     * A JUnit 4.x Rule for Spring REST Documentation generation. Note that the snippet output directory is only
+     * provided because this project contains both 'build.gradle' and 'pom.xml' files. Spring REST Docs uses those files
+     * to auto-detect the build system and automatically sets certain configuration values which cannot be overridden.
      */
     @Rule
     public transient JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("build/generated-snippets");

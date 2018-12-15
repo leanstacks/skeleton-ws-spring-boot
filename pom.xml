@@ -76,6 +76,18 @@
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>27.0.1-jre</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- Dependencies for API Docs -->
+    <dependency>
+    	<groupId>org.springframework.restdocs</groupId>
+    	<artifactId>spring-restdocs-mockmvc</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
