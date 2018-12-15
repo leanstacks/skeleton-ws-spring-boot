@@ -24,11 +24,6 @@ import com.leanstacks.ws.model.Greeting;
 import com.leanstacks.ws.service.EmailService;
 import com.leanstacks.ws.service.GreetingService;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-
 /**
  * The GreetingController class is a RESTful web service controller. The <code>@RestController</code> annotation informs
  * Spring that each <code>@RequestMapping</code> method returns a <code>@ResponseBody</code>.
@@ -62,15 +57,6 @@ public class GreetingController {
      * 
      * @return A List of Greeting objects.
      */
-    @ApiOperation(value = "${GreetingController.getGreetings.title}",
-            notes = "${GreetingController.getGreetings.notes}",
-            response = Greeting.class,
-            responseContainer = "List")
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
-            value = "Basic auth_creds",
-            required = true,
-            dataType = "string",
-            paramType = "header"))
     @GetMapping
     public List<Greeting> getGreetings() {
         logger.info("> getGreetings");
@@ -93,16 +79,8 @@ public class GreetingController {
      * @param id A Long URL path variable containing the Greeting primary key identifier.
      * @return A Greeting object, if found, and a HTTP status code as described in the method comment.
      */
-    @ApiOperation(value = "${GreetingController.getGreeting.title}",
-            notes = "${GreetingController.getGreeting.notes}",
-            response = Greeting.class)
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
-            value = "Basic auth_creds",
-            required = true,
-            dataType = "string",
-            paramType = "header"))
     @GetMapping("/{id}")
-    public Greeting getGreeting(@ApiParam("Greeting ID") @PathVariable final Long id) {
+    public Greeting getGreeting(@PathVariable final Long id) {
         logger.info("> getGreeting");
 
         final Optional<Greeting> greetingOptional = greetingService.findOne(id);
@@ -124,15 +102,6 @@ public class GreetingController {
      * @param greeting The Greeting object to be created.
      * @return A Greeting object, if created successfully, and a HTTP status code as described in the method comment.
      */
-    @ApiOperation(value = "${GreetingController.createGreeting.title}",
-            notes = "${GreetingController.createGreeting.notes}",
-            response = Greeting.class,
-            code = 201)
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
-            value = "Basic auth_creds",
-            required = true,
-            dataType = "string",
-            paramType = "header"))
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Greeting createGreeting(@RequestBody final Greeting greeting) {
@@ -158,17 +127,8 @@ public class GreetingController {
      * @param greeting The Greeting object to be updated.
      * @return A Greeting object, if updated successfully, and a HTTP status code as described in the method comment.
      */
-    @ApiOperation(value = "${GreetingController.updateGreeting.title}",
-            notes = "${GreetingController.updateGreeting.notes}",
-            response = Greeting.class)
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
-            value = "Basic auth_creds",
-            required = true,
-            dataType = "string",
-            paramType = "header"))
     @PutMapping("/{id}")
-    public Greeting updateGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
-            @RequestBody final Greeting greeting) {
+    public Greeting updateGreeting(@PathVariable("id") final Long id, @RequestBody final Greeting greeting) {
         logger.info("> updateGreeting");
 
         greeting.setId(id);
@@ -191,17 +151,9 @@ public class GreetingController {
      * 
      * @param id A Long URL path variable containing the Greeting primary key identifier.
      */
-    @ApiOperation(value = "${GreetingController.deleteGreeting.title}",
-            notes = "${GreetingController.deleteGreeting.notes}",
-            code = 204)
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
-            value = "Basic auth_creds",
-            required = true,
-            dataType = "string",
-            paramType = "header"))
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id) {
+    public void deleteGreeting(@PathVariable("id") final Long id) {
         logger.info("> deleteGreeting");
 
         greetingService.delete(id);
@@ -223,18 +175,9 @@ public class GreetingController {
      *            transmission.
      * @return A Greeting object, if found, and a HTTP status code as described in the method comment.
      */
-    @ApiOperation(value = "${GreetingController.sendGreeting.title}",
-            notes = "${GreetingController.sendGreeting.notes}",
-            response = Greeting.class)
-    @ApiImplicitParams(@ApiImplicitParam(name = "Authorization",
-            value = "Basic auth_creds",
-            required = true,
-            dataType = "string",
-            paramType = "header"))
     @PostMapping("/{id}/send")
-    public Greeting sendGreeting(@ApiParam("Greeting ID") @PathVariable("id") final Long id,
-            @ApiParam("Wait for Response") @RequestParam(value = "wait",
-                    defaultValue = "false") final boolean waitForAsyncResult) {
+    public Greeting sendGreeting(@PathVariable("id") final Long id, @RequestParam(value = "wait",
+            defaultValue = "false") final boolean waitForAsyncResult) {
 
         logger.info("> sendGreeting");
 
