@@ -18,7 +18,6 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
-    <swagger.version>2.7.0</swagger.version>
   </properties>
   
   <dependencies>
@@ -66,18 +65,6 @@
     
     <!-- Dependencies for Miscellaneous Functionality -->
 
-    <!-- Dependencies for Swagger -->
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger2</artifactId>
-      <version>${swagger.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-      <version>${swagger.version}</version>
-    </dependency>
-    
     <!-- Dependencies for Unit Testing -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -88,6 +75,18 @@
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-test</artifactId>
       <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>27.0.1-jre</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- Dependencies for API Docs -->
+    <dependency>
+    	<groupId>org.springframework.restdocs</groupId>
+    	<artifactId>spring-restdocs-mockmvc</artifactId>
     </dependency>
   </dependencies>
 

@@ -74,7 +74,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     public ResponseEntity<Object> handleEmptyResultDataAccessException(final EmptyResultDataAccessException ex,
             final WebRequest request) {
         logger.info("> handleEmptyResultDataAccessException");
-        logger.warn("- EmptyResultDataAccessException: ", ex);
+        logger.info("- EmptyResultDataAccessException: ", ex);
         final ExceptionDetail detail = new ExceptionDetailBuilder().exception(ex).httpStatus(HttpStatus.NOT_FOUND)
                 .webRequest(request).build();
         logger.info("< handleEmptyResultDataAccessException");

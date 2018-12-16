@@ -3,8 +3,6 @@ package com.leanstacks.ws.model;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
-import io.swagger.annotations.ApiModelProperty;
-
 /**
  * The Greeting class is an entity model object.
  * 
@@ -18,10 +16,6 @@ public class Greeting extends TransactionalEntity {
     /**
      * The text value.
      */
-    @ApiModelProperty(value = "The actual text of the Greeting.",
-            required = true,
-            position = 100,
-            example = "Hello World!")
     @NotNull
     private String text;
 

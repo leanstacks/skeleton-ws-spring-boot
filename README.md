@@ -55,7 +55,7 @@ The project contains unit and integration test examples for standard components 
 The project illustrates the use of Spring Boot Actuator for application monitoring and management.  The application demonstrates the recording of custom metrics and the creation of custom health checks.  Also, custom Maven and Gradle project attributes are incorporated into the Actuator info endpoint.
 
 #### API Documentation Generator
-The project includes [Springfox](http://springfox.github.io/springfox/) Swagger integration to automatically generate API docs for the RESTful web service endpoints.  This feature may be activated using the *"docs"* Spring profile.
+The project includes [Spring REST Docs](https://spring.io/projects/spring-restdocs) integration to automatically generate API docs for the RESTful web service endpoints.  This feature may be activated using the *"asciidoctor"* Gradle task.
 
 #### Executable Jar
 The Maven and Gradle builds produce a fully executable Spring Boot Jar file. The Jar file may be executed directly from the command line without the *"java -jar"* command and may be installed on servers as a Linux service.
@@ -278,6 +278,26 @@ java -jar build/libs/example-1.0.0.jar --spring.profiles.active=mysql,batch
 
 ./example-1.0.0.jar --spring.profiles.active=mysql,batch
 ```
+
+#### asciidoctor
+
+The `asciidoctor` Gradle task performs the following workflow steps:
+
+* compiles Java classes to the /build directory
+* copies all resources to the /build directory
+* executes the unit test suites
+* generates [Asciidoctor](https://asciidoctor.org/) snippets in the /build/generated-snippets directory
+* generates HTML API Docs in the /build/asciidoc/html5 directory
+
+The `asciidoctor` Gradle task generates API documentation using [Spring REST Docs](https://spring.io/projects/spring-restdocs).
+
+To execute the `asciidoctor` Gradle task, type the following command at a terminal prompt in the project base directory.
+
+```
+./gradlew clean asciidoctor
+```
+
+The API documentation is placed in the /build/asciidoc/html5 directory and the root document is named `index.html`.
 
 #### encodePassword
 

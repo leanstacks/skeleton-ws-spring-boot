@@ -5,7 +5,6 @@ import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointR
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -179,35 +178,6 @@ public class SecurityConfiguration {
             final RestBasicAuthenticationEntryPoint entryPoint = new RestBasicAuthenticationEntryPoint();
             entryPoint.setRealmName("actuator realm");
             return entryPoint;
-        }
-
-    }
-
-    /**
-     * This inner class configures the WebSecurityConfigurerAdapter instance for any remaining context paths not handled
-     * by other adapters.
-     * 
-     * @author Matt Warman
-     */
-    @Profile("docs")
-    @Configuration
-    @Order(3)
-    public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(final HttpSecurity http) throws Exception {
-
-            // @formatter:off
-            
-            http
-                .csrf().disable()
-                .authorizeRequests()
-                    .anyRequest().authenticated()
-                .and()
-                .formLogin();
-            
-            // @formatter:on
-
         }
 
     }

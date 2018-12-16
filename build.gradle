@@ -1,5 +1,6 @@
 plugins {
   id 'org.springframework.boot' version '2.1.1.RELEASE'
+  id 'org.asciidoctor.convert' version '1.5.3'
 }
 
 apply plugin: 'io.spring.dependency-management'
@@ -12,10 +13,11 @@ apply plugin: 'project-report'
 apply plugin: 'build-dashboard'
 
 ext {
+  snippetsDir = file('build/generated-snippets')
+  
   jacocoVersion = '0.8.2'
   checkstyleVersion = '8.14'
   pmdVersion = '6.9.0'
-  swaggerVersion = '2.7.0'
 }
 
 group = 'com.leanstacks'
@@ -37,14 +39,16 @@ dependencies {
   
   compile group: 'com.github.ben-manes.caffeine', name: 'caffeine'
   compile group: 'org.liquibase', name: 'liquibase-core'
-  compile group: 'io.springfox', name: 'springfox-swagger2', version: swaggerVersion
-  compile group: 'io.springfox', name: 'springfox-swagger-ui', version: swaggerVersion
   
   runtime group: 'org.hsqldb', name: 'hsqldb'
   runtime group: 'mysql', name: 'mysql-connector-java'
   
   testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testCompile group: 'org.springframework.security', name: 'spring-security-test'
+  testCompile group: 'org.springframework.restdocs', name: 'spring-restdocs-mockmvc'
+  testCompile group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
+  
+  asciidoctor group: 'org.springframework.restdocs', name: 'spring-restdocs-asciidoctor'
 }
 
 defaultTasks 'clean', 'build'
@@ -81,7 +85,15 @@ jacocoTestReport {
   }
 }
 
-test.finalizedBy jacocoTestReport
+test {
+  outputs.dir snippetsDir
+  finalizedBy jacocoTestReport
+}
+
+asciidoctor {
+  inputs.dir snippetsDir
+  dependsOn test
+}
 
 checkstyle {
   toolVersion = checkstyleVersion

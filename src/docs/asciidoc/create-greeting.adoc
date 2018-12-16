@@ -1,0 +1,40 @@
+= API Endpoint - Create Greeting
+LeanStacks;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:includedir: _includes
+
+== Create a new greeting
+
+=== POST /api/greetings
+
+Create a new greeting.
+
+=== Request Body Parameters
+
+include::{snippets}/create-greeting/request-fields.adoc[]
+
+=== Response Body Parameters
+
+include::{snippets}/create-greeting/response-fields.adoc[]
+
+=== Example Request
+
+Using cURL:
+
+include::{snippets}/create-greeting/curl-request.adoc[]
+
+The HTTP request:
+
+include::{snippets}/create-greeting/http-request.adoc[]
+
+=== Example Response
+
+include::{snippets}/create-greeting/http-response.adoc[]
+
+=== Example Error Response
+
+include::{includedir}/http-response-error.adoc[]
+
+include::{includedir}/response-fields-error.adoc[]
