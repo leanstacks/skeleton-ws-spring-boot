@@ -1,5 +1,7 @@
 package com.leanstacks.ws.web.api;
 
+import java.time.Instant;
+
 /**
  * The ExceptionDetail class models information about a web service request which results in an Exception. This
  * information may be returned to the client.
@@ -10,15 +12,15 @@ package com.leanstacks.ws.web.api;
 public class ExceptionDetail {
 
     /**
-     * A timestamp expressed in milliseconds.
+     * The time the exception occurred.
      */
-    private long timestamp;
+    private Instant timestamp;
     /**
      * The HTTP method (e.g. GET, POST, etc.)
      */
     private String method = "";
     /**
-     * The web service servlet path.
+     * The web service context path.
      */
     private String path = "";
     /**
@@ -42,24 +44,24 @@ public class ExceptionDetail {
      * Construct an ExceptionDetail.
      */
     public ExceptionDetail() {
-        this.timestamp = System.currentTimeMillis();
+        this.timestamp = Instant.now();
     }
 
     /**
      * Returns the timestamp attribute value.
      * 
-     * @return A long.
+     * @return An Instant.
      */
-    public long getTimestamp() {
+    public Instant getTimestamp() {
         return timestamp;
     }
 
     /**
      * Sets the timestamp attribute value.
      * 
-     * @param timestamp A long.
+     * @param timestamp An Instant.
      */
-    public void setTimestamp(final long timestamp) {
+    public void setTimestamp(final Instant timestamp) {
         this.timestamp = timestamp;
     }
 

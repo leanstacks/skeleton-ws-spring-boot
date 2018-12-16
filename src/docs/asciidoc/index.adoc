@@ -1,0 +1,27 @@
+= Overview
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+
+Review the available resources from the LeanStacks API. Click any endpoint for additional information.
+
+=== Greetings
+
+[cols="2,4,4",options="header"]
+|===
+
+| HTTP method | Endpoint | Function 
+
+| GET | <<get-greetings.adoc#,/api/greetings>> | Get a list of greetings
+
+| GET | <<get-greeting.adoc#,/api/greetings/{id}>> | Get a specific greeting 
+
+| POST | <<create-greeting.adoc#,/api/greetings>> | Create a greeting 
+
+| PUT | <<update-greeting.adoc#,/api/greetings/{id}>> | Update a greeting 
+
+| DELETE | <<delete-greeting.adoc#,/api/greetings/{id}>> | Delete a greeting 
+
+| POST | <<send-greeting.adoc#,/api/greetings/{id}/send>> | Send a greeting 
+
+|===

@@ -15,8 +15,6 @@ import javax.validation.constraints.NotNull;
 
 import com.leanstacks.ws.util.RequestContext;
 
-import io.swagger.annotations.ApiModelProperty;
-
 /**
  * The parent class for all transactional persistent entities.
  * 
@@ -33,11 +31,6 @@ public class TransactionalEntity implements Serializable {
     /**
      * The primary key identifier.
      */
-    @ApiModelProperty(value = "Primary key identifier",
-            required = false,
-            position = 1,
-            readOnly = true,
-            example = "1")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,65 +38,35 @@ public class TransactionalEntity implements Serializable {
     /**
      * A secondary unique identifier which may be used as a reference to this entity by external systems.
      */
-    @ApiModelProperty(value = "External reference identifier",
-            required = false,
-            position = 2,
-            readOnly = true,
-            example = "a1b2c3d4")
     @NotNull
     private String referenceId = UUID.randomUUID().toString();
 
     /**
      * The entity instance version used for optimistic locking.
      */
-    @ApiModelProperty(value = "Version of this model object since creation",
-            required = false,
-            position = Integer.MAX_VALUE - 500,
-            readOnly = true,
-            example = "1")
     @Version
     private Integer version;
 
     /**
      * A reference to the entity or process which created this entity instance.
      */
-    @ApiModelProperty(value = "Identifies the object creator",
-            required = false,
-            position = Integer.MAX_VALUE - 400,
-            readOnly = true,
-            example = "user")
     @NotNull
     private String createdBy;
 
     /**
      * The timestamp when this entity instance was created.
      */
-    @ApiModelProperty(value = "The object creation timestamp",
-            required = false,
-            position = Integer.MAX_VALUE - 300,
-            readOnly = true,
-            example = "1499418339522")
     @NotNull
     private Instant createdAt;
 
     /**
      * A reference to the entity or process which most recently updated this entity instance.
      */
-    @ApiModelProperty(value = "Identifies the object updater",
-            required = false,
-            position = Integer.MAX_VALUE - 200,
-            readOnly = true,
-            example = "usertoo")
     private String updatedBy;
 
     /**
      * The timestamp when this entity instance was most recently updated.
      */
-    @ApiModelProperty(value = "The object update timestamp",
-            required = false,
-            position = Integer.MAX_VALUE - 100,
-            readOnly = true,
-            example = "1499418343681")
     private Instant updatedAt;
 
     public Long getId() {

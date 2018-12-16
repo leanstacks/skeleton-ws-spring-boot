@@ -18,6 +18,9 @@ public abstract class AbstractTest {
      */
     public static final String USERNAME = "unittest";
 
+    /**
+     * Tasks performed before each test method.
+     */
     @Before
     public void before() {
         RequestContext.setUsername(AbstractTest.USERNAME);
@@ -25,17 +28,22 @@ public abstract class AbstractTest {
     }
 
     /**
-     * Perform initialization tasks before the execution of each test method.
+     * Perform initialization tasks before the execution of each test method. Concrete test classes may override this
+     * method to implement class-specific tasks.
      */
     public abstract void doBeforeEachTest();
 
+    /**
+     * Tasks performed after each test method.
+     */
     @After
     public void after() {
         doAfterEachTest();
     }
 
     /**
-     * Perform clean up tasks after the execution of each test method.
+     * Perform clean up tasks after the execution of each test method. Concrete test classes may override this method to
+     * implement class-specific tasks.
      */
     public abstract void doAfterEachTest();
 

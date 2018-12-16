@@ -1,0 +1,32 @@
+= API Endpoint - Delete Greeting
+LeanStacks;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:includedir: _includes
+
+== Delete a greeting
+
+=== DELETE /api/greetings/{id}
+
+Delete all information about a specific greeting.
+
+=== Example Request
+
+Using cURL:
+
+include::{snippets}/delete-greeting/curl-request.adoc[]
+
+The HTTP request:
+
+include::{snippets}/delete-greeting/http-request.adoc[]
+
+=== Example Response
+
+include::{snippets}/delete-greeting/http-response.adoc[]
+
+=== Example Error Response
+
+include::{includedir}/http-response-error.adoc[]
+
+include::{includedir}/response-fields-error.adoc[]

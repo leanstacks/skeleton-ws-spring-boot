@@ -1,0 +1,44 @@
+= API Endpoint - Update Greeting
+LeanStacks;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:includedir: _includes
+
+== Update a greeting
+
+=== PUT /api/greetings/{id}
+
+Update the information about a specific greeting.
+
+=== Path Parameters
+
+include::{snippets}/update-greeting/path-parameters.adoc[]
+
+=== Request Body Parameters
+
+include::{snippets}/update-greeting/request-fields.adoc[]
+
+=== Response Body Parameters
+
+include::{snippets}/update-greeting/response-fields.adoc[]
+
+=== Example Request
+
+Using cURL:
+
+include::{snippets}/update-greeting/curl-request.adoc[]
+
+The HTTP request:
+
+include::{snippets}/update-greeting/http-request.adoc[]
+
+=== Example Response
+
+include::{snippets}/update-greeting/http-response.adoc[]
+
+=== Example Error Response
+
+include::{includedir}/http-response-error.adoc[]
+
+include::{includedir}/response-fields-error.adoc[]

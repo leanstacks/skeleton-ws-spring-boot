@@ -21,24 +21,45 @@ public class Account extends TransactionalEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Login username.
+     */
     @NotNull
     private String username;
 
+    /**
+     * Login password.
+     */
     @NotNull
     private String password;
 
+    /**
+     * Account enabled status indicator.
+     */
     @NotNull
     private boolean enabled = true;
 
+    /**
+     * Credential status indicator.
+     */
     @NotNull
     private boolean credentialsexpired;
 
+    /**
+     * Account expired status indicator.
+     */
     @NotNull
     private boolean expired;
 
+    /**
+     * Account locked indicator.
+     */
     @NotNull
     private boolean locked;
 
+    /**
+     * Authorization information.
+     */
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     @JoinTable(name = "AccountRole",
@@ -48,6 +69,9 @@ public class Account extends TransactionalEntity {
                     referencedColumnName = "id"))
     private Set<Role> roles;
 
+    /**
+     * Create a new Account object.
+     */
     public Account() {
         super();
     }

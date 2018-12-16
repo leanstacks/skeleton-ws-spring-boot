@@ -6,7 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -92,11 +93,16 @@ public class GreetingControllerTest extends AbstractTest {
         // perform test clean up
     }
 
+    /**
+     * Test fetch collection of Greetings.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testGetGreetings() throws Exception {
 
         // Create some test data
-        final Collection<Greeting> list = getEntityListStubData();
+        final List<Greeting> list = getEntityListStubData();
 
         // Stub the GreetingService.findAll method return value
         when(greetingService.findAll()).thenReturn(list);
@@ -118,15 +124,20 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test fetch a Greeting by identifier.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testGetGreeting() throws Exception {
 
         // Create some test data
         final Long id = Long.valueOf(1);
-        final Greeting entity = getEntityStubData();
+        final Optional<Greeting> greetingOptional = Optional.of(getEntityStubData());
 
         // Stub the GreetingService.findOne method return value
-        when(greetingService.findOne(id)).thenReturn(entity);
+        when(greetingService.findOne(id)).thenReturn(greetingOptional);
 
         // Perform the behavior being tested
         final MvcResult result = mvc
@@ -145,6 +156,11 @@ public class GreetingControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
     }
 
+    /**
+     * Test fetch a Greeting with unknown identifier.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testGetGreetingNotFound() throws Exception {
 
@@ -152,7 +168,7 @@ public class GreetingControllerTest extends AbstractTest {
         final Long id = Long.MAX_VALUE;
 
         // Stub the GreetingService.findOne method return value
-        when(greetingService.findOne(id)).thenReturn(null);
+        when(greetingService.findOne(id)).thenReturn(Optional.empty());
 
         // Perform the behavior being tested
         final MvcResult result = mvc
@@ -168,10 +184,15 @@ public class GreetingControllerTest extends AbstractTest {
 
         // Perform standard JUnit assertions on the test results
         Assert.assertEquals("failure - expected HTTP status 404", 404, status);
-        Assert.assertTrue("failure - expected HTTP response body to be empty", Strings.isNullOrEmpty(content));
+        Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
 
     }
 
+    /**
+     * Test create a Greeting.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testCreateGreeting() throws Exception {
 
@@ -208,6 +229,11 @@ public class GreetingControllerTest extends AbstractTest {
         Assert.assertEquals("failure - expected text attribute match", entity.getText(), createdEntity.getText());
     }
 
+    /**
+     * Test update a Greeting.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testUpdateGreeting() throws Exception {
 
@@ -245,6 +271,11 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test delete a Greeting.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testDeleteGreeting() throws Exception {
 
@@ -267,15 +298,20 @@ public class GreetingControllerTest extends AbstractTest {
 
     }
 
+    /**
+     * Test sending email asynchronously.
+     * 
+     * @throws Exception Thrown if mocking failure occurs.
+     */
     @Test
     public void testSendGreetingAsync() throws Exception {
 
         // Create some test data
         final Long id = Long.valueOf(1);
-        final Greeting entity = getEntityStubData();
+        final Optional<Greeting> greetingOptional = Optional.of(getEntityStubData());
 
         // Stub the GreetingService.findOne method return value
-        when(greetingService.findOne(id)).thenReturn(entity);
+        when(greetingService.findOne(id)).thenReturn(greetingOptional);
 
         // Perform the behavior being tested
         final MvcResult result = mvc.perform(
@@ -297,8 +333,8 @@ public class GreetingControllerTest extends AbstractTest {
         Assert.assertTrue("failure - expected HTTP response body to have a value", !Strings.isNullOrEmpty(content));
     }
 
-    private Collection<Greeting> getEntityListStubData() {
-        final Collection<Greeting> list = new ArrayList<Greeting>();
+    private List<Greeting> getEntityListStubData() {
+        final List<Greeting> list = new ArrayList<Greeting>();
         list.add(getEntityStubData());
         return list;
     }
