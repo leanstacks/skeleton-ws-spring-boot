@@ -5,6 +5,9 @@ node {
     }
     stage('Build') {
         echo 'Building...'
+        env.JAVA_HOME="${tool 'OpenJDK-11.0.1'}"
+        env.PATH="${env.JAVA_HOME}/bin:${env.PATH}"
+        sh 'java -version'
         sh './gradlew'
     }
     stage('Report') {
