@@ -1,0 +1,48 @@
+version: "3.7"
+
+services:
+
+  app:
+    # build or use skeleton-ws-spring-boot:latest
+    image: skeleton-ws-spring-boot
+    # when image not present or '--build' option used, build a new
+    # skeleton-ws-spring-boot:latest image using ./Dockerfile
+    build:
+      context: .
+    # override configuration to use MySQL database
+    # and connection URL for 'db' service defined below
+    environment:
+      SPRING_PROFILES_ACTIVE: "mysql,batch"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://db/skeleton?useSSL=false"
+    networks:
+      - skeleton-net
+    # expose app on port 8080
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  db:
+    # use MySQL 5.7 from Docker Hub
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rUtP@55wErd
+    networks:
+      - skeleton-net
+    # optionally expose MySQL default port on 3307 to use Workbench or other admin tool
+    ports:
+      - "3307:3306"
+    restart: unless-stopped
+    volumes:
+      # persistent MySQL data volume
+      - skeleton-mysql:/var/lib/mysql
+      # MySQL initialization scripts to bootstrap new MySQL database on first run
+      - ./etc/mysql/init:/docker-entrypoint-initdb.d
+
+volumes:
+  # persisent Docker volume for MySQL data
+  skeleton-mysql:
+
+networks:
+  # Docker network for the application
+  skeleton-net:
+ 
