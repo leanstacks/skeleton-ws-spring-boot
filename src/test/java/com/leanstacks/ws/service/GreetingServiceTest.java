@@ -83,7 +83,7 @@ public class GreetingServiceTest extends AbstractTest {
 
         final Optional<Greeting> greetingOptional = greetingService.findOne(id);
 
-        Assert.assertTrue("failure - expected null", greetingOptional.isEmpty());
+        Assert.assertTrue("failure - expected null",! greetingOptional.isPresent());
 
     }
 
@@ -188,7 +188,7 @@ public class GreetingServiceTest extends AbstractTest {
 
         final Optional<Greeting> deletedGreetingOptional = greetingService.findOne(id);
 
-        Assert.assertTrue("failure - expected greeting to be deleted", deletedGreetingOptional.isEmpty());
+        Assert.assertTrue("failure - expected greeting to be deleted", ! deletedGreetingOptional.isPresent());
 
     }
 
